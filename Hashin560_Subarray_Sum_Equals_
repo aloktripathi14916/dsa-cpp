@@ -1,0 +1,82 @@
+/*
+Problem: Subarray Sum Equals K
+Platform: LeetCode (LC 560)
+Topic: Arrays / Prefix Sum / Hashing
+
+Given an integer array nums and an integer k,
+return the total number of subarrays whose sum equals k.
+
+----------------------------------------------------------
+
+Approach 1: Brute Force
+- Fix a starting index.
+- Keep adding elements to compute subarray sums.
+- If sum == k, increment count.
+
+Time Complexity: O(n^2)
+Space Complexity: O(1)
+
+----------------------------------------------------------
+
+Approach 2: Prefix Sum + HashMap (Optimal)
+Idea:
+- Let prefixSum[i] = sum of elements from index 0 to i
+- If (prefixSum[j] - k) existed earlier, then the subarray
+  between those indices sums to k.
+
+Steps:
+1. Maintain running prefix sum.
+2. Store frequency of prefix sums in a hashmap.
+3. Check if (prefixSum - k) exists in map.
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+
+    // ----------- Brute Force Approach -----------
+    int subarraySumBrute(vector<int>& nums, int k) {
+
+        int n = nums.size();
+        int count = 0;
+
+        for(int i = 0; i < n; i++) {
+            int sum = 0;
+
+            for(int j = i; j < n; j++) {
+                sum += nums[j];
+
+                if(sum == k)
+                    count++;
+            }
+        }
+
+        return count;
+    }
+
+
+    // ----------- Optimal Approach (Prefix Sum + HashMap) -----------
+    int subarraySum(vector<int>& nums, int k) {
+
+        unordered_map<int,int> mp;
+        int prefixSum = 0;
+        int count = 0;
+
+        mp[0] = 1;  // important for cases where prefixSum == k
+
+        for(int num : nums) {
+
+            prefixSum += num;
+
+            if(mp.find(prefixSum - k) != mp.end()) {
+                count += mp[prefixSum - k];
+            }
+
+            mp[prefixSum]++;
+        }
+
+        return count;
+    }
+};
