@@ -1,0 +1,57 @@
+/*
+Problem: Combination Sum
+Platform: LeetCode (LC 39)
+Topic: Backtracking
+
+---------------------------------------------------------
+
+Approach:
+
+At each index we have two choices:
+
+1. Take current element:
+   - add it to current combination
+   - reduce target
+   - stay on same index because element can be reused
+
+2. Skip current element:
+   - move to next index
+
+Whenever target becomes 0, store the combination.
+
+---------------------------------------------------------
+
+Time Complexity: Exponential
+Space Complexity: O(target) recursion stack
+*/
+
+class Solution {
+public:
+
+    void getAll(vector<int>& arr, int target, int idx,
+                vector<vector<int>>& ans, vector<int>& combination) {
+        
+        if(target == 0) {
+            ans.push_back(combination);
+            return;
+        }
+
+        if(idx == arr.size() || target < 0)
+            return;
+
+        combination.push_back(arr[idx]);
+        getAll(arr, target - arr[idx], idx, ans, combination);
+
+        combination.pop_back();
+        getAll(arr, target, idx + 1, ans, combination);
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& arr, int target) {
+        vector<vector<int>> ans;
+        vector<int> combination;
+
+        getAll(arr, target, 0, ans, combination);
+
+        return ans;
+    }
+};
