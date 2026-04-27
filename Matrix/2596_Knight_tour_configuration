@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool checkValidGrid(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+
+        if(grid[0][0] != 0) return false;
+
+        vector<pair<int,int>> pos(n * n);
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                pos[grid[i][j]] = {i, j};
+            }
+        }
+
+        for(int val = 1; val < n * n; val++) {
+            int r1 = pos[val-1].first;
+            int c1 = pos[val-1].second;
+
+            int r2 = pos[val].first;
+            int c2 = pos[val].second;
+
+            int dr = abs(r1 - r2);
+            int dc = abs(c1 - c2);
+
+            if(!((dr == 2 && dc == 1) || (dr == 1 && dc == 2)))
+                return false;
+        }
+
+        return true;
+    }
+};
