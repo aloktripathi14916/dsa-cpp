@@ -1,0 +1,55 @@
+/*
+Problem: Squares of a Sorted Array
+Platform: LeetCode (LC 977)
+Topic: Two Pointers
+
+---------------------------------------------------------
+
+Approach:
+
+- Since the array is already sorted,
+  the largest square will come from either
+  the leftmost negative number or the rightmost positive number.
+
+- Use two pointers:
+    st at beginning
+    end at end
+
+- Compare absolute values and place larger square
+  at the end of result array.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input: [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+*/
+
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        
+        int n = nums.size();
+        vector<int> ans(n);
+
+        int st = 0, end = n - 1;
+        int idx = n - 1;
+
+        while(st <= end) {
+            if(abs(nums[st]) > abs(nums[end])) {
+                ans[idx] = nums[st] * nums[st];
+                st++;
+            }
+            else {
+                ans[idx] = nums[end] * nums[end];
+                end--;
+            }
+            idx--;
+        }
+
+        return ans;
+    }
+};
