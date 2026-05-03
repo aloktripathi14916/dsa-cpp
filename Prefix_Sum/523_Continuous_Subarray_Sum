@@ -1,0 +1,68 @@
+/*
+Problem: Continuous Subarray Sum
+Platform: LeetCode (LC 523)
+Topic: Prefix Sum + HashMap (Modular Arithmetic)
+
+---------------------------------------------------------
+
+Approach:
+
+We use the idea of prefix sum + modulo k.
+
+Key observations:
+- If (sum[i] % k) == (sum[j] % k), then the subarray (i+1 to j)
+  has a sum divisible by k.
+- We store the first index where each remainder occurs.
+
+Edge case:
+- If k == 0, we directly check for at least two consecutive zeros,
+  since division/modulo is undefined.
+
+Steps:
+1. Maintain running prefix sum.
+2. Compute remainder = sum % k.
+3. If remainder already seen and subarray length > 1 → return true.
+4. Otherwise store the first occurrence of remainder.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(min(n, k))
+
+Example:
+Input: nums = [23,2,4,6,7], k = 6
+Output: true
+Explanation: [2,4] → sum = 6 (divisible by 6)
+*/
+
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        if (k == 0) {
+            for (int i = 1; i < nums.size(); i++) {
+                if (nums[i] == 0 && nums[i - 1] == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        unordered_map<int, int> mp;
+        mp[0] = -1;
+
+        int sum = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+            int rem = sum % k;
+
+            if (mp.count(rem)) {
+                if (i - mp[rem] > 1)
+                    return true;
+            } else {
+                mp[rem] = i;
+            }
+        }
+
+        return false;
+    }
+};
