@@ -1,0 +1,76 @@
+/*
+Problem: Subarray Sums Divisible by K
+Platform: LeetCode (LC 974)
+Topic: Prefix Sum + HashMap
+
+---------------------------------------------------------
+
+Approach:
+
+We use prefix sums and modular arithmetic.
+
+Key idea:
+If two prefix sums have the same remainder when divided by k,
+then the subarray between them has a sum divisible by k.
+
+Mathematically:
+If
+    prefixSum[i] % k == prefixSum[j] % k
+then
+    (prefixSum[j] - prefixSum[i]) is divisible by k.
+
+So:
+- Store frequency of each remainder in a hashmap.
+- Whenever the same remainder appears again,
+  add its frequency to the answer.
+
+Important:
+Negative numbers can produce negative remainders in C++.
+To keep remainder positive:
+    rem = (sum % k + k) % k
+
+Steps:
+1. Maintain running prefix sum.
+2. Compute normalized remainder.
+3. Add frequency of that remainder to answer.
+4. Increase remainder frequency.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(k)
+
+Example:
+Input: nums = [4,5,0,-2,-3,1], k = 5
+Output: 7
+
+Explanation:
+There are 7 subarrays whose sum is divisible by 5.
+*/
+
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+
+        unordered_map<int, int> mp;
+        mp[0] = 1;   // frequency of remainder 0
+
+        int sum = 0;
+        int count = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            sum += nums[i];
+
+            // Handle negative remainders
+            int rem = (sum % k + k) % k;
+
+            if (mp.count(rem))
+                count += mp[rem];
+
+            mp[rem]++;
+        }
+
+        return count;
+    }
+};
