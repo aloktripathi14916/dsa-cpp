@@ -1,0 +1,71 @@
+/*
+Problem: Find Pivot Index
+Platform: LeetCode (LC 724)
+Topic: Prefix Sum / Array
+
+---------------------------------------------------------
+
+Approach:
+
+The pivot index is the index where:
+    left sum == right sum
+
+Instead of calculating left and right sums repeatedly
+for every index (which would be inefficient),
+we use total sum optimization.
+
+Steps:
+1. Calculate total sum of the array.
+2. Maintain a running left sum.
+3. For every index:
+      right sum = total - left sum - current element
+4. If left sum == right sum,
+      return that index.
+5. Otherwise continue updating left sum.
+
+This avoids extra nested loops.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: nums = [1,7,3,6,5,6]
+Output: 3
+
+Explanation:
+Left sum of index 3:
+1 + 7 + 3 = 11
+
+Right sum of index 3:
+5 + 6 = 11
+*/
+
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+
+        int total = 0;
+
+        // Calculate total sum
+        for (int i = 0; i < nums.size(); i++) {
+            total += nums[i];
+        }
+
+        int leftsum = 0;
+        int rightsum = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            rightsum = total - leftsum - nums[i];
+
+            if (leftsum == rightsum)
+                return i;
+
+            leftsum += nums[i];
+        }
+
+        return -1;
+    }
+};
