@@ -1,0 +1,74 @@
+/*
+Problem: Maximum Points You Can Obtain from Cards
+Platform: LeetCode (LC 1423)
+Topic: Sliding Window / Prefix Sum
+
+---------------------------------------------------------
+
+Approach:
+
+We need to pick exactly k cards from either the
+beginning or the end of the array.
+
+Instead of directly choosing k cards,
+we think in reverse:
+
+- Total cards = n
+- If we remove a continuous subarray of size (n-k),
+  the remaining cards will be the selected k cards.
+
+So:
+Maximum score =
+    total sum - minimum subarray sum of size (n-k)
+
+In this solution:
+- We calculate total sum of all cards.
+- Use sliding window to find subarray sum of size (n-k).
+- Subtract that window sum from total sum.
+- Keep track of maximum remaining score.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: nums = [1,2,3,4,5,6,1], k = 3
+Output: 12
+
+Explanation:
+Choose cards [6,5,1]
+Total = 12
+*/
+
+class Solution {
+public:
+    int maxScore(vector<int>& nums, int k) {
+
+        int totalsum = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+            totalsum += nums[i];
+        }
+
+        int windowsum = 0, maxsum = 0;
+        int st = 0;
+
+        for (int end = 0; end < nums.size(); end++) {
+
+            windowsum += nums[end];
+
+            // Maintain window size = n-k
+            if (end - st + 1 > nums.size() - k) {
+                windowsum -= nums[st];
+                st++;
+            }
+
+            // Calculate score after removing current window
+            if (end - st + 1 == nums.size() - k)
+                maxsum = max(totalsum - windowsum, maxsum);
+        }
+
+        return maxsum;
+    }
+};
