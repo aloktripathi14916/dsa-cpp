@@ -1,0 +1,62 @@
+/*
+Problem: First Unique Character in a String
+Platform: LeetCode (LC 387)
+Topic: HashMap / String
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the first character that appears
+exactly once in the string.
+
+Steps:
+1. Traverse the string and store frequency of each
+   character using a hashmap.
+2. Traverse the string again:
+      - The first character with frequency 1
+        is our answer.
+3. If no unique character exists,
+   return -1.
+
+Why two passes?
+- First pass builds frequency count.
+- Second pass preserves original order to find
+  the first unique character.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+(At most 26 lowercase English letters)
+
+Example:
+Input: s = "leetcode"
+Output: 0
+
+Explanation:
+'l' appears only once and is the first unique character.
+*/
+
+class Solution {
+public:
+    int firstUniqChar(string s) {
+
+        unordered_map<char, int> freq;
+
+        // Count frequency of characters
+        for (char c : s) {
+            freq[c]++;
+        }
+
+        // Find first unique character
+        for (int idx = 0; idx < s.length(); idx++) {
+
+            if (freq[s[idx]] == 1) {
+                return idx;
+            }
+        }
+
+        return -1;
+    }
+};
