@@ -1,0 +1,61 @@
+/*
+Problem: Rearrange Array Elements by Sign
+Platform: LeetCode (LC 2149)
+Topic: Arrays / Two Pointer Simulation
+
+---------------------------------------------------------
+
+Approach:
+
+We need to rearrange the array such that:
+- Positive and negative numbers appear alternately.
+- The array starts with a positive number.
+- Relative order of positives and negatives is preserved.
+
+Steps:
+1. Store all positive numbers in one vector.
+2. Store all negative numbers in another vector.
+3. Alternate elements from both vectors into the answer array.
+
+Since the number of positive and negative elements
+is equal, alternating works perfectly.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input: nums = [3,1,-2,-5,2,-4]
+Output: [3,-2,1,-5,2,-4]
+
+Explanation:
+Positive and negative numbers are placed alternately
+while maintaining their original order.
+*/
+
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+
+        vector<int> pos, neg, ans;
+
+        // Separate positive and negative numbers
+        for (int i = 0; i < nums.size(); i++) {
+
+            if (nums[i] > 0)
+                pos.push_back(nums[i]);
+            else
+                neg.push_back(nums[i]);
+        }
+
+        // Arrange alternately
+        for (int i = 0; i < min(pos.size(), neg.size()); i++) {
+
+            ans.push_back(pos[i]);
+            ans.push_back(neg[i]);
+        }
+
+        return ans;
+    }
+};
