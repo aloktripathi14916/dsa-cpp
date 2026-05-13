@@ -1,0 +1,72 @@
+/*
+Problem: Reverse Linked List
+Platform: LeetCode (LC 206)
+Topic: Linked List / Iterative Reversal
+
+---------------------------------------------------------
+
+Approach:
+
+We reverse the linked list by changing the direction
+of the next pointers.
+
+We use three pointers:
+1. prev  -> stores previous node
+2. curr  -> current node being processed
+3. next  -> stores next node temporarily
+
+Steps:
+1. Save curr->next in next.
+2. Reverse current node pointer:
+       curr->next = prev
+3. Move prev and curr one step ahead.
+4. Repeat until curr becomes NULL.
+
+At the end:
+- prev points to the new head of reversed list.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: 5 -> 4 -> 3 -> 2 -> 1
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        ListNode* next = NULL;
+
+        while (curr != NULL) {
+
+            // Store next node
+            next = curr->next;
+
+            // Reverse link
+            curr->next = prev;
+
+            // Move pointers ahead
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+};
