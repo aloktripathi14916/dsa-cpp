@@ -1,0 +1,64 @@
+/*
+Problem: Middle of the Linked List
+Platform: LeetCode (LC 876)
+Topic: Linked List / Fast & Slow Pointer
+
+---------------------------------------------------------
+
+Approach:
+
+We use the two-pointer technique:
+
+1. Slow pointer moves one step at a time.
+2. Fast pointer moves two steps at a time.
+
+By the time the fast pointer reaches the end,
+the slow pointer will be at the middle node.
+
+Special case:
+- If the list has two middle nodes,
+  return the second middle node
+  (as required by the problem).
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: 1 -> 2 -> 3 -> 4 -> 5
+Output: 3
+
+Example:
+Input: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Output: 4
+(Second middle node)
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while (fast != NULL && fast->next != NULL) {
+
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        return slow;
+    }
+};
