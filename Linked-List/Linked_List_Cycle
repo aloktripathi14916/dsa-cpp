@@ -1,0 +1,70 @@
+/*
+Problem: Linked List Cycle
+Platform: LeetCode (LC 141)
+Topic: Linked List / Fast & Slow Pointer
+
+---------------------------------------------------------
+
+Approach:
+
+We use Floyd’s Cycle Detection Algorithm
+(Tortoise and Hare Algorithm).
+
+Two pointers are used:
+1. Slow pointer moves one step at a time.
+2. Fast pointer moves two steps at a time.
+
+Cases:
+- If there is no cycle:
+    fast pointer will reach NULL.
+- If a cycle exists:
+    slow and fast pointers will eventually meet.
+
+Why does this work?
+- Inside a cycle, the fast pointer gains one step
+  on the slow pointer every iteration,
+  so they must collide eventually.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+
+Explanation:
+The tail connects back to node index 1,
+forming a cycle.
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        while (fast != NULL && fast->next != NULL) {
+
+            slow = slow->next;
+            fast = fast->next->next;
+
+            // Cycle detected
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+};
