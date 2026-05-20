@@ -1,0 +1,83 @@
+/*
+Problem: Remove Nth Node From End of List
+Platform: LeetCode (LC 19)
+Topic: Linked List / Two Pointers
+
+---------------------------------------------------------
+
+Approach:
+
+We use the two-pointer technique to find
+the nth node from the end in one traversal.
+
+Idea:
+- Move fast pointer n steps ahead.
+- Then move both slow and fast together.
+- When fast reaches NULL,
+  slow will point to the node to remove.
+
+We also maintain a prev pointer
+to reconnect the list after deletion.
+
+Special case:
+- If fast becomes NULL after moving n steps,
+  it means the head node must be removed.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: head = 1 -> 2 -> 3 -> 4 -> 5, n = 2
+Output: 1 -> 2 -> 3 -> 5
+
+Explanation:
+The 2nd node from the end is 4,
+so it is removed.
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = head;
+
+        // Move fast pointer n steps ahead
+        for (int i = 0; i < n; i++) {
+            fast = fast->next;
+        }
+
+        // Remove head node case
+        if (fast == NULL) {
+            return head->next;
+        }
+
+        // Move both pointers together
+        while (fast != NULL) {
+
+            fast = fast->next;
+            prev = slow;
+            slow = slow->next;
+        }
+
+        // Remove target node
+        prev->next = slow->next;
+        slow->next = NULL;
+
+        return head;
+    }
+};
