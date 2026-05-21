@@ -1,0 +1,66 @@
+/*
+Problem: Contains Duplicate II
+Platform: LeetCode (LC 219)
+Topic: Sliding Window / HashSet
+
+---------------------------------------------------------
+
+Approach:
+
+We need to check whether there exist two equal elements
+such that their index difference is at most k.
+
+Efficient idea:
+Use a sliding window of size k with a HashSet.
+
+How it works:
+- The set stores elements currently inside the window.
+- Before inserting nums[end]:
+      if it already exists in the set,
+      duplicate found within distance k.
+- If window size becomes greater than k,
+  remove the leftmost element.
+
+This keeps only relevant elements inside the window.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(k)
+
+Example:
+Input: nums = [1,2,3,1], k = 3
+Output: true
+
+Explanation:
+nums[0] = nums[3] = 1
+and |0 - 3| = 3
+*/
+
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+
+        int st = 0;
+
+        unordered_set<int> s;
+
+        for (int end = 0; end < nums.size(); end++) {
+
+            // Maintain window size <= k
+            if (end - st > k) {
+                s.erase(nums[st]);
+                st++;
+            }
+
+            // Duplicate found
+            if (s.find(nums[end]) != s.end())
+                return true;
+
+            else
+                s.insert(nums[end]);
+        }
+
+        return false;
+    }
+};
