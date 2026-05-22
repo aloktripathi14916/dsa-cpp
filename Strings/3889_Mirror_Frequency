@@ -1,0 +1,101 @@
+/*
+Problem: Mirror Frequency
+Platform: LeetCode (LC 3889)
+Topic: Strings / Frequency Array
+
+---------------------------------------------------------
+
+Approach:
+
+We compare frequencies of mirror characters and digits.
+
+Mirror pairs:
+Digits:
+0 ↔ 9
+1 ↔ 8
+2 ↔ 7
+3 ↔ 6
+4 ↔ 5
+
+Characters:
+a ↔ z
+b ↔ y
+c ↔ x
+...
+m ↔ n
+
+Steps:
+1. Count frequency of:
+      - lowercase characters
+      - digits
+2. For every mirror pair:
+      add absolute difference of frequencies.
+3. Return total difference count.
+
+Why abs difference?
+- It represents how many extra characters/digits
+  exist on one side compared to its mirror pair.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: s = "aazz19"
+Output: 0
+
+Explanation:
+- 'a' and 'z' frequencies are equal.
+- '1' and '8' are both 0.
+- '9' and '0' frequencies match.
+So total mirror frequency difference = 0.
+*/
+
+class Solution {
+public:
+    int mirrorFrequency(string s) {
+
+        int count = 0;
+
+        // Frequency arrays
+        vector<int> freqChar(26, 0);
+        vector<int> freqDigit(10, 0);
+
+        // Count characters and digits
+        for (int i = 0; i < s.size(); i++) {
+
+            if (s[i] >= '0' && s[i] <= '9') {
+                freqDigit[s[i] - '0']++;
+            }
+
+            else if (s[i] >= 'a' && s[i] <= 'z') {
+                freqChar[s[i] - 'a']++;
+            }
+        }
+
+        // Check mirror digit frequencies
+        for (int i = 0; i <= 9; i++) {
+
+            int j = 9 - i;
+
+            if (i > j)
+                break;
+
+            count += abs(freqDigit[i] - freqDigit[j]);
+        }
+
+        // Check mirror character frequencies
+        for (int i = 0; i < 26; i++) {
+
+            int j = 25 - i;
+
+            if (i > j)
+                break;
+
+            count += abs(freqChar[i] - freqChar[j]);
+        }
+
+        return count;
+    }
+};
