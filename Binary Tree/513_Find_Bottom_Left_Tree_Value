@@ -1,0 +1,97 @@
+/*
+Problem: Find Bottom Left Tree Value
+Platform: LeetCode (LC 513)
+Topic: Binary Tree / Breadth First Search (BFS)
+
+---------------------------------------------------------
+
+Approach:
+
+We perform Level Order Traversal (BFS)
+using a queue.
+
+Key observation:
+- The first node encountered at every level
+  is the leftmost node of that level.
+- While traversing level by level,
+  we continuously update the answer.
+- After processing the last level,
+  the stored node becomes the bottom-left value.
+
+Steps:
+1. Push root into queue.
+2. Traverse tree level by level.
+3. For every level:
+      - The first node (i == 0)
+        becomes current answer.
+4. Push left child first, then right child.
+5. Return the value of the last recorded node.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input:
+        2
+       / \
+      1   3
+
+Output: 1
+
+Explanation:
+The bottom-most level contains [1,3]
+and the leftmost value is 1.
+*/
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right)
+ *         : val(x), left(left), right(right) {}
+ * };
+ */
+
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+
+        if (root == NULL)
+            return 0;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        TreeNode* ans = q.front();
+
+        while (!q.empty()) {
+
+            int size = q.size();
+
+            for (int i = 0; i < size; i++) {
+
+                TreeNode* curr = q.front();
+                q.pop();
+
+                // First node of current level
+                if (i == 0)
+                    ans = curr;
+
+                // Push left child first
+                if (curr->left)
+                    q.push(curr->left);
+
+                if (curr->right)
+                    q.push(curr->right);
+            }
+        }
+
+        return ans->val;
+    }
+};
