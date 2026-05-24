@@ -1,0 +1,91 @@
+/*
+Problem: Find Good Integers
+Platform: LeetCode (LC 3890)
+Topic: Math / HashMap
+
+---------------------------------------------------------
+
+Approach:
+
+A number is considered "good" if it can be represented
+as the sum of cubes of two integers in at least
+two different ways.
+
+Form:
+    x = a³ + b³
+
+We generate all possible cube sums up to n.
+
+Steps:
+1. Iterate over all possible values of a and b.
+2. Compute:
+       sum = a³ + b³
+3. Store frequency of every sum in a map.
+4. Any sum appearing at least twice
+   is considered a good integer.
+5. Store such integers in the answer vector.
+
+Optimization:
+- Limit iteration till cube root of n,
+  since a³ or b³ larger than n is invalid.
+- Start b from a to avoid duplicate pairs.
+
+---------------------------------------------------------
+
+Time Complexity: O(cbrt(n)²)
+Space Complexity: O(number of cube sums)
+
+Example:
+Input: n = 2000
+Output: [1729]
+
+Explanation:
+1729 can be written as:
+1³ + 12³
+9³ + 10³
+
+Hence it is a good integer.
+*/
+
+class Solution {
+public:
+    vector<int> findGoodIntegers(int n) {
+
+        map<int, int> count;
+
+        int limit = cbrt(n) + 1;
+
+        // Generate all cube sums
+        for (int a = 1; a <= limit; a++) {
+
+            int a3 = a * a * a;
+
+            if (a3 > n)
+                break;
+
+            for (int b = a; b <= limit; b++) {
+
+                long long sum =
+                    (long long)a3 + (long long)b * b * b;
+
+                if (sum > n)
+                    break;
+
+                count[(int)sum]++;
+            }
+        }
+
+        vector<int> ans;
+
+        // Collect sums appearing at least twice
+        for (auto &[sum, c] : count) {
+
+            if (c >= 2)
+                ans.push_back(sum);
+        }
+
+        sort(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
