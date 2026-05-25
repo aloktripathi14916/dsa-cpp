@@ -1,0 +1,91 @@
+/*
+Problem: Third Maximum Number
+Platform: LeetCode (LC 414)
+Topic: Arrays / Greedy Tracking
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the third distinct maximum number.
+
+Instead of sorting the array,
+we maintain the top 3 distinct maximum values:
+
+1. first  -> largest number
+2. second -> second largest distinct number
+3. third  -> third largest distinct number
+
+Steps:
+1. Traverse the array.
+2. Ignore duplicate values already stored.
+3. Update first, second, and third accordingly:
+      - If current number > first:
+            shift first → second
+            shift second → third
+      - Else if current number > second:
+            shift second → third
+      - Else if current number > third:
+            update third
+4. If third maximum does not exist,
+   return the maximum number.
+
+Why use LONG_MIN?
+- nums can contain INT_MIN.
+- Using long avoids ambiguity between
+  an actual value and uninitialized state.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input: nums = [2,2,3,1]
+Output: 1
+
+Explanation:
+Distinct numbers are [3,2,1]
+Third maximum = 1
+*/
+
+class Solution {
+public:
+    int thirdMax(vector<int>& nums) {
+
+        long first = LONG_MIN;
+        long second = LONG_MIN;
+        long third = LONG_MIN;
+
+        for (int x : nums) {
+
+            // Ignore duplicates
+            if (x == first || x == second || x == third)
+                continue;
+
+            // Update largest
+            if (x > first) {
+
+                third = second;
+                second = first;
+                first = x;
+            }
+
+            // Update second largest
+            else if (x > second) {
+
+                third = second;
+                second = x;
+            }
+
+            // Update third largest
+            else if (x > third) {
+
+                third = x;
+            }
+        }
+
+        // If third distinct maximum doesn't exist
+        return (third == LONG_MIN) ? first : third;
+    }
+};
