@@ -1,0 +1,106 @@
+/*
+Problem: Flatten a Multilevel Doubly Linked List
+Platform: LeetCode (LC 430)
+Topic: Linked List / DFS Recursion
+
+---------------------------------------------------------
+
+Approach:
+
+Each node may contain:
+1. next pointer
+2. prev pointer
+3. child pointer to another doubly linked list
+
+Goal:
+Flatten the multilevel list into a single-level
+doubly linked list.
+
+Idea:
+Whenever a node has a child:
+1. Save the current next node.
+2. Recursively flatten the child list.
+3. Insert the flattened child list between:
+       current node and next node.
+4. Traverse to the tail of inserted child list.
+5. Reconnect the saved next node.
+
+Steps:
+- Process nodes one by one.
+- If child exists:
+      flatten child list recursively
+      attach it in-place
+      remove child pointer
+- Continue traversal.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+(Recursive call stack in worst case)
+
+Example:
+Input:
+1 - 2 - 3
+        |
+        7 - 8
+
+Output:
+1 - 2 - 3 - 7 - 8
+
+Explanation:
+Child list gets inserted directly after node 3.
+*/
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+*/
+
+class Solution {
+public:
+    Node* flatten(Node* head) {
+
+        Node* curr = head;
+
+        while (curr != NULL) {
+
+            // If child exists
+            if (curr->child != NULL) {
+
+                Node* nextNode = curr->next;
+
+                // Flatten child list
+                curr->next = flatten(curr->child);
+                curr->next->prev = curr;
+
+                // Remove child pointer
+                curr->child = NULL;
+
+                // Reach tail of flattened child list
+                Node* temp = curr->next;
+
+                while (temp->next != NULL) {
+                    temp = temp->next;
+                }
+
+                // Reconnect saved next node
+                if (nextNode != NULL) {
+
+                    temp->next = nextNode;
+                    nextNode->prev = temp;
+                }
+            }
+
+            curr = curr->next;
+        }
+
+        return head;
+    }
+};
