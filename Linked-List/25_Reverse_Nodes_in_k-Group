@@ -1,0 +1,97 @@
+/*
+Problem: Reverse Nodes in k-Group
+Platform: LeetCode (LC 25)
+Topic: Linked List / Recursion
+
+---------------------------------------------------------
+
+Approach:
+
+We reverse the linked list in groups of size k.
+
+Main idea:
+1. First check whether at least k nodes exist.
+   - If fewer than k nodes remain,
+     leave them unchanged.
+2. Recursively process the remaining list.
+3. Reverse the current group of k nodes.
+4. Attach the reversed group to the result of
+   recursive calls.
+
+Steps:
+- Move a temporary pointer k steps ahead.
+- If NULL occurs before k steps,
+  return head directly.
+- Recursively reverse the remaining nodes.
+- Reverse current k nodes using standard
+  linked list reversal logic.
+- Return new head of reversed group.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n / k)
+(Recursive call stack)
+
+Example:
+Input:
+1 -> 2 -> 3 -> 4 -> 5
+k = 2
+
+Output:
+2 -> 1 -> 4 -> 3 -> 5
+
+Explanation:
+Every group of 2 nodes gets reversed.
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+
+        ListNode* temp = head;
+        int count = 0;
+
+        // Check if k nodes exist
+        while (count < k) {
+
+            if (temp == NULL)
+                return head;
+
+            temp = temp->next;
+            count++;
+        }
+
+        // Recursively reverse remaining list
+        ListNode* prevNode = reverseKGroup(temp, k);
+
+        temp = head;
+        count = 0;
+
+        // Reverse current k-group
+        while (count < k) {
+
+            ListNode* next = temp->next;
+
+            temp->next = prevNode;
+
+            prevNode = temp;
+            temp = next;
+
+            count++;
+        }
+
+        return prevNode;
+    }
+};
