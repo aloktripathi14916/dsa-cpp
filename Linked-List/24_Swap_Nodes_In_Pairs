@@ -1,0 +1,97 @@
+/*
+Problem: Swap Nodes in Pairs
+Platform: LeetCode (LC 24)
+Topic: Linked List / Pointer Manipulation
+
+---------------------------------------------------------
+
+Approach:
+
+We swap every two adjacent nodes in the linked list.
+
+Example:
+1 -> 2 -> 3 -> 4
+becomes:
+2 -> 1 -> 4 -> 3
+
+Pointers used:
+1. first  -> first node of pair
+2. sec    -> second node of pair
+3. prev   -> tail of previous swapped pair
+
+Steps:
+1. Store third node (next pair start).
+2. Reverse links between first and second.
+3. Connect previous pair to current swapped pair.
+4. Move pointers forward to process next pair.
+
+Special cases:
+- Empty list
+- Single node list
+
+Both remain unchanged.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input:
+1 -> 2 -> 3 -> 4
+
+Output:
+2 -> 1 -> 4 -> 3
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+
+        // Base case
+        if (head == NULL || head->next == NULL)
+            return head;
+
+        ListNode* first = head;
+        ListNode* sec = head->next;
+        ListNode* prev = NULL;
+
+        while (first != NULL && sec != NULL) {
+
+            // Store next pair start
+            ListNode* third = sec->next;
+
+            // Swap current pair
+            sec->next = first;
+            first->next = third;
+
+            // Connect previous swapped pair
+            if (prev != NULL)
+                prev->next = sec;
+            else
+                head = sec;
+
+            // Move pointers forward
+            prev = first;
+            first = third;
+
+            if (third != NULL)
+                sec = third->next;
+            else
+                sec = NULL;
+        }
+
+        return head;
+    }
+};
