@@ -1,0 +1,86 @@
+/*
+Problem: Valid Parentheses
+Platform: LeetCode (LC 20)
+Topic: Stack / Strings
+
+---------------------------------------------------------
+
+Approach:
+
+We use a stack to keep track of opening brackets.
+
+Rules:
+- Opening brackets:
+      (, {, [
+  are pushed into the stack.
+
+- Closing brackets:
+      ), }, ]
+  must match the top element of the stack.
+
+Steps:
+1. Traverse the string.
+2. If current character is an opening bracket:
+      push into stack.
+3. Otherwise:
+      - If stack is empty → invalid.
+      - Check whether top matches current closing bracket.
+      - If matched → pop.
+      - Else → invalid.
+4. At the end:
+      stack must be empty for valid parentheses.
+
+Why stack?
+- Parentheses follow LIFO order
+  (Last Opened → First Closed).
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input: s = "()[]{}"
+Output: true
+
+Explanation:
+All brackets are correctly matched and closed.
+*/
+
+class Solution {
+public:
+    bool isValid(string s) {
+
+        stack<char> st;
+
+        for (int i = 0; i < s.size(); i++) {
+
+            // Opening brackets
+            if (s[i] == '[' || s[i] == '{' || s[i] == '(') {
+
+                st.push(s[i]);
+            }
+
+            else {
+
+                // No matching opening bracket
+                if (st.size() == 0)
+                    return false;
+
+                // Matching bracket found
+                if ((st.top() == '(' && s[i] == ')') ||
+                    (st.top() == '{' && s[i] == '}') ||
+                    (st.top() == '[' && s[i] == ']')) {
+
+                    st.pop();
+                }
+
+                else
+                    return false;
+            }
+        }
+
+        // Stack should be empty
+        return st.size() == 0;
+    }
+};
