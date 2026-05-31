@@ -1,0 +1,88 @@
+/*
+Problem: Online Stock Span
+Platform: LeetCode (LC 901)
+Topic: Stack / Monotonic Stack
+
+---------------------------------------------------------
+
+Approach:
+
+The stock span of a day is:
+Number of consecutive days (including today)
+where stock price <= today's price.
+
+Efficient idea:
+Use a Monotonic Decreasing Stack.
+
+Stack stores:
+    {price, span}
+
+Why?
+- If previous prices are smaller or equal,
+  they can be merged into the current span.
+- This avoids checking every previous day repeatedly.
+
+Steps:
+1. Initialize span = 1 for current day.
+2. While stack top price <= current price:
+      - Add its span to current span.
+      - Pop it from stack.
+3. Push current {price, span} into stack.
+4. Return span.
+
+The stack always remains decreasing by price.
+
+---------------------------------------------------------
+
+Time Complexity:
+- Amortized O(1) per query
+- Overall O(n)
+
+Space Complexity: O(n)
+
+Example:
+Input:
+[100,80,60,70,60,75,85]
+
+Output:
+[1,1,1,2,1,4,6]
+
+Explanation:
+For price 85:
+Previous consecutive prices <= 85 are
+75, 60, 70, 60, 80
+So span = 6
+*/
+
+class StockSpanner {
+public:
+
+    stack<pair<int, int>> s;
+
+    StockSpanner() {
+
+    }
+
+    int next(int price) {
+
+        int span = 1;
+
+        // Merge smaller/equal previous prices
+        while (s.size() > 0 && s.top().first <= price) {
+
+            span += s.top().second;
+            s.pop();
+        }
+
+        // Store current price and span
+        s.push({price, span});
+
+        return span;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
