@@ -1,0 +1,62 @@
+/*
+Problem: Factorial Trailing Zeroes
+Platform: LeetCode (LC 172)
+Topic: Math / Number Theory
+
+---------------------------------------------------------
+
+Approach:
+
+Trailing zeroes in n! are produced by factors of:
+    10 = 2 × 5
+
+In factorials:
+- Factors of 2 are abundant.
+- Factors of 5 are fewer.
+
+So,
+Number of trailing zeroes =
+    total number of factors of 5 in n!
+
+How to count factors of 5?
+- Numbers divisible by 5 contribute one 5.
+- Numbers divisible by 25 contribute an extra 5.
+- Numbers divisible by 125 contribute another extra 5, etc.
+
+Formula:
+    count = n/5 + n/25 + n/125 + ...
+
+Steps:
+1. Repeatedly divide n by 5.
+2. Add quotient to count.
+3. Continue until n becomes 0.
+
+---------------------------------------------------------
+
+Time Complexity: O(log₅ n)
+Space Complexity: O(1)
+
+Example:
+Input: n = 10
+Output: 2
+
+Explanation:
+10! = 3628800
+Trailing zeroes = 2
+*/
+
+class Solution {
+public:
+    int trailingZeroes(int n) {
+
+        int count = 0;
+
+        while (n > 0) {
+
+            n /= 5;
+            count += n;
+        }
+
+        return count;
+    }
+};
