@@ -1,0 +1,85 @@
+/*
+Problem: Daily Temperatures
+Platform: LeetCode (LC 739)
+Topic: Stack / Monotonic Stack
+
+---------------------------------------------------------
+
+Approach:
+
+For each day, we need to find:
+How many days later a warmer temperature occurs.
+
+Efficient idea:
+Use a Monotonic Decreasing Stack.
+
+The stack stores indices of temperatures
+in decreasing order.
+
+Why store indices?
+- We need distance:
+      futureIndex - currentIndex
+
+Steps:
+1. Traverse array from right to left.
+2. Remove all temperatures from stack
+   that are smaller or equal to current temperature,
+   since they can never be the next warmer day.
+3. If stack is not empty:
+      answer = stack top index - current index
+4. Push current index into stack.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input:
+temperatures = [73,74,75,71,69,72,76,73]
+
+Output:
+[1,1,4,2,1,1,0,0]
+
+Explanation:
+For temperature 73 at index 0,
+next warmer temperature is 74 at index 1,
+so answer = 1.
+*/
+
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+
+        int n = temperatures.size();
+
+        if (n == 0)
+            return {};
+
+        vector<int> ans(n, 0);
+
+        stack<int> s;
+
+        // Traverse from right to left
+        for (int i = n - 1; i >= 0; i--) {
+
+            // Remove smaller/equal temperatures
+            while (!s.empty() &&
+                   temperatures[s.top()] <= temperatures[i]) {
+
+                s.pop();
+            }
+
+            // Next warmer day exists
+            if (!s.empty()) {
+
+                ans[i] = s.top() - i;
+            }
+
+            // Store current index
+            s.push(i);
+        }
+
+        return ans;
+    }
+};
