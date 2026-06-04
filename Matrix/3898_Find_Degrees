@@ -1,0 +1,75 @@
+/*
+Problem: Find Degrees
+Platform: LeetCode (LC 3898)
+Topic: Matrix / Graph Basics
+
+---------------------------------------------------------
+
+Approach:
+
+The matrix represents an adjacency matrix of a graph.
+
+Rule:
+- matrix[i][j] = 1
+    means node i is connected to node j.
+
+Degree of a node:
+- Number of connections (edges) for that node.
+- In adjacency matrix form,
+  degree = count of 1s in that row.
+
+Steps:
+1. Traverse every row of the matrix.
+2. Count number of 1s in that row.
+3. Store the count in the answer vector.
+4. Return the degrees array.
+
+---------------------------------------------------------
+
+Time Complexity: O(n²)
+Space Complexity: O(1)
+(Excluding output array)
+
+Example:
+Input:
+matrix =
+[
+ [1,1,0],
+ [1,0,1],
+ [0,1,1]
+]
+
+Output:
+[2,2,2]
+
+Explanation:
+Each row contains two 1s,
+so every node has degree 2.
+*/
+
+class Solution {
+public:
+    vector<int> findDegrees(vector<vector<int>>& matrix) {
+
+        vector<int> ans;
+
+        int n = matrix.size();
+
+        // Traverse each row
+        for (int i = 0; i < n; i++) {
+
+            int count = 0;
+
+            // Count number of 1s
+            for (int j = 0; j < n; j++) {
+
+                if (matrix[i][j] == 1)
+                    count++;
+            }
+
+            ans.push_back(count);
+        }
+
+        return ans;
+    }
+};
