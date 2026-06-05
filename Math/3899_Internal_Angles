@@ -1,0 +1,92 @@
+/*
+Problem: Internal Angles
+Platform: LeetCode (LC 3899)
+Topic: Geometry / Math
+
+---------------------------------------------------------
+
+Approach:
+
+Given the three side lengths of a triangle,
+we need to calculate its three internal angles.
+
+Important check:
+A valid triangle must satisfy:
+    a + b > c
+
+(after sorting sides)
+
+If not valid:
+    return empty vector.
+
+To calculate angles,
+we use the Law of Cosines:
+
+            b² + c² - a²
+cos(A) = ----------------
+              2bc
+
+Similarly:
+- compute angles B and C
+- use acos() to get angles in radians
+- convert radians to degrees
+
+Formula:
+    degrees = radians × 180 / π
+
+Finally:
+- store all angles
+- sort them in increasing order
+- return result
+
+---------------------------------------------------------
+
+Time Complexity: O(1)
+Space Complexity: O(1)
+
+Example:
+Input: sides = [3,4,5]
+Output: [36.87, 53.13, 90.0]
+
+Explanation:
+A 3-4-5 triangle is a right triangle.
+*/
+
+class Solution {
+public:
+    vector<double> internalAngles(vector<int>& sides) {
+
+        // Sort side lengths
+        sort(sides.begin(), sides.end());
+
+        double a = sides[0];
+        double b = sides[1];
+        double c = sides[2];
+
+        // Triangle validity check
+        if (a + b <= c)
+            return {};
+
+        // Law of Cosines
+        double A =
+            acos((b * b + c * c - a * a) / (2 * b * c));
+
+        double B =
+            acos((a * a + c * c - b * b) / (2 * a * c));
+
+        double C =
+            acos((a * a + b * b - c * c) / (2 * a * b));
+
+        // Convert radians to degrees
+        A = A * 180.0 / M_PI;
+        B = B * 180.0 / M_PI;
+        C = C * 180.0 / M_PI;
+
+        vector<double> res = {A, B, C};
+
+        // Sort angles
+        sort(res.begin(), res.end());
+
+        return res;
+    }
+};
