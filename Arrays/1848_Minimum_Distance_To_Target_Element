@@ -1,0 +1,80 @@
+/*
+Problem: Minimum Distance to the Target Element
+Platform: LeetCode (LC 1848)
+Topic: Arrays / Linear Search
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the minimum distance between:
+    start index
+and
+    any index containing target.
+
+Idea:
+- Search towards the left of start.
+- Search towards the right of start.
+- Compute minimum absolute distance.
+
+Steps:
+1. Traverse left from start to 0:
+      if target found,
+      update minimum left distance.
+2. Traverse right from start to n-1:
+      if target found,
+      update minimum right distance.
+3. Return the smaller distance.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input:
+nums = [1,2,3,4,5]
+target = 5
+start = 3
+
+Output: 1
+
+Explanation:
+Target 5 is at index 4.
+Distance = |4 - 3| = 1
+*/
+
+class Solution {
+public:
+    int getMinDistance(vector<int>& nums,
+                       int target,
+                       int start) {
+
+        int minleft = INT_MAX;
+        int minright = INT_MAX;
+
+        // Search towards left
+        for (int left = start; left >= 0; left--) {
+
+            if (nums[left] == target) {
+
+                minleft =
+                    min(minleft, abs(left - start));
+            }
+        }
+
+        // Search towards right
+        for (int right = start;
+             right < nums.size();
+             right++) {
+
+            if (nums[right] == target) {
+
+                minright =
+                    min(minright, abs(right - start));
+            }
+        }
+
+        return min(minleft, minright);
+    }
+};
