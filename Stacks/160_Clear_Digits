@@ -1,0 +1,81 @@
+/*
+Problem: Clear Digits
+Platform: LeetCode (LC 3174)
+Topic: Stack / Strings
+
+---------------------------------------------------------
+
+Approach:
+
+Whenever a digit appears:
+- Remove the closest previous character.
+
+This behavior follows LIFO order,
+so a stack is perfect for this problem.
+
+Steps:
+1. Traverse the string.
+2. If current character is a digit:
+      pop one character from stack
+      (if stack is not empty)
+3. Otherwise:
+      push character into stack.
+4. Build final string from remaining stack elements.
+5. Reverse the string because stack gives characters
+   in reverse order.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Example:
+Input: s = "abc3d2"
+
+Process:
+abc3  -> remove c
+abd2  -> remove d
+
+Remaining:
+"ab"
+
+Output: "ab"
+*/
+
+class Solution {
+public:
+    string clearDigits(string s) {
+
+        stack<char> st;
+
+        for (int i = 0; i < s.size(); i++) {
+
+            // Digit encountered
+            if (s[i] >= '0' && s[i] <= '9') {
+
+                if (!st.empty())
+                    st.pop();
+            }
+
+            // Character encountered
+            else {
+
+                st.push(s[i]);
+            }
+        }
+
+        string ans = "";
+
+        // Build string from stack
+        while (!st.empty()) {
+
+            ans += st.top();
+            st.pop();
+        }
+
+        // Reverse to restore order
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
