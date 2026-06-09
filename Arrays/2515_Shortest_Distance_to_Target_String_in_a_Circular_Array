@@ -1,0 +1,75 @@
+/*
+Problem: Shortest Distance to Target String in a Circular Array
+Platform: LeetCode (LC 2515)
+Topic: Arrays / Circular Traversal
+
+---------------------------------------------------------
+
+Approach:
+
+The array is circular, so from any index
+we can move:
+- clockwise
+- anticlockwise
+
+For every occurrence of target:
+1. Compute direct distance:
+       abs(startIndex - i)
+2. Compute circular distance:
+       n - direct distance
+3. Minimum of these two is the actual shortest
+   distance to that occurrence.
+4. Keep track of overall minimum distance.
+
+If target never appears,
+return -1.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Example:
+Input:
+words = ["hello","i","am","leetcode","hello"]
+target = "hello"
+startIndex = 1
+
+Output: 1
+
+Explanation:
+Closest "hello" is at index 0.
+Circular distance = 1.
+*/
+
+class Solution {
+public:
+    int closestTarget(vector<string>& words,
+                      string target,
+                      int startIndex) {
+
+        int mindistance = INT_MAX;
+
+        for (int i = 0; i < words.size(); i++) {
+
+            if (words[i] == target) {
+
+                // Direct distance
+                int distance1 = abs(startIndex - i);
+
+                // Circular distance
+                int distance2 =
+                    words.size() - distance1;
+
+                int curr = min(distance1, distance2);
+
+                mindistance =
+                    min(mindistance, curr);
+            }
+        }
+
+        return (mindistance == INT_MAX)
+                   ? -1
+                   : mindistance;
+    }
+};
