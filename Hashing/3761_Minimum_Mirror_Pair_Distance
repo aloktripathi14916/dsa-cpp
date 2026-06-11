@@ -1,0 +1,106 @@
+/*
+Problem: Minimum Mirror Pair Distance
+Platform: LeetCode (LC 3761)
+Topic: HashMap / Arrays
+
+---------------------------------------------------------
+
+Approach:
+
+Two numbers form a mirror pair if one number
+is the digit-reversal of the other.
+
+Examples:
+12 ↔ 21
+123 ↔ 321
+7 ↔ 7
+
+Goal:
+Find the minimum index distance between any
+mirror pair in the array.
+
+Idea:
+- While traversing the array,
+  keep track of previously seen reversed numbers.
+- For current number x:
+      if x already exists in the hashmap,
+      then a mirror pair has been found.
+- Update the minimum distance.
+- Store reverse(x) in the hashmap with
+  the current index.
+
+Example:
+nums = [12, 45, 21]
+
+i = 0:
+store reverse(12)=21 → index 0
+
+i = 1:
+store reverse(45)=54 → index 1
+
+i = 2:
+21 found in hashmap at index 0
+distance = 2 - 0 = 2
+
+---------------------------------------------------------
+
+Time Complexity: O(n × d)
+where d = number of digits in a number
+
+Space Complexity: O(n)
+
+Example:
+Input:
+nums = [12, 45, 21, 54]
+
+Output:
+2
+
+Explanation:
+12 ↔ 21  → distance = 2
+45 ↔ 54  → distance = 2
+
+Minimum distance = 2
+*/
+
+class Solution {
+public:
+
+    int reverseNum(int x) {
+
+        int rev = 0;
+
+        while (x > 0) {
+
+            rev = rev * 10 + (x % 10);
+            x /= 10;
+        }
+
+        return rev;
+    }
+
+    int minMirrorPairDistance(vector<int>& nums) {
+
+        unordered_map<int, int> mp;
+
+        int mindist = INT_MAX;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            // Mirror pair found
+            if (mp.find(nums[i]) != mp.end()) {
+
+                int dist = i - mp[nums[i]];
+                mindist = min(mindist, dist);
+            }
+
+            // Store reversed number
+            int rev = reverseNum(nums[i]);
+            mp[rev] = i;
+        }
+
+        return (mindist == INT_MAX)
+                   ? -1
+                   : mindist;
+    }
+};
