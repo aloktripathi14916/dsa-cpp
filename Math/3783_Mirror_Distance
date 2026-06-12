@@ -1,0 +1,64 @@
+/*
+Problem: Mirror Distance
+Platform: LeetCode (LC 3783)
+Topic: Math / Number Manipulation
+
+---------------------------------------------------------
+
+Approach:
+
+The mirror of a number is obtained by
+reversing its digits.
+
+Examples:
+123  → 321
+450  → 54
+7    → 7
+
+Steps:
+1. Store the original number.
+2. Reverse its digits using modulo (%) and
+   division (/).
+3. Compute:
+       |original - reversed|
+4. Return the absolute difference.
+
+---------------------------------------------------------
+
+Time Complexity: O(d)
+where d = number of digits in n
+
+Space Complexity: O(1)
+
+Example:
+Input: n = 123
+
+Reverse:
+321
+
+Distance:
+|123 - 321| = 198
+
+Output: 198
+*/
+
+class Solution {
+public:
+    int mirrorDistance(int n) {
+
+        int rev = 0;
+        int x = n;
+
+        // Reverse the digits
+        while (x > 0) {
+
+            rev = rev * 10 + (x % 10);
+            x /= 10;
+        }
+
+        // Absolute difference
+        int dist = abs(n - rev);
+
+        return dist;
+    }
+};
