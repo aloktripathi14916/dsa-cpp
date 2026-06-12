@@ -1,0 +1,85 @@
+/*
+Problem: Build an Array With Stack Operations
+Platform: LeetCode (LC 1441)
+Topic: Arrays / Simulation
+
+---------------------------------------------------------
+
+Approach:
+
+We are given a target array and numbers
+from 1 to n arriving sequentially.
+
+Allowed operations:
+1. "Push" → insert current number
+2. "Pop"  → remove the last inserted number
+
+Goal:
+Generate the sequence of operations needed
+to build the target array.
+
+Idea:
+- Traverse numbers from 1 to n.
+- Maintain pointer j for target array.
+- If current number matches target[j]:
+      perform "Push"
+      move to next target element.
+- Otherwise:
+      perform "Push"
+      immediately perform "Pop"
+      (discard the number).
+- Stop once all target elements are built.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+(Excluding output vector)
+
+Example:
+Input:
+target = [1,3]
+n = 3
+
+Output:
+["Push","Push","Pop","Push"]
+
+Explanation:
+Read 1 → Push
+Read 2 → Push, Pop
+Read 3 → Push
+Target array is formed.
+*/
+
+class Solution {
+public:
+    vector<string> buildArray(vector<int>& target, int n) {
+
+        vector<string> operations;
+
+        int j = 0;
+
+        for (int i = 1; i <= n; i++) {
+
+            // Current number belongs to target
+            if (i == target[j]) {
+
+                operations.push_back("Push");
+                j++;
+            }
+
+            // Current number not needed
+            else {
+
+                operations.push_back("Push");
+                operations.push_back("Pop");
+            }
+
+            // Target completely built
+            if (j == target.size())
+                break;
+        }
+
+        return operations;
+    }
+};
