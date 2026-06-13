@@ -1,0 +1,94 @@
+/*
+Problem: Assign Cookies
+Platform: LeetCode (LC 455)
+Topic: Greedy / Sorting
+
+---------------------------------------------------------
+
+Approach:
+
+Each child has a greed factor g[i]
+and each cookie has a size s[j].
+
+A child is satisfied if:
+    cookie size >= greed factor
+
+Goal:
+Maximize the number of satisfied children.
+
+Greedy Idea:
+- Sort both greed factors and cookie sizes.
+- Always try to satisfy the least greedy
+  unsatisfied child with the smallest
+  available cookie that can satisfy them.
+
+Why does this work?
+- Using a larger cookie on a less greedy child
+  may waste resources needed for greedier children.
+- Assigning the smallest valid cookie is optimal.
+
+Steps:
+1. Sort arrays g and s.
+2. Use two pointers:
+      i → children
+      j → cookies
+3. If current cookie can satisfy child:
+      assign cookie
+      move both pointers
+      increase count
+4. Otherwise:
+      cookie is too small,
+      try a larger cookie.
+
+---------------------------------------------------------
+
+Time Complexity: O(n log n + m log m)
+n = number of children
+m = number of cookies
+
+Space Complexity: O(1)
+(ignoring sorting space)
+
+Example:
+Input:
+g = [1,2,3]
+s = [1,1]
+
+Output: 1
+
+Explanation:
+Only one child can be satisfied.
+*/
+
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+
+        int count = 0;
+
+        int i = 0; // child pointer
+        int j = 0; // cookie pointer
+
+        while (i < g.size() && j < s.size()) {
+
+            // Cookie can satisfy current child
+            if (s[j] >= g[i]) {
+
+                count++;
+                i++;
+                j++;
+            }
+
+            // Cookie too small
+            else {
+
+                j++;
+            }
+        }
+
+        return count;
+    }
+};
