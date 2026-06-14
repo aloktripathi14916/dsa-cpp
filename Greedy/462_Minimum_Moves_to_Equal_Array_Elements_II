@@ -1,0 +1,161 @@
+/*
+Problem: Minimum Moves to Equal Array Elements II
+Platform: LeetCode (LC 462)
+Topic: Greedy / Sorting / Median
+
+---------------------------------------------------------
+
+Approach:
+
+In one move, we can increment or decrement
+an element by 1.
+
+Goal:
+Make all array elements equal using the
+minimum number of moves.
+
+Key Observation:
+The sum of absolute differences
+
+    Σ |x - nums[i]|
+
+is minimized when x is the median
+of the array.
+
+Therefore:
+1. Sort the array.
+2. Choose the median element.
+3. Sum the absolute differences between
+   every element and the median.
+
+Why median?
+- Moving all elements toward the median
+  results in the minimum total movement.
+- Choosing the mean does not work for
+  absolute difference minimization.
+
+---------------------------------------------------------
+
+Time Complexity: O(n log n)
+(due to sorting)
+
+Space Complexity: O(1)
+(ignoring sorting space)
+
+Example:
+Input:
+nums = [1,2,3]
+
+Median = 2
+
+Moves:
+|1-2| + |2-2| + |3-2|
+= 1 + 0 + 1
+= 2
+
+Output: 2
+*/
+
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+
+        int n = nums.size();
+
+        // Sort the array
+        sort(nums.begin(), nums.end());
+
+        // Median minimizes absolute differences
+        int median = nums[n / 2];
+
+        int moves = 0;
+
+        // Calculate total moves
+        for (int i = 0; i < n; i++) {
+
+            moves += abs(median - nums[i]);
+        }
+
+        return moves;
+    }
+};/*
+Problem: Minimum Moves to Equal Array Elements II
+Platform: LeetCode (LC 462)
+Topic: Greedy / Sorting / Median
+
+---------------------------------------------------------
+
+Approach:
+
+In one move, we can increment or decrement
+an element by 1.
+
+Goal:
+Make all array elements equal using the
+minimum number of moves.
+
+Key Observation:
+The sum of absolute differences
+
+    Σ |x - nums[i]|
+
+is minimized when x is the median
+of the array.
+
+Therefore:
+1. Sort the array.
+2. Choose the median element.
+3. Sum the absolute differences between
+   every element and the median.
+
+Why median?
+- Moving all elements toward the median
+  results in the minimum total movement.
+- Choosing the mean does not work for
+  absolute difference minimization.
+
+---------------------------------------------------------
+
+Time Complexity: O(n log n)
+(due to sorting)
+
+Space Complexity: O(1)
+(ignoring sorting space)
+
+Example:
+Input:
+nums = [1,2,3]
+
+Median = 2
+
+Moves:
+|1-2| + |2-2| + |3-2|
+= 1 + 0 + 1
+= 2
+
+Output: 2
+*/
+
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+
+        int n = nums.size();
+
+        // Sort the array
+        sort(nums.begin(), nums.end());
+
+        // Median minimizes absolute differences
+        int median = nums[n / 2];
+
+        int moves = 0;
+
+        // Calculate total moves
+        for (int i = 0; i < n; i++) {
+
+            moves += abs(median - nums[i]);
+        }
+
+        return moves;
+    }
+};
