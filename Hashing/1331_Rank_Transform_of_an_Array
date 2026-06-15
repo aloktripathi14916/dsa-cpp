@@ -1,0 +1,86 @@
+/*
+Problem: Rank Transform of an Array
+Platform: LeetCode (LC 1331)
+Topic: Arrays / Sorting / HashMap
+
+---------------------------------------------------------
+
+Approach:
+
+The rank of a number is determined by its
+position in the sorted order of distinct values.
+
+Rules:
+- Smallest value gets rank 1.
+- Equal values receive the same rank.
+- Larger values get larger ranks.
+
+Steps:
+1. Create a copy of the array.
+2. Sort the copied array.
+3. Traverse the sorted array and assign ranks
+   only to distinct values.
+4. Store:
+       value -> rank
+   in a hashmap.
+5. Traverse the original array and replace
+   each value with its assigned rank.
+
+---------------------------------------------------------
+
+Time Complexity: O(n log n)
+(due to sorting)
+
+Space Complexity: O(n)
+
+Example:
+Input:
+arr = [40,10,20,30]
+
+Sorted distinct values:
+[10,20,30,40]
+
+Ranks:
+10 -> 1
+20 -> 2
+30 -> 3
+40 -> 4
+
+Output:
+[4,1,2,3]
+*/
+
+class Solution {
+public:
+    vector<int> arrayRankTransform(vector<int>& arr) {
+
+        // Copy original array
+        vector<int> temp = arr;
+
+        // Sort values
+        sort(temp.begin(), temp.end());
+
+        unordered_map<int, int> rankMap;
+
+        int rank = 1;
+
+        // Assign ranks to distinct values
+        for (int i = 0; i < temp.size(); i++) {
+
+            if (rankMap.find(temp[i]) == rankMap.end()) {
+
+                rankMap[temp[i]] = rank++;
+            }
+        }
+
+        vector<int> ans(arr.size());
+
+        // Replace values with ranks
+        for (int i = 0; i < arr.size(); i++) {
+
+            ans[i] = rankMap[arr[i]];
+        }
+
+        return ans;
+    }
+};
