@@ -1,0 +1,98 @@
+/*
+Problem: Maximum Distance Between a Pair of Values
+Platform: LeetCode (LC 1855)
+Topic: Two Pointers / Arrays
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the maximum value of:
+
+    j - i
+
+such that:
+    i <= j
+    nums1[i] <= nums2[j]
+
+Both arrays are sorted in non-increasing
+(descending) order.
+
+Two Pointer Idea:
+
+- Start with:
+      i = 0
+      j = 0
+
+- If nums1[i] <= nums2[j]:
+      the pair is valid.
+      Update maximum distance and try to
+      increase j to get a larger distance.
+
+- Otherwise:
+      nums1[i] > nums2[j]
+      Current i cannot form a valid pair
+      with this j, so move i forward.
+
+Because both arrays are sorted,
+each pointer moves only once.
+
+---------------------------------------------------------
+
+Time Complexity: O(n + m)
+
+n = nums1.size()
+m = nums2.size()
+
+Space Complexity: O(1)
+
+Example:
+Input:
+nums1 = [55,30,5,4,2]
+nums2 = [100,20,10,10,5]
+
+Valid pairs:
+(0,0) -> distance = 0
+(2,4) -> distance = 2
+
+Output:
+2
+
+Explanation:
+Maximum valid distance is 4 - 2 = 2.
+*/
+
+class Solution {
+public:
+    int maxDistance(vector<int>& nums1,
+                    vector<int>& nums2) {
+
+        int i = 0;
+        int j = 0;
+
+        int maxDistance = 0;
+
+        while (i < nums1.size() &&
+               j < nums2.size()) {
+
+            // Valid pair
+            if (nums1[i] <= nums2[j]) {
+
+                int dist = j - i;
+
+                maxDistance =
+                    max(maxDistance, dist);
+
+                j++;
+            }
+
+            // Invalid pair
+            else {
+
+                i++;
+            }
+        }
+
+        return maxDistance;
+    }
+};
