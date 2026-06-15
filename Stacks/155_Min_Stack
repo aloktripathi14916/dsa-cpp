@@ -1,0 +1,125 @@
+/*
+Problem: Min Stack
+Platform: LeetCode (LC 155)
+Topic: Stack / Design
+
+---------------------------------------------------------
+
+Approach:
+
+Design a stack that supports:
+
+1. push(x)
+2. pop()
+3. top()
+4. getMin()
+
+All operations must run in O(1) time.
+
+Idea:
+
+Store a pair in the stack:
+
+    {value, minimum_so_far}
+
+For every element:
+- value = actual element
+- minimum_so_far = minimum element present
+  in the stack up to that point
+
+Example:
+
+Push 5:
+    (5,5)
+
+Push 2:
+    (2,2)
+
+Push 8:
+    (8,2)
+
+The second value always stores the current
+minimum of the stack.
+
+Therefore:
+- top() returns first element of pair
+- getMin() returns second element of pair
+- No extra traversal is required
+
+---------------------------------------------------------
+
+Time Complexity:
+
+push()   -> O(1)
+pop()    -> O(1)
+top()    -> O(1)
+getMin() -> O(1)
+
+Space Complexity: O(n)
+
+Example:
+
+Operations:
+push(5)
+push(2)
+push(8)
+
+Stack:
+(5,5)
+(2,2)
+(8,2)
+
+getMin() -> 2
+
+Output:
+2
+*/
+
+class MinStack {
+public:
+
+    stack<pair<int, int>> s;
+
+    MinStack() {
+
+    }
+
+    void push(int val) {
+
+        if (s.empty()) {
+
+            s.push({val, val});
+        }
+        else {
+
+            int minValue =
+                min(val, s.top().second);
+
+            s.push({val, minValue});
+        }
+    }
+
+    void pop() {
+
+        s.pop();
+    }
+
+    int top() {
+
+        return s.top().first;
+    }
+
+    int getMin() {
+
+        return s.top().second;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
