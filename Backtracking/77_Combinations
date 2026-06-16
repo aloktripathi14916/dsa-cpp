@@ -1,0 +1,102 @@
+/*
+Problem: Combinations
+Platform: LeetCode (LC 77)
+Topic: Backtracking / Recursion
+
+---------------------------------------------------------
+
+Approach:
+
+We need to generate all possible combinations
+of k numbers chosen from the range [1, n].
+
+Backtracking Idea:
+
+At each step:
+- Choose a number.
+- Add it to the current combination.
+- Recursively build the remaining combination.
+- Remove the number (backtrack) to explore
+  other possibilities.
+
+Steps:
+1. Maintain a temporary vector `ans`
+   representing the current combination.
+2. If ans contains k elements:
+      store it in the result.
+3. Otherwise:
+      try every number from `st` to `n`.
+4. Include the current number.
+5. Recurse for the next position.
+6. Remove the current number and continue.
+
+This explores all valid combinations.
+
+---------------------------------------------------------
+
+Time Complexity: O(C(n, k) * k)
+
+Number of combinations:
+    C(n, k)
+
+Each combination of size k is copied
+into the result.
+
+Space Complexity: O(k)
+(Recursion stack excluding output)
+
+Example:
+Input:
+n = 4
+k = 2
+
+Output:
+[
+ [1,2],
+ [1,3],
+ [1,4],
+ [2,3],
+ [2,4],
+ [3,4]
+]
+*/
+
+class Solution {
+public:
+
+    void combinations(vector<vector<int>>& res,
+                      vector<int>& ans,
+                      int n,
+                      int k,
+                      int st) {
+
+        // Combination complete
+        if (ans.size() == k) {
+
+            res.push_back(ans);
+            return;
+        }
+
+        for (int i = st; i <= n; i++) {
+
+            // Choose
+            ans.push_back(i);
+
+            // Explore
+            combinations(res, ans, n, k, i + 1);
+
+            // Backtrack
+            ans.pop_back();
+        }
+    }
+
+    vector<vector<int>> combine(int n, int k) {
+
+        vector<vector<int>> res;
+        vector<int> ans;
+
+        combinations(res, ans, n, k, 1);
+
+        return res;
+    }
+};
