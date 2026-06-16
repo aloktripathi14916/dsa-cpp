@@ -1,0 +1,157 @@
+/*
+Problem: Sum of Distances
+Platform: LeetCode (LC 2615)
+Topic: HashMap / Prefix Sum
+
+---------------------------------------------------------
+
+Approach:
+
+For each index i, we need:
+
+    ans[i] = Σ |i - j|
+
+for all indices j where:
+
+    nums[i] == nums[j]
+
+Brute Force:
+- Compare every equal-valued pair.
+- O(n²) → Too slow.
+
+Optimized Idea:
+
+1. Group indices having the same value.
+
+Example:
+nums = [1,3,1,1,2]
+
+Value 1 appears at:
+[0, 2, 3]
+
+2. For each group of indices,
+   build a prefix sum array.
+
+Indices:
+[0, 2, 3]
+
+Prefix:
+[0, 2, 5]
+
+3. For an index position i in this group:
+
+Contribution from left side:
+
+    i * idx[i] - prefix[i-1]
+
+Contribution from right side:
+
+    (prefix[last] - prefix[i])
+    - (countRight * idx[i])
+
+Total distance:
+
+    left + right
+
+This computes all distances in O(1)
+for each occurrence after preprocessing.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+- Building groups: O(n)
+- Prefix sums: O(n)
+- Distance calculation: O(n)
+
+Total: O(n)
+
+Space Complexity: O(n)
+
+Example:
+
+Input:
+nums = [1,3,1,1,2]
+
+Indices of value 1:
+[0,2,3]
+
+Output:
+[5,0,3,4,0]
+
+Explanation:
+
+For index 0:
+|0-2| + |0-3| = 5
+
+For index 2:
+|2-0| + |2-3| = 3
+
+For index 3:
+|3-0| + |3-2| = 4
+*/
+
+class Solution {
+public:
+    vector<long long> distance(vector<int>& nums) {
+
+        int n = nums.size();
+
+        vector<long long> ans(n, 0);
+
+        unordered_map<int, vector<int>> mp;
+
+        // Store indices for each value
+        for (int i = 0; i < n; i++) {
+
+            mp[nums[i]].push_back(i);
+        }
+
+        // Process each value group
+        for (auto &p : mp) {
+
+            vector<int>& idx = p.second;
+
+            int m = idx.size();
+
+            // Prefix sums of indices
+            vector<long long> prefix(m, 0);
+
+            prefix[0] = idx[0];
+
+            for (int i = 1; i < m; i++) {
+
+                prefix[i] =
+                    prefix[i - 1] + idx[i];
+            }
+
+            // Calculate answer for each occurrence
+            for (int i = 0; i < m; i++) {
+
+                long long left = 0;
+                long long right = 0;
+
+                // Distance to left indices
+                if (i > 0) {
+
+                    left =
+                        (long long)i * idx[i]
+                        - prefix[i - 1];
+                }
+
+                // Distance to right indices
+                if (i < m - 1) {
+
+                    right =
+                        (prefix[m - 1] - prefix[i])
+                        - (long long)(m - i - 1)
+                              * idx[i];
+                }
+
+                ans[idx[i]] = left + right;
+            }
+        }
+
+        return ans;
+    }
+};
