@@ -1,0 +1,137 @@
+/*
+Problem: Largest Rectangle in Histogram
+Platform: LeetCode (LC 84)
+Topic: Stack / Monotonic Stack
+
+---------------------------------------------------------
+
+Approach:
+
+For every bar, assume it is the height
+of the largest rectangle.
+
+To calculate its maximum possible width,
+we need:
+
+1. Nearest Smaller Element on Left (NSL)
+2. Nearest Smaller Element on Right (NSR)
+
+Why?
+
+For a bar of height h:
+- Rectangle can extend left until a smaller
+  bar is encountered.
+- Rectangle can extend right until a smaller
+  bar is encountered.
+
+Width:
+
+    width = right[i] - left[i] - 1
+
+Area:
+
+    area = height[i] * width
+
+We compute NSL and NSR using monotonic stacks.
+
+---------------------------------------------------------
+
+Steps:
+
+1. Compute nearest smaller element on the right.
+2. Compute nearest smaller element on the left.
+3. For every index:
+      width = right[i] - left[i] - 1
+      area  = height[i] * width
+4. Return maximum area.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Each element is pushed and popped
+at most once from each stack.
+
+Space Complexity: O(n)
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+heights = [2,1,5,6,2,3]
+
+NSL:
+[-1,-1,1,2,1,4]
+
+NSR:
+[1,6,4,4,6,6]
+
+Maximum rectangle:
+Height = 5
+Width = 2
+
+Area = 10
+
+Output:
+10
+*/
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+
+        int n = heights.size();
+
+        int maxArea = 0;
+
+        // Nearest Smaller on Right
+        stack<int> sr;
+        vector<int> right(n);
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            while (!sr.empty() &&
+                   heights[i] <= heights[sr.top()]) {
+
+                sr.pop();
+            }
+
+            right[i] = sr.empty() ? n : sr.top();
+
+            sr.push(i);
+        }
+
+        // Nearest Smaller on Left
+        stack<int> sl;
+        vector<int> left(n);
+
+        for (int i = 0; i < n; i++) {
+
+            while (!sl.empty() &&
+                   heights[i] <= heights[sl.top()]) {
+
+                sl.pop();
+            }
+
+            left[i] = sl.empty() ? -1 : sl.top();
+
+            sl.push(i);
+        }
+
+        // Calculate maximum area
+        for (int i = 0; i < n; i++) {
+
+            int width =
+                right[i] - left[i] - 1;
+
+            int area =
+                heights[i] * width;
+
+            maxArea =
+                max(maxArea, area);
+        }
+
+        return maxArea;
+    }
+};
