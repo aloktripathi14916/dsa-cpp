@@ -1,0 +1,116 @@
+/*
+Problem: Next Greater Element II
+Platform: LeetCode (LC 503)
+Topic: Monotonic Stack / Circular Array
+
+---------------------------------------------------------
+
+Approach:
+
+For every element, find the first greater
+element while moving to the right.
+
+The array is circular, meaning:
+after the last element,
+search continues from the beginning.
+
+Example:
+
+nums = [1,2,1]
+
+For the last 1:
+search wraps around and finds 2.
+
+Output:
+[2,-1,2]
+
+---------------------------------------------------------
+
+Monotonic Stack Idea:
+
+Maintain a decreasing stack of indices.
+
+While processing an element:
+- Remove all elements smaller than or equal
+  to the current element.
+- The top of the stack becomes the
+  Next Greater Element.
+- Push the current index.
+
+Since the array is circular,
+traverse it twice:
+
+    from (2*n - 1) to 0
+
+Use:
+
+    i % n
+
+to access actual indices.
+
+This simulates wrapping around the array.
+
+---------------------------------------------------------
+
+Steps:
+
+1. Initialize answer array with -1.
+2. Traverse from 2*n-1 to 0.
+3. Remove smaller elements from stack.
+4. Top of stack gives next greater element.
+5. Push current index.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Each index is pushed and popped
+at most once.
+
+Space Complexity: O(n)
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+nums = [1,2,1]
+
+Traversal:
+
+1 -> NGE = 2
+2 -> NGE = -1
+1 -> NGE = 2
+
+Output:
+[2,-1,2]
+*/
+
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+
+        int n = nums.size();
+
+        vector<int> ans(n, -1);
+
+        stack<int> s;   // stores indices
+
+        // Traverse twice for circular array
+        for (int i = 2 * n - 1; i >= 0; i--) {
+
+            while (!s.empty() &&
+                   nums[i % n] >= nums[s.top()]) {
+
+                s.pop();
+            }
+
+            ans[i % n] =
+                s.empty() ? -1 : nums[s.top()];
+
+            s.push(i % n);
+        }
+
+        return ans;
+    }
+};
