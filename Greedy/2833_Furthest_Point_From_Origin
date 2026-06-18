@@ -1,0 +1,91 @@
+/*
+Problem: Furthest Point From Origin
+Platform: LeetCode (LC 2833)
+Topic: Greedy / Strings
+
+---------------------------------------------------------
+
+Approach:
+
+Each character represents a move:
+
+'L' -> move left by 1
+'R' -> move right by 1
+'_' -> can be either 'L' or 'R'
+
+Goal:
+Maximize the final distance from the origin.
+
+Observation:
+
+Let:
+    l = number of 'L'
+    r = number of 'R'
+    u = number of '_'
+
+To maximize distance, assign every '_'
+in the direction that increases the current
+imbalance between left and right moves.
+
+The final maximum distance becomes:
+
+    |l - r| + u
+
+Your implementation uses an equivalent formula:
+
+    n - 2 * min(l, r)
+
+where:
+    n = total length of the string
+
+Reason:
+The smaller count between L and R cancels out
+an equal number of moves in the opposite direction.
+All remaining moves (including '_') can be directed
+to the same side to maximize distance.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+moves = "L_RL__R"
+
+Count:
+L = 2
+R = 2
+_ = 3
+
+Maximum distance:
+
+|2 - 2| + 3 = 3
+
+Output:
+3
+*/
+
+class Solution {
+public:
+    int furthestDistanceFromOrigin(string moves) {
+
+        int l = 0;
+        int r = 0;
+
+        for (int i = 0; i < moves.size(); i++) {
+
+            if (moves[i] == 'L')
+                l++;
+
+            else if (moves[i] == 'R')
+                r++;
+        }
+
+        return moves.size() - 2 * min(l, r);
+    }
+};
