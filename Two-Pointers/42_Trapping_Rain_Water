@@ -1,0 +1,139 @@
+/*
+Problem: Trapping Rain Water
+Platform: LeetCode (LC 42)
+Topic: Two Pointers / Arrays
+
+---------------------------------------------------------
+
+Approach:
+
+After raining, water can be trapped between
+bars of different heights.
+
+For any index i:
+
+    Water[i] =
+    min(maxLeft, maxRight) - height[i]
+
+where:
+- maxLeft  = tallest bar on the left
+- maxRight = tallest bar on the right
+
+Computing maxLeft and maxRight arrays
+would require O(n) extra space.
+
+---------------------------------------------------------
+
+Two Pointer Optimization:
+
+Use two pointers:
+
+    l = 0
+    r = n - 1
+
+Maintain:
+
+    lmax = maximum height seen from left
+    rmax = maximum height seen from right
+
+Observation:
+
+If:
+
+    height[l] <= height[r]
+
+then the trapped water at index l depends
+only on lmax because there exists a bar on
+the right that is at least as tall as height[l].
+
+Similarly, when:
+
+    height[l] > height[r]
+
+the trapped water at index r depends only
+on rmax.
+
+This allows us to process the array in a
+single pass without extra arrays.
+
+---------------------------------------------------------
+
+Steps:
+
+1. Initialize:
+      l = 0
+      r = n - 1
+      lmax = 0
+      rmax = 0
+
+2. While l < r:
+      - Update lmax or rmax.
+      - Add trapped water at current index.
+      - Move the appropriate pointer.
+
+3. Return total trapped water.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Each pointer moves at most n times.
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+height = [0,1,0,2,1,0,1,3,2,1,2,1]
+
+Water trapped at each position:
+
+0 0 1 0 1 2 1 0 0 1 0 0
+
+Total:
+
+1 + 1 + 2 + 1 + 1 = 6
+
+Output:
+6
+*/
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+
+        int n = height.size();
+
+        int l = 0;
+        int r = n - 1;
+
+        int lmax = 0;
+        int rmax = 0;
+
+        int ans = 0;
+
+        while (l < r) {
+
+            if (height[l] <= height[r]) {
+
+                lmax = max(lmax, height[l]);
+
+                ans += lmax - height[l];
+
+                l++;
+            }
+            else {
+
+                rmax = max(rmax, height[r]);
+
+                ans += rmax - height[r];
+
+                r--;
+            }
+        }
+
+        return ans;
+    }
+};
