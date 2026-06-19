@@ -1,0 +1,145 @@
+/*
+Problem: Single Number III
+Platform: LeetCode (LC 260)
+Topic: Bit Manipulation / XOR
+
+---------------------------------------------------------
+
+Approach:
+
+In the array:
+- Every element appears exactly twice.
+- Two elements appear only once.
+
+We need to find those two unique numbers.
+
+---------------------------------------------------------
+
+Key XOR Properties:
+
+1. x ^ x = 0
+2. x ^ 0 = x
+3. XOR is commutative and associative
+
+Therefore, XOR of all elements gives:
+
+    xr = a ^ b
+
+where:
+    a and b are the two unique numbers.
+
+Since a != b,
+xr must contain at least one set bit.
+
+---------------------------------------------------------
+
+Finding a Differentiating Bit:
+
+Extract the rightmost set bit:
+
+    setbit = xr & (-xr)
+
+This bit is set in one unique number
+and unset in the other.
+
+---------------------------------------------------------
+
+Partition the Array:
+
+Using this bit:
+
+Group 1:
+    Numbers with setbit = 1
+
+Group 2:
+    Numbers with setbit = 0
+
+Since duplicate numbers are identical,
+they always fall into the same group and
+cancel out through XOR.
+
+After XOR-ing each group separately:
+
+    Group 1 -> a
+    Group 2 -> b
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+nums = [1,2,1,3,2,5]
+
+Overall XOR:
+
+1 ^ 2 ^ 1 ^ 3 ^ 2 ^ 5
+= 3 ^ 5
+= 6
+
+Binary:
+
+3 = 011
+5 = 101
+6 = 110
+
+Rightmost set bit:
+
+setbit = 2
+
+Partition:
+
+Group 1:
+2,2,3
+
+XOR = 3
+
+Group 2:
+1,1,5
+
+XOR = 5
+
+Output:
+[3,5]
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Two linear traversals.
+
+Space Complexity: O(1)
+
+(No extra data structures used)
+*/
+
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+
+        int xr = 0;
+
+        // XOR of all elements
+        for (int num : nums) {
+
+            xr ^= num;
+        }
+
+        // Rightmost set bit
+        int setbit =
+            xr & (-(unsigned int)xr);
+
+        int a = 0;
+        int b = 0;
+
+        // Separate into two groups
+        for (int num : nums) {
+
+            if (num & setbit)
+                a ^= num;
+            else
+                b ^= num;
+        }
+
+        return {a, b};
+    }
+};
