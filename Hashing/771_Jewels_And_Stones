@@ -1,0 +1,99 @@
+/*
+Problem: Jewels and Stones
+Platform: LeetCode (LC 771)
+Topic: Hashing / String
+
+---------------------------------------------------------
+
+Approach:
+
+We are given:
+
+- jewels: characters representing jewel types
+- stones: characters representing stones we own
+
+A stone is considered a jewel if its character
+appears in the jewels string.
+
+Goal:
+Count how many stones are jewels.
+
+---------------------------------------------------------
+
+Hash Set Idea:
+
+1. Insert every character from `jewels`
+   into an unordered_set.
+
+2. Traverse the `stones` string:
+      - If the current character exists in
+        the set, increment the count.
+
+Using a hash set allows O(1) average-time
+lookup for each stone.
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+jewels = "aA"
+stones = "aAAbbbb"
+
+Set:
+{'a', 'A'}
+
+Traverse stones:
+
+a -> jewel ✓
+A -> jewel ✓
+A -> jewel ✓
+b -> not jewel
+b -> not jewel
+b -> not jewel
+b -> not jewel
+
+Count = 3
+
+Output:
+3
+
+---------------------------------------------------------
+
+Time Complexity: O(j + s)
+
+j = jewels.length()
+s = stones.length()
+
+Space Complexity: O(j)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int numJewelsInStones(string jewels,
+                          string stones) {
+
+        int count = 0;
+
+        unordered_set<int> s;
+
+        // Store all jewel types
+        for (int val : jewels) {
+
+            s.insert(val);
+        }
+
+        // Count jewels among stones
+        for (int i = 0; i < stones.size(); i++) {
+
+            if (s.find(stones[i]) != s.end()) {
+
+                count++;
+            }
+        }
+
+        return count;
+    }
+};
