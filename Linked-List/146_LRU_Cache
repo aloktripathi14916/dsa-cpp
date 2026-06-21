@@ -1,0 +1,264 @@
+/*
+Problem: LRU Cache
+Platform: LeetCode (LC 146)
+Topic: Design / HashMap + Doubly Linked List
+
+---------------------------------------------------------
+
+Approach:
+
+Design a cache that supports:
+
+1. get(key)
+2. put(key, value)
+
+Both operations must run in O(1) time.
+
+The cache follows the LRU
+(Least Recently Used) policy:
+
+- Whenever a key is accessed,
+  it becomes the Most Recently Used (MRU).
+
+- If capacity is full and a new key
+  must be inserted, remove the
+  Least Recently Used (LRU) key.
+
+---------------------------------------------------------
+
+Data Structures Used:
+
+1. HashMap
+
+    key -> Node*
+
+Provides O(1) access to cache entries.
+
+2. Doubly Linked List
+
+Maintains usage order:
+
+Head <-> Most Recently Used Nodes <-> Least Recently Used Node <-> Tail
+
+- Node near head  = most recently used
+- Node near tail  = least recently used
+
+Dummy head and tail nodes simplify insertion
+and deletion operations.
+
+---------------------------------------------------------
+
+Helper Functions:
+
+addNode(node)
+
+Insert a node immediately after head.
+
+Result:
+Node becomes the most recently used.
+
+---------------------------------------------------------
+
+delNode(node)
+
+Remove a node from the doubly linked list.
+
+Used when:
+- Updating an existing key
+- Moving a node to the front
+- Evicting the least recently used node
+
+---------------------------------------------------------
+
+get(key)
+
+Case 1:
+Key not present
+
+Return:
+    -1
+
+Case 2:
+Key exists
+
+Steps:
+1. Retrieve node.
+2. Remove it from current position.
+3. Move it next to head.
+4. Return its value.
+
+This marks the key as recently used.
+
+---------------------------------------------------------
+
+put(key, value)
+
+If key already exists:
+
+1. Remove old node.
+2. Remove entry from hashmap.
+
+If cache is full:
+
+1. LRU node is:
+       tail->prev
+2. Remove it from hashmap.
+3. Delete it from linked list.
+
+Insert new node:
+
+1. Create node.
+2. Add near head.
+3. Store in hashmap.
+
+---------------------------------------------------------
+
+Example:
+
+Capacity = 2
+
+put(1,1)
+
+List:
+Head <-> 1 <-> Tail
+
+put(2,2)
+
+List:
+Head <-> 2 <-> 1 <-> Tail
+
+get(1)
+
+List:
+Head <-> 1 <-> 2 <-> Tail
+
+put(3,3)
+
+Capacity exceeded.
+
+Remove:
+2 (Least Recently Used)
+
+List:
+Head <-> 3 <-> 1 <-> Tail
+
+---------------------------------------------------------
+
+Time Complexity:
+
+get()  -> O(1)
+put()  -> O(1)
+
+Space Complexity: O(capacity)
+
+---------------------------------------------------------
+*/
+
+class LRUCache {
+public:
+
+    class Node {
+    public:
+        int key, val;
+        Node* prev;
+        Node* next;
+
+        Node(int k, int v) {
+            key = k;
+            val = v;
+            prev = next = NULL;
+        }
+    };
+
+    Node* head = new Node(-1, -1);
+    Node* tail = new Node(-1, -1);
+
+    unordered_map<int, Node*> m;
+
+    int limit;
+
+    // Insert node after head
+    void addNode(Node* newNode) {
+
+        Node* oldNext = head->next;
+
+        head->next = newNode;
+        oldNext->prev = newNode;
+
+        newNode->next = oldNext;
+        newNode->prev = head;
+    }
+
+    // Remove node from list
+    void delNode(Node* oldNode) {
+
+        Node* oldPrev = oldNode->prev;
+        Node* oldNext = oldNode->next;
+
+        oldPrev->next = oldNext;
+        oldNext->prev = oldPrev;
+    }
+
+    LRUCache(int capacity) {
+
+        limit = capacity;
+
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key) {
+
+        if (m.find(key) == m.end())
+            return -1;
+
+        Node* ansNode = m[key];
+        int ans = ansNode->val;
+
+        // Move to front (MRU)
+        m.erase(key);
+
+        delNode(ansNode);
+
+        addNode(ansNode);
+
+        m[key] = ansNode;
+
+        return ans;
+    }
+
+    void put(int key, int value) {
+
+        // Remove old entry if present
+        if (m.find(key) != m.end()) {
+
+            Node* oldNode = m[key];
+
+            delNode(oldNode);
+
+            m.erase(key);
+        }
+
+        // Cache full -> remove LRU
+        if (m.size() == limit) {
+
+            m.erase(tail->prev->key);
+
+            delNode(tail->prev);
+        }
+
+        // Insert new node as MRU
+        Node* newNode = new Node(key, value);
+
+        addNode(newNode);
+
+        m[key] = newNode;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key, value);
+ */
