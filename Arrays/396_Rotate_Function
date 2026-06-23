@@ -1,0 +1,171 @@
+/*
+Problem: Rotate Function
+Platform: LeetCode (LC 396)
+Topic: Arrays / Math / Dynamic Programming
+
+---------------------------------------------------------
+
+Approach:
+
+The rotate function is defined as:
+
+F(k) = 0 * Bk[0]
+     + 1 * Bk[1]
+     + 2 * Bk[2]
+     + ...
+     + (n-1) * Bk[n-1]
+
+where Bk is the array after k clockwise rotations.
+
+A brute force solution would:
+- Generate every rotation.
+- Compute F(k) from scratch.
+
+Time Complexity:
+
+    O(n²)
+
+
+
+---------------------------------------------------------
+
+Key Observation:
+
+Let:
+
+    sum = total sum of all elements
+
+and
+
+    F(0) =
+    Σ (i * nums[i])
+
+When moving from one rotation to the next:
+
+    F(k) = F(k-1)
+           + sum
+           - n * movedElement
+
+where:
+
+    movedElement =
+    nums[n - k]
+
+This recurrence allows us to compute
+each rotation value in O(1).
+
+---------------------------------------------------------
+
+Derivation:
+
+Suppose:
+
+F(0) = 0*a0 + 1*a1 + 2*a2 + ... + (n-1)*a(n-1)
+
+After one rotation:
+
+F(1) = 0*a(n-1)
+     + 1*a0
+     + 2*a1
+     + ...
+     + (n-1)*a(n-2)
+
+Comparing both equations gives:
+
+    F(1) = F(0)
+           + sum
+           - n*a(n-1)
+
+Similarly:
+
+    F(k) = F(k-1)
+           + sum
+           - n*nums[n-k]
+
+---------------------------------------------------------
+
+Steps:
+
+1. Compute:
+      sum of all elements.
+2. Compute:
+      F(0).
+3. Iterate through all rotations using
+   the recurrence relation.
+4. Track the maximum value obtained.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+- One pass for sum and F(0)
+- One pass for remaining rotations
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+nums = [4,3,2,6]
+
+F(0):
+
+0*4 + 1*3 + 2*2 + 3*6
+= 25
+
+sum = 15
+
+F(1):
+
+25 + 15 - 4*6
+= 16
+
+F(2):
+
+16 + 15 - 4*2
+= 23
+
+F(3):
+
+23 + 15 - 4*3
+= 26
+
+Maximum = 26
+
+Output:
+26
+*/
+
+class Solution {
+public:
+    int maxRotateFunction(vector<int>& nums) {
+
+        int n = nums.size();
+
+        long long sum = 0;
+        long long f = 0;
+
+        // Compute total sum and F(0)
+        for (int i = 0; i < n; i++) {
+
+            sum += nums[i];
+
+            f += 1LL * i * nums[i];
+        }
+
+        long long maxf = f;
+
+        // Compute remaining rotations
+        for (int i = 1; i < n; i++) {
+
+            f = f + sum
+                  - 1LL * n * nums[n - i];
+
+            maxf = max(maxf, f);
+        }
+
+        return maxf;
+    }
+};
