@@ -1,0 +1,158 @@
+/*
+Problem: Sliding Window Maximum
+Platform: LeetCode (LC 239)
+Topic: Sliding Window / Monotonic Deque
+
+---------------------------------------------------------
+
+Approach:
+
+Given an array and a window size k,
+find the maximum element in every
+contiguous window of size k.
+
+Brute Force:
+
+For every window:
+- Scan all k elements.
+- Find the maximum.
+
+Time Complexity:
+
+    O(n * k)
+
+Too slow for large inputs.
+
+---------------------------------------------------------
+
+Monotonic Deque Idea:
+
+Maintain a deque storing indices.
+
+Properties:
+
+1. Indices in deque always belong to
+   the current window.
+
+2. Values corresponding to those indices
+   are stored in decreasing order.
+
+This ensures:
+
+    nums[dq.front()]
+
+always represents the maximum element
+of the current window.
+
+---------------------------------------------------------
+
+Processing a New Element:
+
+Before inserting nums[i]:
+
+1. Remove indices that are outside
+   the current window.
+
+2. Remove all smaller or equal elements
+   from the back of the deque.
+
+Why?
+
+Those elements can never become maximum
+while nums[i] exists in the window.
+
+3. Insert index i.
+
+---------------------------------------------------------
+
+Getting Window Maximum:
+
+The front of the deque always stores
+the index of the maximum element.
+
+    maximum = nums[dq.front()]
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [1,3,-1,-3,5,3,6,7]
+k = 3
+
+Windows:
+
+[1,3,-1]     -> 3
+[3,-1,-3]    -> 3
+[-1,-3,5]    -> 5
+[-3,5,3]     -> 5
+[5,3,6]      -> 6
+[3,6,7]      -> 7
+
+Output:
+
+[3,3,5,5,6,7]
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Each index is pushed and popped
+at most once.
+
+Space Complexity: O(k)
+
+Deque stores at most k indices.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums,
+                                 int k) {
+
+        deque<int> dq;
+        vector<int> res;
+
+        // Process first window
+        for (int i = 0; i < k; i++) {
+
+            while (!dq.empty() &&
+                   nums[dq.back()] <= nums[i]) {
+
+                dq.pop_back();
+            }
+
+            dq.push_back(i);
+        }
+
+        res.push_back(nums[dq.front()]);
+
+        // Process remaining windows
+        for (int i = k; i < nums.size(); i++) {
+
+            // Remove elements outside window
+            while (!dq.empty() &&
+                   dq.front() <= i - k) {
+
+                dq.pop_front();
+            }
+
+            // Maintain decreasing order
+            while (!dq.empty() &&
+                   nums[dq.back()] <= nums[i]) {
+
+                dq.pop_back();
+            }
+
+            dq.push_back(i);
+
+            // Current window maximum
+            res.push_back(nums[dq.front()]);
+        }
+
+        return res;
+    }
+};
