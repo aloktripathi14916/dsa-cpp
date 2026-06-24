@@ -1,0 +1,164 @@
+/*
+Problem: Gas Station
+Platform: LeetCode (LC 134)
+Topic: Greedy / Arrays
+
+---------------------------------------------------------
+
+Approach:
+
+There are n gas stations arranged in a circle.
+
+At station i:
+- gas[i] units of fuel are available.
+- cost[i] fuel is required to travel to
+  the next station.
+
+Goal:
+Find the starting station from which we can
+complete the entire circular route.
+
+---------------------------------------------------------
+
+Key Observation 1:
+
+If:
+
+    totalGas < totalCost
+
+then completing the circuit is impossible.
+
+Return:
+
+    -1
+
+---------------------------------------------------------
+
+Key Observation 2:
+
+Suppose we start at station "start".
+
+While traversing, if at station i:
+
+    currentGas < 0
+
+then:
+
+- We cannot reach station i + 1.
+- Any station between start and i
+  also cannot be a valid starting point.
+
+Why?
+
+Because starting from any station between
+start and i would give even less fuel than
+starting from start.
+
+Therefore:
+
+    start = i + 1
+
+and reset:
+
+    currentGas = 0
+
+---------------------------------------------------------
+
+Greedy Idea:
+
+1. Check if total gas is sufficient.
+2. Traverse once.
+3. Maintain fuel balance.
+4. Whenever balance becomes negative,
+   move the starting station ahead.
+5. The final candidate is the answer.
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+
+gas  = [1,2,3,4,5]
+cost = [3,4,5,1,2]
+
+Net gain:
+
+[-2,-2,-2,+3,+3]
+
+Start = 0
+
+At index 0:
+currentGas = -2
+
+Cannot proceed.
+
+New start = 1
+
+At index 1:
+currentGas = -2
+
+New start = 2
+
+At index 2:
+currentGas = -2
+
+New start = 3
+
+From station 3:
+
+3 + 3 - 2 + ...
+Complete circuit successfully.
+
+Output:
+3
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+One pass for total gas/cost.
+One pass for finding starting station.
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas,
+                           vector<int>& cost) {
+
+        int totalCost = 0;
+        int totalGas = 0;
+
+        // Check overall feasibility
+        for (int i = 0; i < gas.size(); i++) {
+
+            totalCost += cost[i];
+            totalGas += gas[i];
+        }
+
+        if (totalCost > totalGas)
+            return -1;
+
+        int start = 0;
+        int currentGas = 0;
+
+        // Find valid starting station
+        for (int i = 0; i < gas.size(); i++) {
+
+            currentGas += gas[i] - cost[i];
+
+            if (currentGas < 0) {
+
+                start = i + 1;
+
+                currentGas = 0;
+            }
+        }
+
+        return start;
+    }
+};
