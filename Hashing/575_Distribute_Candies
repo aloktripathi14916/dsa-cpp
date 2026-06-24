@@ -1,0 +1,147 @@
+/*
+Problem: Distribute Candies
+Platform: LeetCode (LC 575)
+Topic: Hash Set / Arrays
+
+---------------------------------------------------------
+
+Approach:
+
+Alice has n candies where:
+
+- n is always even.
+- She can eat only n/2 candies.
+
+Each candy has a type.
+
+Goal:
+
+Maximize the number of different candy
+types Alice can eat.
+
+---------------------------------------------------------
+
+Key Observation:
+
+Let:
+
+uniqueTypes = number of distinct candy types
+
+Alice can eat only:
+
+    n / 2
+
+candies.
+
+Therefore:
+
+1. If uniqueTypes <= n/2
+
+   Alice can eat one candy from every
+   distinct type.
+
+   Answer = uniqueTypes
+
+2. If uniqueTypes > n/2
+
+   Alice can eat only n/2 candies.
+
+   So maximum distinct types possible:
+
+       n/2
+
+Answer:
+
+    min(uniqueTypes, n/2)
+
+---------------------------------------------------------
+
+Algorithm:
+
+1. Insert all candy types into a HashSet.
+2. HashSet size gives the number of
+   distinct candy types.
+3. Return:
+
+       min(distinctTypes, n/2)
+
+---------------------------------------------------------
+
+Example 1:
+
+Input:
+
+candyType = [1,1,2,2,3,3]
+
+Distinct Types:
+
+{1,2,3}
+
+uniqueTypes = 3
+
+Alice can eat:
+
+6/2 = 3 candies
+
+Answer:
+
+3
+
+---------------------------------------------------------
+
+Example 2:
+
+Input:
+
+candyType = [1,1,2,3]
+
+Distinct Types:
+
+{1,2,3}
+
+uniqueTypes = 3
+
+Alice can eat:
+
+4/2 = 2 candies
+
+Answer:
+
+2
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+- Each candy is inserted into the set once.
+
+Space Complexity: O(n)
+
+- HashSet stores distinct candy types.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int distributeCandies(vector<int>& candyType) {
+
+        unordered_set<int> s;
+
+        int count = 0;
+
+        for (auto val : candyType) {
+
+            if (s.find(val) == s.end()) {
+
+                s.insert(val);
+
+                count++;
+            }
+        }
+
+        return count > (candyType.size() / 2)
+               ? (candyType.size() / 2)
+               : count;
+    }
+};
