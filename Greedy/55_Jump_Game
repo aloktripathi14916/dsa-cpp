@@ -1,0 +1,175 @@
+/*
+Problem: Jump Game
+Platform: LeetCode (LC 55)
+Topic: Greedy
+
+---------------------------------------------------------
+
+Approach:
+
+At each index i:
+
+nums[i] tells the maximum jump length
+possible from that position.
+
+Goal:
+
+Determine whether we can reach the
+last index.
+
+---------------------------------------------------------
+
+Greedy Idea:
+
+Maintain:
+
+    farthest
+
+= the farthest index reachable so far.
+
+Initially:
+
+    farthest = 0
+
+---------------------------------------------------------
+
+For every index i:
+
+Case 1:
+
+If
+
+    i > farthest
+
+then this position is unreachable.
+
+Therefore:
+
+    return false
+
+---------------------------------------------------------
+
+Case 2:
+
+Position is reachable.
+
+Update:
+
+    farthest = max(farthest,
+                   i + nums[i])
+
+This extends our reachable range.
+
+---------------------------------------------------------
+
+Example 1:
+
+nums = [2,3,1,1,4]
+
+i = 0
+
+farthest = max(0,0+2)
+         = 2
+
+--------------------------------
+
+i = 1
+
+reachable because 1 <= 2
+
+farthest = max(2,1+3)
+         = 4
+
+Now last index is reachable.
+
+Output:
+
+true
+
+---------------------------------------------------------
+
+Example 2:
+
+nums = [3,2,1,0,4]
+
+i = 0
+
+farthest = 3
+
+--------------------------------
+
+i = 1
+
+farthest = 3
+
+--------------------------------
+
+i = 2
+
+farthest = 3
+
+--------------------------------
+
+i = 3
+
+farthest = 3
+
+nums[3] = 0
+
+cannot move further
+
+--------------------------------
+
+i = 4
+
+4 > farthest
+
+unreachable
+
+Output:
+
+false
+
+---------------------------------------------------------
+
+Why Greedy Works?
+
+We don't care HOW we reached an index.
+
+We only care about the farthest position
+reachable so far.
+
+If an index lies within that range,
+it can be used to extend the range.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Single traversal of the array.
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+
+        int farthest = 0;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            // Current index is unreachable
+            if (i > farthest)
+                return false;
+
+            // Extend reachable range
+            farthest =
+                max(farthest, i + nums[i]);
+        }
+
+        return farthest >= nums.size() - 1;
+    }
+};
