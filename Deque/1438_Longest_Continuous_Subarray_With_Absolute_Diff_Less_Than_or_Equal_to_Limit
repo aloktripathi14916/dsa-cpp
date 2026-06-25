@@ -1,0 +1,238 @@
+/*
+Problem: Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+Platform: LeetCode (LC 1438)
+Topic: Sliding Window + Monotonic Deque
+
+---------------------------------------------------------
+
+Approach:
+
+We need the longest subarray such that:
+
+    max(subarray) - min(subarray) <= limit
+
+A brute force solution would check
+the maximum and minimum of every subarray.
+
+Time Complexity:
+
+    O(n²) or O(n³)
+
+Too slow.
+
+---------------------------------------------------------
+
+Key Idea:
+
+For every sliding window we need:
+
+1. Current Maximum
+2. Current Minimum
+
+Both should be available in O(1).
+
+We use two monotonic deques:
+
+---------------------------------------------------------
+
+1. maxDeque
+
+Stores indices in decreasing order
+of values.
+
+Front always contains the index of
+the maximum element in the window.
+
+Example:
+
+Values:
+
+[8,5,3]
+
+Deque:
+
+8 5 3
+
+Front = maximum
+
+---------------------------------------------------------
+
+2. minDeque
+
+Stores indices in increasing order
+of values.
+
+Front always contains the index of
+the minimum element in the window.
+
+Example:
+
+Values:
+
+[2,4,6]
+
+Deque:
+
+2 4 6
+
+Front = minimum
+
+---------------------------------------------------------
+
+Sliding Window:
+
+Expand window using "end".
+
+For every new element:
+
+1. Update maxDeque
+2. Update minDeque
+
+Now:
+
+Current Maximum =
+    v[maxDeque.front()]
+
+Current Minimum =
+    v[minDeque.front()]
+
+---------------------------------------------------------
+
+If Condition Violates:
+
+While:
+
+    max - min > limit
+
+Shrink window from the left.
+
+Move:
+
+    st++
+
+Remove expired indices from
+both deques.
+
+---------------------------------------------------------
+
+Example:
+
+nums = [8,2,4,7]
+limit = 4
+
+Window:
+
+[8]
+
+max=8 min=8
+
+Valid
+
+---------------------------------------------------------
+
+[8,2]
+
+max=8 min=2
+
+8-2 = 6
+
+Invalid
+
+Shrink:
+
+Window:
+
+[2]
+
+Valid
+
+---------------------------------------------------------
+
+Continue similarly.
+
+Longest valid length = 2
+
+---------------------------------------------------------
+
+Why Deques Work?
+
+Each index:
+
+- Enters a deque once.
+- Leaves a deque once.
+
+Therefore total operations are linear.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Each element is pushed and popped
+at most once from each deque.
+
+Space Complexity: O(n)
+
+Deques may store up to n indices.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& v, int k) {
+
+        int n = v.size();
+
+        deque<int> maxDeque;
+        deque<int> minDeque;
+
+        int st = 0;
+
+        int maxWindow = 0;
+
+        for (int end = 0; end < n; end++) {
+
+            // Maintain decreasing deque (maximum)
+            while (!maxDeque.empty() &&
+                   v[maxDeque.back()] < v[end]) {
+
+                maxDeque.pop_back();
+            }
+
+            maxDeque.push_back(end);
+
+            // Maintain increasing deque (minimum)
+            while (!minDeque.empty() &&
+                   v[minDeque.back()] > v[end]) {
+
+                minDeque.pop_back();
+            }
+
+            minDeque.push_back(end);
+
+            // Shrink window if condition violated
+            while ((v[maxDeque.front()] -
+                    v[minDeque.front()]) > k) {
+
+                st++;
+
+                if (!maxDeque.empty() &&
+                    maxDeque.front() < st) {
+
+                    maxDeque.pop_front();
+                }
+
+                if (!minDeque.empty() &&
+                    minDeque.front() < st) {
+
+                    minDeque.pop_front();
+                }
+            }
+
+            maxWindow =
+                max(maxWindow, end - st + 1);
+        }
+
+        return maxWindow;
+    }
+};
