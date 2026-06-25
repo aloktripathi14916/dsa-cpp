@@ -1,0 +1,146 @@
+/*
+Problem: Rotate String
+Platform: LeetCode (LC 796)
+Topic: String
+
+---------------------------------------------------------
+
+Approach:
+
+A string can be rotated by repeatedly moving
+its first character to the end.
+
+Example:
+
+s = "abcde"
+
+Rotations:
+
+abcde
+bcdea
+cdeab
+deabc
+eabcd
+
+---------------------------------------------------------
+
+Key Observation:
+
+If goal is a valid rotation of s,
+then goal must appear as a substring
+of:
+
+    s + s
+
+Why?
+
+Concatenating s with itself contains
+all possible rotations.
+
+Example:
+
+s = "abcde"
+
+s + s =
+
+"abcdeabcde"
+
+All rotations appear inside it:
+
+abcde
+bcdea
+cdeab
+deabc
+eabcd
+
+---------------------------------------------------------
+
+Algorithm:
+
+1. If lengths are different:
+      return false
+
+2. Create:
+
+      r = s + s
+
+3. Check whether goal exists inside r.
+
+      r.find(goal)
+
+4. If found:
+      return true
+
+   Otherwise:
+      return false
+
+---------------------------------------------------------
+
+Example 1:
+
+Input:
+
+s = "abcde"
+goal = "cdeab"
+
+r = "abcdeabcde"
+
+"cdeab" exists inside r
+
+Output:
+
+true
+
+---------------------------------------------------------
+
+Example 2:
+
+Input:
+
+s = "abcde"
+goal = "abced"
+
+r = "abcdeabcde"
+
+"abced" does not exist
+
+Output:
+
+false
+
+---------------------------------------------------------
+
+Time Complexity:
+
+String find:
+
+O(n)
+
+Overall:
+
+O(n)
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(n)
+
+for the concatenated string.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool rotateString(string s, string goal) {
+
+        // Lengths must match
+        if (s.length() != goal.length())
+            return false;
+
+        string r = s + s;
+
+        return r.find(goal) != string::npos;
+    }
+};
