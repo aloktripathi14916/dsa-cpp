@@ -1,0 +1,162 @@
+/*
+Problem: Rotate Image
+Platform: LeetCode (LC 48)
+Topic: Matrix / In-Place Rotation
+
+---------------------------------------------------------
+
+Approach:
+
+We need to rotate an n × n matrix
+90 degrees clockwise in-place.
+
+The challenge is:
+
+- No extra matrix allowed.
+- Modify the given matrix directly.
+
+---------------------------------------------------------
+
+Layer-by-Layer Rotation:
+
+Think of the matrix as layers
+(or rings).
+
+Example:
+
+1  2  3
+4  5  6
+7  8  9
+
+Outer layer:
+
+1 2 3
+4   6
+7 8 9
+
+We rotate four elements at a time.
+
+---------------------------------------------------------
+
+4-Way Swap:
+
+For a position:
+
+(i, j)
+
+Rotate:
+
+Top    <- Left
+Left   <- Bottom
+Bottom <- Right
+Right  <- Top
+
+Coordinates:
+
+Top:
+(i, j)
+
+Left:
+(n-1-j, i)
+
+Bottom:
+(n-1-i, n-1-j)
+
+Right:
+(j, n-1-i)
+
+---------------------------------------------------------
+
+Swap Order:
+
+Store top element first:
+
+temp = matrix[i][j]
+
+Then perform:
+
+top    = left
+left   = bottom
+bottom = right
+right  = temp
+
+This completes one 90° clockwise rotation.
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+
+1 2 3
+4 5 6
+7 8 9
+
+After rotation:
+
+7 4 1
+8 5 2
+9 6 3
+
+---------------------------------------------------------
+
+Layer Traversal:
+
+Outer loop:
+
+for each layer
+
+    i = 0 to n/2 - 1
+
+Inner loop:
+
+Traverse elements of current layer:
+
+    j = i to n-i-2
+
+Rotate each group of four elements.
+
+---------------------------------------------------------
+
+Time Complexity: O(n²)
+
+Every element is visited once.
+
+Space Complexity: O(1)
+
+Rotation is performed in-place.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+
+        int n = matrix.size();
+
+        // Process layer by layer
+        for (int i = 0; i < n / 2; i++) {
+
+            for (int j = i; j < n - i - 1; j++) {
+
+                int temp = matrix[i][j];
+
+                // Left -> Top
+                matrix[i][j] =
+                    matrix[n - 1 - j][i];
+
+                // Bottom -> Left
+                matrix[n - 1 - j][i] =
+                    matrix[n - 1 - i][n - 1 - j];
+
+                // Right -> Bottom
+                matrix[n - 1 - i][n - 1 - j] =
+                    matrix[j][n - 1 - i];
+
+                // Top -> Right
+                matrix[j][n - 1 - i] = temp;
+            }
+        }
+    }
+};
