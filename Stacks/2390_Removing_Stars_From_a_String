@@ -1,0 +1,190 @@
+/*
+Problem: Removing Stars From a String
+Platform: LeetCode (LC 2390)
+Topic: Stack / String
+
+---------------------------------------------------------
+
+Approach:
+
+Every '*' removes:
+
+1. The star itself.
+2. The closest non-star character
+   to its left.
+
+A stack naturally supports this because
+the most recently added character is
+the first one to be removed (LIFO).
+
+---------------------------------------------------------
+
+Stack Idea:
+
+Traverse the string from left to right.
+
+If current character is:
+
+1. A normal character
+      Push it onto the stack.
+
+2. '*'
+      Pop the top character from the stack.
+
+At the end, the stack contains the
+remaining characters in reverse order.
+
+Reverse them to obtain the answer.
+
+---------------------------------------------------------
+
+Example:
+
+Input:
+
+s = "leet**cod*e"
+
+Process:
+
+l -> push
+
+Stack:
+l
+
+--------------------------------
+
+e -> push
+
+Stack:
+l e
+
+--------------------------------
+
+e -> push
+
+Stack:
+l e e
+
+--------------------------------
+
+t -> push
+
+Stack:
+l e e t
+
+--------------------------------
+
+*
+
+Pop 't'
+
+Stack:
+l e e
+
+--------------------------------
+
+*
+
+Pop 'e'
+
+Stack:
+l e
+
+--------------------------------
+
+c -> push
+
+Stack:
+l e c
+
+--------------------------------
+
+o -> push
+
+Stack:
+l e c o
+
+--------------------------------
+
+d -> push
+
+Stack:
+l e c o d
+
+--------------------------------
+
+*
+
+Pop 'd'
+
+Stack:
+l e c o
+
+--------------------------------
+
+e -> push
+
+Stack:
+l e c o e
+
+Final stack:
+
+l e c o e
+
+Reverse popped characters:
+
+"lecoe"
+
+Output:
+
+"lecoe"
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+- Each character is pushed once.
+- Each character is popped at most once.
+
+Space Complexity: O(n)
+
+Stack stores remaining characters.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    string removeStars(string s) {
+
+        stack<char> st;
+
+        // Process the string
+        for (int i = 0; i < s.length(); i++) {
+
+            if (s[i] == '*') {
+
+                st.pop();
+            }
+            else {
+
+                st.push(s[i]);
+            }
+        }
+
+        // Build answer from stack
+        string ans = "";
+
+        while (!st.empty()) {
+
+            ans += st.top();
+
+            st.pop();
+        }
+
+        // Stack gives reverse order
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
