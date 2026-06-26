@@ -1,0 +1,196 @@
+/*
+Problem: Jump Game II
+Platform: LeetCode (LC 45)
+Topic: Greedy
+
+---------------------------------------------------------
+
+Approach:
+
+Each element represents the maximum jump
+length from that position.
+
+Goal:
+
+Reach the last index using the minimum
+number of jumps.
+
+---------------------------------------------------------
+
+Greedy Idea:
+
+Think of each jump as covering a range
+of indices.
+
+Maintain:
+
+1. currentEnd
+
+   The farthest index that can be reached
+   using the current number of jumps.
+
+2. farthest
+
+   The farthest index reachable while
+   exploring the current range.
+
+3. count
+
+   Number of jumps taken.
+
+---------------------------------------------------------
+
+Algorithm:
+
+Traverse the array (excluding the last index).
+
+For every position:
+
+Update:
+
+    farthest = max(farthest,
+                   i + nums[i])
+
+This tells us how far the next jump
+can potentially reach.
+
+---------------------------------------------------------
+
+When:
+
+    i == currentEnd
+
+it means we have explored every index
+reachable with the current jump.
+
+Therefore:
+
+- We must take another jump.
+- Increment jump count.
+- Extend the current range to:
+
+      currentEnd = farthest
+
+---------------------------------------------------------
+
+Example:
+
+nums = [2,3,1,1,4]
+
+Initially:
+
+count = 0
+currentEnd = 0
+farthest = 0
+
+--------------------------------
+
+i = 0
+
+farthest = max(0,2)
+
+Since:
+
+i == currentEnd
+
+Take Jump 1
+
+count = 1
+currentEnd = 2
+
+--------------------------------
+
+i = 1
+
+farthest = max(2,4)
+
+--------------------------------
+
+i = 2
+
+farthest = max(4,3)
+
+Again:
+
+i == currentEnd
+
+Take Jump 2
+
+count = 2
+currentEnd = 4
+
+Reached the last index.
+
+Output:
+
+2
+
+---------------------------------------------------------
+
+Visualization:
+
+Indices:
+
+0   1   2   3   4
+
+Jump 1 covers:
+
+[0 ... 2]
+
+While exploring this range,
+the best next reach becomes 4.
+
+Jump 2 covers:
+
+[3 ... 4]
+
+Done.
+
+---------------------------------------------------------
+
+Why Greedy Works?
+
+Within the current jump's reachable range,
+we always keep track of the farthest
+possible next position.
+
+When the current range ends,
+choosing that farthest reach guarantees
+the minimum number of jumps.
+
+---------------------------------------------------------
+
+Time Complexity: O(n)
+
+Single traversal of the array.
+
+Space Complexity: O(1)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+
+        int farthest = 0;
+        int count = 0;
+        int currentEnd = 0;
+
+        for (int i = 0; i < nums.size() - 1; i++) {
+
+            // Update farthest reachable index
+            farthest = max(farthest, i + nums[i]);
+
+            // End of current jump range
+            if (i == currentEnd) {
+
+                count++;
+
+                currentEnd = farthest;
+            }
+        }
+
+        return count;
+    }
+};
