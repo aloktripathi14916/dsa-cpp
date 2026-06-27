@@ -1,0 +1,179 @@
+/*
+Problem: Merge Strings Alternately
+Platform: LeetCode (LC 1768)
+Topic: String / Two Pointers
+
+---------------------------------------------------------
+
+Approach:
+
+Given two strings:
+
+word1
+word2
+
+Merge them by taking characters
+alternately from each string.
+
+If one string becomes exhausted,
+append the remaining characters
+of the other string.
+
+---------------------------------------------------------
+
+Two Pointer Idea:
+
+Maintain:
+
+i -> current index in word1
+j -> current index in word2
+
+Traverse both strings simultaneously.
+
+---------------------------------------------------------
+
+Algorithm:
+
+While both strings still have characters:
+
+1. Add word1[i]
+2. Add word2[j]
+3. Increment both pointers
+
+---------------------------------------------------------
+
+After one string ends:
+
+If word1 still has characters:
+
+Append all remaining characters.
+
+If word2 still has characters:
+
+Append all remaining characters.
+
+---------------------------------------------------------
+
+Example 1:
+
+Input:
+
+word1 = "abc"
+word2 = "pqr"
+
+Process:
+
+a + p
+b + q
+c + r
+
+Answer:
+
+"apbqcr"
+
+---------------------------------------------------------
+
+Example 2:
+
+Input:
+
+word1 = "ab"
+word2 = "pqrs"
+
+Process:
+
+a + p
+b + q
+
+word1 finished.
+
+Append remaining:
+
+r s
+
+Answer:
+
+"apbqrs"
+
+---------------------------------------------------------
+
+Example 3:
+
+Input:
+
+word1 = "abcd"
+word2 = "pq"
+
+Process:
+
+a + p
+b + q
+
+word2 finished.
+
+Append remaining:
+
+c d
+
+Answer:
+
+"apbqcd"
+
+---------------------------------------------------------
+
+Time Complexity: O(n + m)
+
+n = word1.length()
+m = word2.length()
+
+Every character is visited exactly once.
+
+---------------------------------------------------------
+
+Space Complexity: O(n + m)
+
+The answer string stores all characters.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    string mergeAlternately(string word1,
+                            string word2) {
+
+        int i = 0;
+        int j = 0;
+
+        string ans = "";
+
+        // Merge while both strings have characters
+        while (i < word1.size() &&
+               j < word2.size()) {
+
+            ans += word1[i];
+            ans += word2[j];
+
+            i++;
+            j++;
+        }
+
+        // Append remaining characters of word1
+        while (i < word1.size()) {
+
+            ans += word1[i];
+
+            i++;
+        }
+
+        // Append remaining characters of word2
+        while (j < word2.size()) {
+
+            ans += word2[j];
+
+            j++;
+        }
+
+        return ans;
+    }
+};
