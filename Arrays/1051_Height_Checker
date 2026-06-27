@@ -1,0 +1,145 @@
+/*
+Problem: Height Checker
+Platform: LeetCode (LC 1051)
+Topic: Arrays / Sorting
+
+---------------------------------------------------------
+
+Approach:
+
+Students are standing in a certain order.
+
+We need to determine how many students
+are not standing in the positions they
+would occupy if the heights were sorted
+in non-decreasing order.
+
+---------------------------------------------------------
+
+Idea:
+
+1. Create a copy of the original array.
+
+2. Sort the copied array.
+
+The sorted array represents the
+expected arrangement.
+
+3. Compare both arrays index by index.
+
+If:
+
+    heights[i] != expected[i]
+
+then that student is standing in the
+wrong position.
+
+Count all such mismatches.
+
+---------------------------------------------------------
+
+Algorithm:
+
+1. Copy the original array.
+2. Sort the copied array.
+3. Traverse both arrays.
+4. Count indices where values differ.
+5. Return the count.
+
+---------------------------------------------------------
+
+Example 1:
+
+Input:
+
+heights = [1,1,4,2,1,3]
+
+Sorted:
+
+[1,1,1,2,3,4]
+
+Comparison:
+
+Original : 1 1 4 2 1 3
+Expected : 1 1 1 2 3 4
+
+Mismatches:
+
+Index 2
+Index 4
+Index 5
+
+Answer:
+
+3
+
+---------------------------------------------------------
+
+Example 2:
+
+Input:
+
+heights = [5,1,2,3,4]
+
+Sorted:
+
+[1,2,3,4,5]
+
+Every position differs.
+
+Answer:
+
+5
+
+---------------------------------------------------------
+
+Time Complexity:
+
+Copy array : O(n)
+
+Sorting : O(n log n)
+
+Comparison : O(n)
+
+Overall:
+
+O(n log n)
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(n)
+
+Extra array used for sorting.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) {
+
+        // Create a copy of the original array
+        vector<int> expected(heights.size());
+
+        for (int i = 0; i < heights.size(); i++) {
+
+            expected[i] = heights[i];
+        }
+
+        // Sort to get the expected order
+        sort(expected.begin(), expected.end());
+
+        int count = 0;
+
+        // Count mismatched positions
+        for (int i = 0; i < heights.size(); i++) {
+
+            if (heights[i] != expected[i])
+                count++;
+        }
+
+        return count;
+    }
+};
