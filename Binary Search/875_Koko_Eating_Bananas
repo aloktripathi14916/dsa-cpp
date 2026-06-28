@@ -1,0 +1,232 @@
+/*
+Problem: Koko Eating Bananas
+Platform: LeetCode (LC 875)
+Topic: Binary Search on Answer
+
+---------------------------------------------------------
+
+Approach:
+
+Koko has h hours to finish all banana piles.
+
+If she eats at a speed of:
+
+k bananas/hour
+
+then for every pile:
+
+Hours needed = ceil(pile / k)
+
+We need to find the minimum eating speed
+that allows her to finish within h hours.
+
+---------------------------------------------------------
+
+Key Observation:
+
+Possible eating speeds are:
+
+Minimum:
+
+1 banana/hour
+
+Maximum:
+
+Largest pile
+
+because eating faster than the largest pile
+doesn't reduce the required hours further.
+
+So search space is:
+
+[1, max(piles)]
+
+---------------------------------------------------------
+
+Binary Search on Answer:
+
+Let:
+
+mid = candidate eating speed
+
+Question:
+
+Can Koko finish all bananas within h hours
+if she eats at speed = mid?
+
+If YES:
+
+Try a smaller speed.
+
+If NO:
+
+Increase the speed.
+
+---------------------------------------------------------
+
+Calculating Hours:
+
+For each pile:
+
+Hours required = ceil(pile / speed)
+
+Instead of using floating point:
+
+ceil(a / b)
+
+can be computed as:
+
+(a + b - 1) / b
+
+So:
+
+hours += (pile + speed - 1) / speed
+
+---------------------------------------------------------
+
+Example:
+
+piles = [3,6,7,11]
+h = 8
+
+Search range:
+
+1 ... 11
+
+--------------------------------
+
+mid = 6
+
+Hours:
+
+3 -> 1
+
+6 -> 1
+
+7 -> 2
+
+11 -> 2
+
+Total = 6
+
+Works.
+
+Try smaller speed.
+
+--------------------------------
+
+mid = 3
+
+Hours:
+
+3 -> 1
+
+6 -> 2
+
+7 -> 3
+
+11 -> 4
+
+Total = 10
+
+Too many hours.
+
+Increase speed.
+
+Continue until the minimum
+valid speed is found.
+
+---------------------------------------------------------
+
+Why Binary Search Works?
+
+As eating speed increases:
+
+Required hours never increase.
+
+Speed ↑
+
+↓
+
+Hours Needed ↓ (or remain same)
+
+This monotonic property allows
+binary search.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+Let:
+
+n = number of piles
+
+M = maximum pile size
+
+Binary Search:
+
+O(log M)
+
+Each validity check:
+
+O(n)
+
+Overall:
+
+O(n log M)
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(1)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+
+        // Find the maximum pile
+        int maxPile = 0;
+
+        for (int p : piles) {
+
+            maxPile = max(maxPile, p);
+        }
+
+        int st = 1;
+        int end = maxPile;
+
+        int ans = maxPile;
+
+        while (st <= end) {
+
+            int mid = st + (end - st) / 2;
+
+            long long hours = 0;
+
+            // Calculate total hours needed
+            for (int p : piles) {
+
+                hours += (p + mid - 1) / mid;
+            }
+
+            // Speed works
+            if (hours <= h) {
+
+                ans = mid;
+
+                end = mid - 1;
+            }
+            // Need a faster speed
+            else {
+
+                st = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
