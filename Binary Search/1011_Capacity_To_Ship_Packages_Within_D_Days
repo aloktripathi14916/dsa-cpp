@@ -1,0 +1,254 @@
+/*
+Problem: Capacity To Ship Packages Within D Days
+Platform: LeetCode (LC 1011)
+Topic: Binary Search on Answer
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the minimum ship capacity
+such that all packages can be shipped
+within the given number of days.
+
+The order of packages cannot be changed.
+
+---------------------------------------------------------
+
+Key Observation:
+
+Instead of searching for the answer directly,
+search over the possible ship capacities.
+
+Possible capacities lie between:
+
+Minimum Capacity:
+
+Largest single package
+
+because every package must fit individually.
+
+Maximum Capacity:
+
+Sum of all package weights
+
+because we could ship everything in one day.
+
+So the answer lies in:
+
+[max(weights), sum(weights)]
+
+---------------------------------------------------------
+
+Binary Search on Answer:
+
+Let:
+
+mid = candidate ship capacity.
+
+Question:
+
+Can we ship all packages within
+the given number of days using
+capacity = mid?
+
+If YES:
+
+Try a smaller capacity.
+
+If NO:
+
+Increase the capacity.
+
+---------------------------------------------------------
+
+Checking a Capacity:
+
+Traverse all packages.
+
+Maintain:
+
+currentLoad
+
+If:
+
+currentLoad + weights[i] <= capacity
+
+Add the package to today's shipment.
+
+Otherwise:
+
+Start a new day.
+
+day++
+
+currentLoad = weights[i]
+
+Finally:
+
+If
+
+day <= givenDays
+
+capacity works.
+
+---------------------------------------------------------
+
+Example:
+
+weights = [1,2,3,4,5]
+days = 3
+
+Search range:
+
+st = 5
+end = 15
+
+--------------------------------
+
+mid = 10
+
+Day 1:
+
+1+2+3+4 = 10
+
+Day 2:
+
+5
+
+Days used = 2
+
+Works.
+
+Try smaller capacity.
+
+--------------------------------
+
+mid = 7
+
+Day 1:
+
+1+2+3 = 6
+
+Day 2:
+
+4
+
+Day 3:
+
+5
+
+Days = 3
+
+Still works.
+
+Try smaller.
+
+Continue until the minimum
+valid capacity is found.
+
+---------------------------------------------------------
+
+Why Binary Search Works?
+
+As ship capacity increases:
+
+Days required never increase.
+
+Capacity ↑
+↓
+
+Days Needed ↓ (or remain same)
+
+This monotonic property allows
+binary search.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+Let:
+
+n = number of packages
+S = sum of weights
+
+Binary Search:
+
+O(log S)
+
+Each check:
+
+O(n)
+
+Overall:
+
+O(n log S)
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(1)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights,
+                       int days) {
+
+        int maxCap = 0;
+        int minCap = 0;
+
+        // Determine search range
+        for (int i = 0; i < weights.size(); i++) {
+
+            maxCap += weights[i];
+
+            minCap = max(minCap, weights[i]);
+        }
+
+        int st = minCap;
+        int end = maxCap;
+
+        int ans = 0;
+
+        while (st <= end) {
+
+            int currCap = st + (end - st) / 2;
+
+            int currentLoad = 0;
+            int day = 1;
+
+            // Check if currCap is sufficient
+            for (int i = 0; i < weights.size(); i++) {
+
+                if (currentLoad + weights[i] > currCap) {
+
+                    day++;
+
+                    currentLoad = weights[i];
+                }
+                else {
+
+                    currentLoad += weights[i];
+                }
+            }
+
+            // Capacity works
+            if (day <= days) {
+
+                ans = currCap;
+
+                end = currCap - 1;
+            }
+            else {
+
+                st = currCap + 1;
+            }
+        }
+
+        return ans;
+    }
+};
