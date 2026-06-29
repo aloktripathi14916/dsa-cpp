@@ -1,0 +1,250 @@
+/*
+Problem: Subtree of Another Tree
+Platform: LeetCode (LC 572)
+Topic: Binary Tree / DFS / Recursion
+
+---------------------------------------------------------
+
+Approach:
+
+We are given:
+
+1. root
+   → Main tree
+
+2. subRoot
+   → Tree that may be a subtree of root
+
+A subtree means:
+
+Choose any node in root,
+and the entire tree starting from that
+node must be identical to subRoot.
+
+---------------------------------------------------------
+
+Idea:
+
+For every node in root:
+
+Check:
+
+"Is the tree rooted here exactly the
+same as subRoot?"
+
+If yes:
+
+Return true.
+
+Otherwise:
+
+Repeat the same process for:
+
+• Left subtree
+
+• Right subtree
+
+---------------------------------------------------------
+
+Helper Function:
+
+isSameTree(p, q)
+
+Purpose:
+
+Checks whether two trees are
+completely identical.
+
+Conditions:
+
+1. Both NULL
+
+Return true.
+
+2. One NULL
+
+Return false.
+
+3. Values must match.
+
+4. Left subtrees must match.
+
+5. Right subtrees must match.
+
+---------------------------------------------------------
+
+Main Algorithm:
+
+At every node of root:
+
+Step 1:
+
+If
+
+root->val == subRoot->val
+
+then call
+
+isSameTree(root, subRoot)
+
+If true,
+
+Return true.
+
+--------------------------------
+
+Step 2:
+
+Otherwise search recursively in:
+
+root->left
+
+or
+
+root->right
+
+If either returns true,
+
+subRoot exists.
+
+---------------------------------------------------------
+
+Example:
+
+root:
+
+        3
+       / \
+      4   5
+     / \
+    1   2
+
+subRoot:
+
+      4
+     / \
+    1   2
+
+--------------------------------
+
+Visit:
+
+3
+
+Not equal.
+
+Search left.
+
+--------------------------------
+
+Visit:
+
+4
+
+Values match.
+
+Call:
+
+isSameTree()
+
+Compare:
+
+4 == 4 ✔
+
+1 == 1 ✔
+
+2 == 2 ✔
+
+Entire tree matches.
+
+Return true.
+
+---------------------------------------------------------
+
+Why It Works?
+
+Every node in root is treated as
+a possible starting point.
+
+Whenever values match,
+we verify the entire subtree.
+
+If none matches,
+the answer is false.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+Let:
+
+n = nodes in root
+
+m = nodes in subRoot
+
+Worst case:
+
+O(n × m)
+
+Because at many nodes,
+isSameTree() may compare up to m nodes.
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(h)
+
+h = height of the tree
+
+Recursive call stack.
+
+Worst case:
+
+O(n)
+
+Balanced tree:
+
+O(log n)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    // Check whether two trees are identical
+    bool isSameTree(TreeNode* p,
+                    TreeNode* q) {
+
+        if (p == NULL || q == NULL)
+            return p == q;
+
+        bool isLeftSame =
+            isSameTree(p->left, q->left);
+
+        bool isRightSame =
+            isSameTree(p->right, q->right);
+
+        return isLeftSame &&
+               isRightSame &&
+               p->val == q->val;
+    }
+
+    bool isSubtree(TreeNode* root,
+                   TreeNode* subRoot) {
+
+        // Base case
+        if (root == NULL || subRoot == NULL)
+            return root == subRoot;
+
+        // Check if subtree starts here
+        if (root->val == subRoot->val &&
+            isSameTree(root, subRoot))
+            return true;
+
+        // Search in left or right subtree
+        return isSubtree(root->left, subRoot) ||
+               isSubtree(root->right, subRoot);
+    }
+};
