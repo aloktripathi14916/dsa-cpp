@@ -1,0 +1,190 @@
+/*
+Problem: Same Tree
+Platform: LeetCode (LC 100)
+Topic: Binary Tree / DFS / Recursion
+
+---------------------------------------------------------
+
+Approach:
+
+Two binary trees are considered the same if:
+
+1. They have the same structure.
+2. Corresponding nodes have equal values.
+
+This naturally suggests using recursion.
+
+---------------------------------------------------------
+
+Recursive Idea:
+
+For every pair of nodes:
+
+Case 1:
+
+Both are NULL
+
+Trees match at this position.
+
+Return true.
+
+--------------------------------
+
+Case 2:
+
+One is NULL and the other isn't
+
+Structures differ.
+
+Return false.
+
+--------------------------------
+
+Case 3:
+
+Both exist
+
+Check:
+
+1. Current node values are equal.
+2. Left subtrees are the same.
+3. Right subtrees are the same.
+
+Return true only if all three
+conditions are true.
+
+---------------------------------------------------------
+
+Recursive Formula:
+
+SameTree(p, q) =
+
+(p->val == q->val)
+
+AND
+
+SameTree(p->left, q->left)
+
+AND
+
+SameTree(p->right, q->right)
+
+---------------------------------------------------------
+
+Example:
+
+Tree 1:
+
+      1
+     / \
+    2   3
+
+Tree 2:
+
+      1
+     / \
+    2   3
+
+--------------------------------
+
+Compare:
+
+1 == 1 ✔
+
+Compare left:
+
+2 == 2 ✔
+
+Both children NULL ✔
+
+Compare right:
+
+3 == 3 ✔
+
+Result:
+
+true
+
+---------------------------------------------------------
+
+Example 2:
+
+Tree 1:
+
+    1
+   /
+  2
+
+Tree 2:
+
+    1
+     \
+      2
+
+At second level:
+
+NULL vs Node(2)
+
+Return false.
+
+---------------------------------------------------------
+
+Why It Works?
+
+Every recursive call compares
+the corresponding nodes.
+
+If any value or structure differs,
+false immediately propagates upward.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+O(n)
+
+Every node is visited once.
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(h)
+
+h = height of tree
+
+Recursive call stack.
+
+Worst case:
+
+O(n)
+
+Best (balanced tree):
+
+O(log n)
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+
+        // If one or both nodes are NULL
+        if (p == NULL || q == NULL)
+            return p == q;
+
+        // Compare left subtrees
+        bool isLeftSame =
+            isSameTree(p->left, q->left);
+
+        // Compare right subtrees
+        bool isRightSame =
+            isSameTree(p->right, q->right);
+
+        // Current nodes must also match
+        return isLeftSame &&
+               isRightSame &&
+               p->val == q->val;
+    }
+};
