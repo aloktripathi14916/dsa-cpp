@@ -1,0 +1,315 @@
+/*
+Problem: Minimum Generations
+Platform: LeetCode (LC 3923)
+Topic: Simulation / Hashing / Geometry
+
+---------------------------------------------------------
+
+Approach:
+
+Initially we are given some 3D points.
+
+In one generation:
+
+Take every pair of EXISTING points.
+
+Generate their midpoint.
+
+If the midpoint is new,
+add it to the set of points.
+
+Repeat until:
+
+• target is generated
+or
+• no new point can be generated.
+
+---------------------------------------------------------
+
+Key Observation:
+
+Points generated in previous generations
+can also participate in generating
+future midpoints.
+
+Therefore we maintain one growing list:
+
+allpts
+
+instead of using only the original points.
+
+---------------------------------------------------------
+
+Data Structures:
+
+1. unordered_set
+
+Stores every generated point.
+
+Allows O(1) lookup.
+
+--------------------------------
+
+2. vector allpts
+
+Stores all available points.
+
+Original + newly generated.
+
+--------------------------------
+
+3. vector newpts
+
+Stores only the points created
+during the current generation.
+
+They are appended after the generation
+finishes.
+
+---------------------------------------------------------
+
+Hash Function:
+
+unordered_set cannot directly store
+vector<int>.
+
+So we define a custom hash.
+
+For point
+
+(x,y,z)
+
+Hash:
+
+x * 1000000
+
++
+
+y * 1000
+
++
+
+z
+
+---------------------------------------------------------
+
+Algorithm:
+
+Step 1
+
+If target already exists
+
+Return 0.
+
+--------------------------------
+
+Step 2
+
+Insert all initial points into
+
+unordered_set
+
+and
+
+allpts.
+
+--------------------------------
+
+Step 3
+
+Repeat:
+
+generation++
+
+--------------------------------
+
+For every pair:
+
+(i, j)
+
+Compute midpoint.
+
+mid.x = (x1+x2)/2
+
+mid.y = (y1+y2)/2
+
+mid.z = (z1+z2)/2
+
+--------------------------------
+
+If midpoint is new:
+
+If midpoint == target
+
+Return current generation.
+
+Otherwise:
+
+Insert into
+
+set
+
+and
+
+newpts.
+
+--------------------------------
+
+After checking all pairs:
+
+If no new point was created
+
+Return -1.
+
+Otherwise append every point
+from newpts into allpts.
+
+Repeat.
+
+---------------------------------------------------------
+
+Example:
+
+Initial:
+
+(0,0,0)
+
+(2,2,2)
+
+Target:
+
+(1,1,1)
+
+--------------------------------
+
+Generation 1
+
+Midpoint:
+
+(1,1,1)
+
+Target found.
+
+Answer = 1
+
+---------------------------------------------------------
+
+Why It Works?
+
+The set guarantees:
+
+No duplicate point is processed twice.
+
+The growing list guarantees:
+
+Newly generated points can generate
+future points.
+
+Simulation continues until either:
+
+Target appears
+
+or
+
+No further progress is possible.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+Suppose total generated points = N
+
+Every generation compares pairs.
+
+Worst case:
+
+O(N²)
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(N)
+
+For storing generated points.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    // Custom hash for vector<int>
+    struct hashVec {
+        int operator()(const vector<int>& v) const {
+            return v[0] * 1000000 +
+                   v[1] * 1000 +
+                   v[2];
+        }
+    };
+
+    int minGenerations(vector<vector<int>>& points,
+                       vector<int>& target) {
+
+        // Target already exists
+        for (auto &p : points) {
+            if (p == target)
+                return 0;
+        }
+
+        unordered_set<vector<int>, hashVec> st;
+
+        // Stores every point generated so far
+        vector<vector<int>> allpts;
+
+        for (auto &p : points) {
+            st.insert(p);
+            allpts.push_back(p);
+        }
+
+        int generation = 0;
+
+        while (true) {
+
+            generation++;
+
+            vector<vector<int>> newpts;
+
+            int n = allpts.size();
+
+            // Generate midpoints
+            for (int i = 0; i < n; i++) {
+
+                for (int j = i + 1; j < n; j++) {
+
+                    if (allpts[i] == allpts[j])
+                        continue;
+
+                    vector<int> mid(3);
+
+                    mid[0] = (allpts[i][0] + allpts[j][0]) / 2;
+                    mid[1] = (allpts[i][1] + allpts[j][1]) / 2;
+                    mid[2] = (allpts[i][2] + allpts[j][2]) / 2;
+
+                    // New point discovered
+                    if (st.find(mid) == st.end()) {
+
+                        if (mid == target)
+                            return generation;
+
+                        st.insert(mid);
+                        newpts.push_back(mid);
+                    }
+                }
+            }
+
+            // No new point generated
+            if (newpts.empty())
+                return -1;
+
+            // Add newly generated points
+            for (auto &p : newpts)
+                allpts.push_back(p);
+        }
+    }
+};
