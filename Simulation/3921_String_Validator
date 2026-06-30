@@ -1,0 +1,239 @@
+/*
+Problem: Score Validator
+Platform: LeetCode (LC 3921)
+Topic: Simulation / String Processing
+
+---------------------------------------------------------
+
+Approach:
+
+We are given a list of cricket events.
+
+Need to compute:
+
+1. Total score
+2. Number of wickets
+
+Stop processing immediately after
+10 wickets fall.
+
+---------------------------------------------------------
+
+Meaning of Events:
+
+"W"
+
+A wicket falls.
+
+Increase wicket counter.
+
+--------------------------------
+
+"WD"
+
+Wide ball.
+
+Adds 1 run.
+
+No wicket.
+
+--------------------------------
+
+"NB"
+
+No ball.
+
+Adds 1 run.
+
+No wicket.
+
+--------------------------------
+
+Any other string
+
+Represents runs scored.
+
+Convert the string to integer.
+
+Example:
+
+"0"
+
+"1"
+
+"2"
+
+"4"
+
+"6"
+
+Use:
+
+stoi()
+
+and add to total score.
+
+---------------------------------------------------------
+
+Algorithm:
+
+Initialize:
+
+score = 0
+
+counter = 0
+
+--------------------------------
+
+Traverse every event.
+
+First check:
+
+Have 10 wickets already fallen?
+
+If yes,
+
+Stop processing.
+
+--------------------------------
+
+Otherwise,
+
+Process the current event.
+
+If "W"
+
+counter++
+
+--------------------------------
+
+Else if "WD" or "NB"
+
+score++
+
+--------------------------------
+
+Else
+
+score += stoi(event)
+
+---------------------------------------------------------
+
+Example:
+
+events =
+
+["1","4","W","NB","6","W","2"]
+
+--------------------------------
+
+1
+
+score = 1
+
+--------------------------------
+
+4
+
+score = 5
+
+--------------------------------
+
+W
+
+wickets = 1
+
+--------------------------------
+
+NB
+
+score = 6
+
+--------------------------------
+
+6
+
+score = 12
+
+--------------------------------
+
+W
+
+wickets = 2
+
+--------------------------------
+
+2
+
+score = 14
+
+Answer:
+
+{14, 2}
+
+---------------------------------------------------------
+
+Why It Works?
+
+Each event is processed exactly once.
+
+The simulation follows the problem
+rules directly.
+
+Processing stops after 10 wickets.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+O(n)
+
+Each event is visited once.
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(1)
+
+Only a few variables are used.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> scoreValidator(vector<string>& events) {
+
+        int wickets = 0;
+        int score = 0;
+
+        for (int i = 0; i < events.size(); i++) {
+
+            // Stop after 10 wickets
+            if (wickets == 10)
+                break;
+
+            // Wicket
+            if (events[i] == "W") {
+
+                wickets++;
+            }
+
+            // Wide or No Ball
+            else if (events[i] == "WD" ||
+                     events[i] == "NB") {
+
+                score++;
+            }
+
+            // Runs scored
+            else {
+
+                score += stoi(events[i]);
+            }
+        }
+
+        return {score, wickets};
+    }
+};
