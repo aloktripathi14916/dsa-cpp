@@ -1,0 +1,188 @@
+/*
+Problem: Maximum Number of Vowels in a Substring
+of Given Length
+Platform: LeetCode (LC 1456)
+Topic: Sliding Window (Fixed Size)
+
+---------------------------------------------------------
+
+Approach:
+
+We need to find the maximum number of
+vowels present in any substring of
+length k.
+
+Instead of checking every substring
+independently (O(nk)),
+
+maintain a sliding window of size k.
+
+---------------------------------------------------------
+
+Sliding Window Idea:
+
+Maintain:
+
+st   → left boundary
+
+end  → right boundary
+
+count
+
+Number of vowels currently inside
+the window.
+
+---------------------------------------------------------
+
+For every character:
+
+If it is a vowel,
+
+Increase count.
+
+---------------------------------------------------------
+
+If window size becomes greater than k:
+
+Remove the leftmost character.
+
+If it was a vowel,
+
+Decrease count.
+
+Move st forward.
+
+---------------------------------------------------------
+
+Whenever window size becomes exactly k:
+
+Update:
+
+maxVowels = max(maxVowels, count)
+
+Continue sliding.
+
+---------------------------------------------------------
+
+Example:
+
+s = "abciiidef"
+
+k = 3
+
+--------------------------------
+
+Window:
+
+"abc"
+
+Vowels = 1
+
+Answer = 1
+
+--------------------------------
+
+Slide
+
+"bci"
+
+Vowels = 1
+
+--------------------------------
+
+Slide
+
+"cii"
+
+Vowels = 2
+
+Answer = 2
+
+--------------------------------
+
+Slide
+
+"iii"
+
+Vowels = 3
+
+Answer = 3
+
+Maximum = 3
+
+---------------------------------------------------------
+
+Why Sliding Window Works?
+
+When moving the window by one position:
+
+Only two characters change:
+
+1. One enters.
+
+2. One leaves.
+
+So update the vowel count in O(1)
+instead of recounting the entire window.
+
+---------------------------------------------------------
+
+Time Complexity:
+
+O(n)
+
+Each character enters and leaves
+the window at most once.
+
+---------------------------------------------------------
+
+Space Complexity:
+
+O(1)
+
+Only a few variables are used.
+
+---------------------------------------------------------
+*/
+
+class Solution {
+public:
+    int maxVowels(string s, int k) {
+
+        int st = 0;
+        int count = 0;
+        int maxVowels = 0;
+
+        for (int end = 0; end < s.length(); end++) {
+
+            // Add current character
+            if (s[end] == 'a' || s[end] == 'e' ||
+                s[end] == 'i' || s[end] == 'o' ||
+                s[end] == 'u') {
+
+                count++;
+            }
+
+            // Shrink window if it exceeds size k
+            while (end - st + 1 > k) {
+
+                if (s[st] == 'a' || s[st] == 'e' ||
+                    s[st] == 'i' || s[st] == 'o' ||
+                    s[st] == 'u') {
+
+                    count--;
+                }
+
+                st++;
+            }
+
+            // Window size is exactly k
+            if (end - st + 1 == k) {
+
+                maxVowels = max(maxVowels, count);
+            }
+        }
+
+        return maxVowels;
+    }
+};
