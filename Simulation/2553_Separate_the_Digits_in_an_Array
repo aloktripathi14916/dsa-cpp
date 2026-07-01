@@ -1,0 +1,133 @@
+/*
+Problem: Separate the Digits in an Array (LC 2553)
+Topic: Simulation / Math
+
+--------------------------------------------------
+
+Idea:
+
+For every number in the array:
+
+Extract its digits one by one.
+
+Since digits are obtained from
+right to left using '% 10',
+
+store them temporarily.
+
+Then traverse the temporary vector
+in reverse order to restore the
+original digit sequence.
+
+--------------------------------------------------
+
+Algorithm:
+
+For each number:
+
+1. If number is 0
+   -> Push 0 directly.
+
+2. Otherwise:
+   • Extract digits using %10.
+   • Store in temp.
+   • Divide number by 10.
+
+3. Reverse the order by traversing
+   temp from back to front and
+   append the digits to answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[13,25,83]
+
+13 -> temp = [3,1]
+      -> add 1,3
+
+25 -> temp = [5,2]
+      -> add 2,5
+
+83 -> temp = [3,8]
+      -> add 8,3
+
+Answer:
+
+[1,3,2,5,8,3]
+
+--------------------------------------------------
+
+Why Temp Vector?
+
+Digits are extracted in reverse order.
+
+Example:
+
+123
+
+Extraction:
+
+3,2,1
+
+Need:
+
+1,2,3
+
+So we reverse using temp.
+
+--------------------------------------------------
+
+Time : O(total digits)
+
+Each digit is processed twice:
+once while extracting,
+once while restoring order.
+
+Space : O(total digits)
+
+(for temp and answer)
+
+--------------------------------------------------
+
+Pattern:
+
+Simulation + Digit Extraction
+*/
+
+class Solution {
+public:
+    vector<int> separateDigits(vector<int>& nums) {
+
+        vector<int> ans;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            vector<int> temp;
+
+            // Special case for 0
+            if (nums[i] == 0) {
+                ans.push_back(0);
+                continue;
+            }
+
+            // Extract digits (reverse order)
+            while (nums[i] > 0) {
+
+                int digit = nums[i] % 10;
+                temp.push_back(digit);
+
+                nums[i] /= 10;
+            }
+
+            // Restore original order
+            for (int j = temp.size() - 1; j >= 0; j--) {
+                ans.push_back(temp[j]);
+            }
+        }
+
+        return ans;
+    }
+};
