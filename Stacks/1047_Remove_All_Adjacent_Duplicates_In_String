@@ -1,0 +1,125 @@
+/*
+Problem: Remove All Adjacent Duplicates In String (LC 1047)
+Topic: Stack / String
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the string from left to right.
+
+Maintain a stack containing the
+characters that remain after removing
+adjacent duplicates.
+
+For every new character:
+
+• If it matches the stack top,
+  remove the top (duplicate pair).
+
+• Otherwise,
+  push the current character.
+
+At the end, the stack contains the
+final string.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"abbaca"
+
+Process:
+
+a      -> a
+
+b      -> ab
+
+b      -> a
+
+a      -> ""
+
+c      -> c
+
+a      -> ca
+
+Answer:
+
+"ca"
+
+--------------------------------------------------
+
+Why Stack?
+
+A character can become adjacent to
+a previous character after deleting
+duplicates.
+
+The stack always keeps the latest
+remaining character, making it easy
+to check for new adjacent pairs.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Traverse the string.
+
+2. If stack is not empty and
+   current character == stack top,
+   pop the top.
+
+3. Otherwise push the character.
+
+4. Build the answer from the stack
+   and reverse it.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each character is pushed and popped
+at most once.
+
+Space : O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Stack + String Simulation
+*/
+
+class Solution {
+public:
+    string removeDuplicates(string s) {
+
+        stack<char> st;
+
+        for (int i = 0; i < s.length(); i++) {
+
+            // Adjacent duplicate found
+            if (!st.empty() && s[i] == st.top()) {
+                st.pop();
+            }
+            // Keep current character
+            else {
+                st.push(s[i]);
+            }
+        }
+
+        // Build answer
+        string ans = "";
+
+        while (!st.empty()) {
+            ans.push_back(st.top());
+            st.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
