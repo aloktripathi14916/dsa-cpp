@@ -1,0 +1,173 @@
+/*
+Problem: Sort an Array (LC 912)
+Topic: Merge Sort / Divide & Conquer
+
+--------------------------------------------------
+
+Idea:
+
+Merge Sort works by repeatedly dividing
+the array into two halves until each
+subarray contains only one element.
+
+Then the smaller sorted arrays are
+merged back together to form a completely
+sorted array.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Divide:
+   Find the middle index.
+
+2. Conquer:
+   Recursively sort the left half.
+   Recursively sort the right half.
+
+3. Merge:
+   Merge the two sorted halves into
+   one sorted array.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[5,2,3,1]
+
+Divide:
+
+[5,2]   [3,1]
+
+↓
+
+[5] [2]   [3] [1]
+
+Merge:
+
+[2,5]   [1,3]
+
+↓
+
+[1,2,3,5]
+
+--------------------------------------------------
+
+Merge Function:
+
+Two pointers:
+
+i -> left half
+j -> right half
+
+Compare both elements:
+
+Smaller one goes into temp.
+
+When one half finishes,
+
+copy the remaining elements from
+the other half.
+
+Finally copy temp back into nums.
+
+--------------------------------------------------
+
+Why It Works?
+
+At merge time,
+
+both halves are already sorted.
+
+Merging two sorted arrays takes O(n),
+
+which makes Merge Sort efficient.
+
+--------------------------------------------------
+
+Time Complexity:
+
+Best  : O(n log n)
+
+Average: O(n log n)
+
+Worst : O(n log n)
+
+--------------------------------------------------
+
+Space Complexity:
+
+O(n)
+
+Temporary array is used during merging.
+
+--------------------------------------------------
+
+Pattern:
+
+Divide & Conquer
+*/
+
+class Solution {
+public:
+
+    void merge(vector<int>& nums, int st, int end, int mid) {
+
+        vector<int> temp;
+
+        int i = st;
+        int j = mid + 1;
+
+        // Merge both sorted halves
+        while (i <= mid && j <= end) {
+
+            if (nums[i] < nums[j]) {
+                temp.push_back(nums[i]);
+                i++;
+            }
+            else {
+                temp.push_back(nums[j]);
+                j++;
+            }
+        }
+
+        // Remaining left half
+        while (i <= mid) {
+            temp.push_back(nums[i]);
+            i++;
+        }
+
+        // Remaining right half
+        while (j <= end) {
+            temp.push_back(nums[j]);
+            j++;
+        }
+
+        // Copy back to original array
+        for (int k = 0; k < temp.size(); k++) {
+            nums[st + k] = temp[k];
+        }
+    }
+
+    void mergeSort(vector<int>& nums, int st, int end) {
+
+        if (st >= end)
+            return;
+
+        int mid = st + (end - st) / 2;
+
+        mergeSort(nums, st, mid);
+        mergeSort(nums, mid + 1, end);
+
+        merge(nums, st, end, mid);
+    }
+
+    vector<int> sortArray(vector<int>& nums) {
+
+        mergeSort(nums, 0, nums.size() - 1);
+
+        return nums;
+    }
+};
