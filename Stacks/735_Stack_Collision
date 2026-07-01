@@ -1,0 +1,143 @@
+/*
+Problem: Asteroid Collision (LC 735)
+Topic: Stack + Simulation
+
+--------------------------------------------------
+
+Idea:
+
+Asteroids move in one dimension.
+
++ve -> moves right
+-ve -> moves left
+
+A collision can happen ONLY when:
+
+Right-moving asteroid is already on the stack
+and
+Current asteroid is moving left.
+
+Condition:
+
+stack.top() > 0 && curr < 0
+
+In all other cases, no collision occurs.
+
+--------------------------------------------------
+
+Cases During Collision:
+
+1. |curr| > |top|
+   -> Stack asteroid explodes.
+   -> Continue checking with previous asteroid.
+
+2. |curr| == |top|
+   -> Both explode.
+
+3. |curr| < |top|
+   -> Current asteroid explodes.
+
+If current asteroid survives all collisions,
+push it into the stack.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[5,10,-5]
+
+Stack:
+
+5
+
+5 10
+
+Current = -5
+
+10 survives.
+
+Final Stack:
+
+5 10
+
+Answer:
+
+[5,10]
+
+--------------------------------------------------
+
+Why Stack?
+
+A new asteroid can only collide with the
+latest surviving right-moving asteroid.
+
+That's exactly LIFO behavior.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each asteroid is pushed and popped
+at most once.
+
+Space : O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Stack + Simulation
+*/
+
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+
+        stack<int> s;
+
+        for (int curr : asteroids) {
+
+            bool destroyed = false;
+
+            while (!s.empty() &&
+                   s.top() > 0 &&
+                   curr < 0) {
+
+                // Current asteroid is larger
+                if (abs(curr) > abs(s.top())) {
+                    s.pop();
+                }
+
+                // Both explode
+                else if (abs(curr) == abs(s.top())) {
+                    s.pop();
+                    destroyed = true;
+                    break;
+                }
+
+                // Stack asteroid survives
+                else {
+                    destroyed = true;
+                    break;
+                }
+            }
+
+            // Current asteroid survived
+            if (!destroyed)
+                s.push(curr);
+        }
+
+        vector<int> ans;
+
+        while (!s.empty()) {
+            ans.push_back(s.top());
+            s.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
