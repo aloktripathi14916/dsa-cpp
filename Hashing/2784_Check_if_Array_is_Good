@@ -1,0 +1,134 @@
+/*
+Problem: Check if Array is Good (LC 2784)
+Topic: Hashing / Frequency Count
+
+--------------------------------------------------
+
+Idea:
+
+A good array of size n must contain:
+
+1, 2, 3, ..., n-1 exactly once
+
+and
+
+n-1 exactly twice.
+
+So simply count the frequency of
+every number and verify these
+conditions.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Store the frequency of every
+   element using a hash map.
+
+2. Check numbers from 1 to n-2:
+   Each must appear exactly once.
+
+3. Check n-1:
+   It must appear exactly twice.
+
+4. If all conditions hold,
+   return true.
+   Otherwise return false.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[1,2,3,3]
+
+Size = 4
+
+Expected:
+
+1 -> 1 time
+
+2 -> 1 time
+
+3 -> 2 times
+
+Valid
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Example:
+
+[1,2,2]
+
+Size = 3
+
+Expected:
+
+1 -> 1 time
+
+2 -> 2 times
+
+Valid
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Why It Works?
+
+A good array has a fixed frequency
+pattern.
+
+Checking frequencies directly is
+enough to determine whether the
+array satisfies the definition.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass to build frequencies and
+one pass to verify.
+
+Space : O(n)
+
+Hash map stores frequencies.
+
+--------------------------------------------------
+
+Pattern:
+
+Hashing + Frequency Counting
+*/
+
+class Solution {
+public:
+    bool isGood(vector<int>& nums) {
+
+        unordered_map<int, int> mp;
+
+        // Count frequency
+        for (int x : nums) {
+            mp[x]++;
+        }
+
+        // 1 to n-2 should appear once
+        for (int i = 1; i <= nums.size() - 2; i++) {
+            if (mp[i] != 1)
+                return false;
+        }
+
+        // n-1 should appear twice
+        if (mp[nums.size() - 1] != 2)
+            return false;
+
+        return true;
+    }
+};
