@@ -1,0 +1,123 @@
+/*
+Problem: Lowest Common Ancestor of a Binary Tree (LC 236)
+Topic: Binary Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+The Lowest Common Ancestor (LCA) is the
+lowest node that has both p and q in
+its subtree (a node can be its own
+ancestor).
+
+Recursively search the left and right
+subtrees.
+
+Based on where p and q are found,
+decide the LCA.
+
+--------------------------------------------------
+
+Cases:
+
+1. Current node is NULL
+   -> Return NULL.
+
+2. Current node is p or q
+   -> Return current node.
+
+3. Search left and right subtree.
+
+   • Both return non-NULL
+     -> Current node is the LCA.
+
+   • Only left is non-NULL
+     -> LCA lies in left subtree.
+
+   • Only right is non-NULL
+     -> LCA lies in right subtree.
+
+--------------------------------------------------
+
+Example:
+
+        3
+      /   \
+     5     1
+    / \   / \
+   6   2 0   8
+
+p = 5
+q = 1
+
+Left recursion returns 5.
+Right recursion returns 1.
+
+Both are non-NULL.
+
+Answer = 3
+
+--------------------------------------------------
+
+Why It Works?
+
+The recursion searches both subtrees.
+
+If p and q are found in different
+subtrees, the current node is their
+first meeting point, i.e., the LCA.
+
+If both are in the same subtree,
+that subtree's answer is propagated
+upwards.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = height of tree
+(O(log n) for balanced,
+ O(n) for skewed tree)
+
+--------------------------------------------------
+
+Pattern:
+
+Tree DFS + Postorder Recursion
+*/
+
+class Solution {
+public:
+
+    TreeNode* lowestCommonAncestor(TreeNode* root,
+                                   TreeNode* p,
+                                   TreeNode* q) {
+
+        // Base cases
+        if (root == NULL)
+            return NULL;
+
+        if (root == p || root == q)
+            return root;
+
+        // Search both subtrees
+        TreeNode* leftLCA = lowestCommonAncestor(root->left, p, q);
+        TreeNode* rightLCA = lowestCommonAncestor(root->right, p, q);
+
+        // p and q found in different subtrees
+        if (leftLCA && rightLCA)
+            return root;
+
+        // LCA lies in left subtree
+        if (leftLCA)
+            return leftLCA;
+
+        // LCA lies in right subtree
+        return rightLCA;
+    }
+};
