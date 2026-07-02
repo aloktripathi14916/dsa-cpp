@@ -1,0 +1,156 @@
+/*
+Problem: Construct Binary Tree from Preorder and Inorder Traversal (LC 105)
+Topic: Binary Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+Preorder traversal:
+
+Root -> Left -> Right
+
+So the first element of preorder is
+always the root of the current subtree.
+
+In inorder traversal:
+
+Left -> Root -> Right
+
+The root divides inorder into:
+
+Left subtree | Root | Right subtree
+
+Recursively build both subtrees.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Pick preorder[preIdx] as root.
+
+2. Find its index in inorder.
+
+3. Elements left of that index
+   belong to the left subtree.
+
+4. Elements right of that index
+   belong to the right subtree.
+
+5. Increment preIdx and recursively
+   build left then right subtree.
+
+--------------------------------------------------
+
+Example:
+
+Preorder:
+
+[3,9,20,15,7]
+
+Inorder:
+
+[9,3,15,20,7]
+
+Root = 3
+
+Inorder becomes:
+
+[9] | 3 | [15,20,7]
+
+Left subtree:
+
+Root = 9
+
+Right subtree:
+
+Root = 20
+
+Continue recursively.
+
+--------------------------------------------------
+
+Why It Works?
+
+Preorder always tells us the next root.
+
+Inorder tells us exactly how to split
+the tree into left and right parts.
+
+Using both traversals, the original
+tree can be reconstructed uniquely.
+
+--------------------------------------------------
+
+Time : O(n²)
+
+Finding every root in inorder takes O(n)
+and is done for n nodes.
+
+(Using a hashmap for inorder indices
+reduces it to O(n).)
+
+Space : O(h)
+
+Recursive call stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Tree Construction + Divide & Conquer
+*/
+
+class Solution {
+public:
+
+    // Find root index in inorder traversal
+    int search(vector<int>& inorder, int left,
+               int right, int val) {
+
+        for (int i = left; i <= right; i++) {
+            if (inorder[i] == val)
+                return i;
+        }
+
+        return -1;
+    }
+
+    TreeNode* helper(vector<int>& preorder,
+                     vector<int>& inorder,
+                     int &preIdx,
+                     int left,
+                     int right) {
+
+        if (left > right)
+            return NULL;
+
+        // Current root from preorder
+        TreeNode* root = new TreeNode(preorder[preIdx]);
+
+        int inIdx = search(inorder, left, right,
+                           preorder[preIdx]);
+
+        preIdx++;
+
+        // Build left subtree
+        root->left = helper(preorder, inorder,
+                            preIdx, left, inIdx - 1);
+
+        // Build right subtree
+        root->right = helper(preorder, inorder,
+                             preIdx, inIdx + 1, right);
+
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder,
+                        vector<int>& inorder) {
+
+        int preIdx = 0;
+
+        return helper(preorder, inorder,
+                      preIdx, 0,
+                      inorder.size() - 1);
+    }
+};
