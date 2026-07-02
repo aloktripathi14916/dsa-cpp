@@ -1,0 +1,123 @@
+/*
+Problem: Sort Characters By Frequency (LC 451)
+Topic: Hashing + Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Count the frequency of every character.
+
+Then sort the characters in decreasing
+order of their frequencies.
+
+Finally, append each character to the
+answer as many times as its frequency.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Count frequency using a hash map.
+
+2. Store each (character, frequency)
+   pair in a vector.
+
+3. Sort the vector in descending
+   order of frequency.
+
+4. For every pair,
+   append the character
+   frequency times.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"tree"
+
+Frequency:
+
+t -> 1
+
+r -> 1
+
+e -> 2
+
+After sorting:
+
+e -> 2
+
+t -> 1
+
+r -> 1
+
+Answer:
+
+"eetr"
+
+(or "eert")
+
+--------------------------------------------------
+
+Why It Works?
+
+The hash map efficiently counts the
+occurrences of each character.
+
+Sorting the frequency pairs ensures
+characters with higher frequency are
+placed first in the answer.
+
+--------------------------------------------------
+
+Time : O(n + k log k)
+
+n = length of string
+
+k = number of distinct characters
+
+Space : O(k)
+
+Hash map and vector store only the
+distinct characters.
+
+--------------------------------------------------
+
+Pattern:
+
+Hashing + Custom Sorting
+*/
+
+class Solution {
+public:
+    string frequencySort(string s) {
+
+        unordered_map<char, int> freq;
+
+        // Count frequency
+        for (char ch : s) {
+            freq[ch]++;
+        }
+
+        // Store (character, frequency) pairs
+        vector<pair<char, int>> vec(freq.begin(), freq.end());
+
+        // Sort by decreasing frequency
+        sort(vec.begin(), vec.end(),
+             [](pair<char, int>& a, pair<char, int>& b) {
+                 return a.second > b.second;
+             });
+
+        string ans = "";
+
+        // Build answer
+        for (auto p : vec) {
+            ans += string(p.second, p.first);
+        }
+
+        return ans;
+    }
+};
