@@ -1,0 +1,102 @@
+/*
+Problem: Minimum Operations to Transform String (LC 3675)
+Topic: Greedy / String
+
+--------------------------------------------------
+
+Idea:
+
+For each character, calculate how many
+forward cyclic shifts are needed to
+reach 'z'.
+
+Operations are performed on the entire
+string, so the answer is determined by
+the character that needs the maximum
+number of shifts.
+
+Thus, compute the required operations
+for every character and take the maximum.
+
+--------------------------------------------------
+
+Formula:
+
+Operations for a character:
+
+('z' - ch + 1) % 26
+
+Examples:
+
+z -> 0
+
+y -> 1
+
+x -> 2
+
+a -> 25
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"ayz"
+
+a -> 25
+
+y -> 1
+
+z -> 0
+
+Maximum = 25
+
+Answer:
+
+25
+
+--------------------------------------------------
+
+Why It Works?
+
+Every character can be transformed
+independently.
+
+Since one operation affects all eligible
+characters simultaneously, the total
+operations required is simply the
+largest requirement among all characters.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass through the string.
+
+Space : O(1)
+
+Only one variable is used.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Character Arithmetic
+*/
+
+class Solution {
+public:
+    int minOperations(string s) {
+
+        int ans = 0;
+
+        for (char ch : s) {
+
+            // Operations needed to reach 'z'
+            ans = max(ans, ('z' - ch + 1) % 26);
+        }
+
+        return ans;
+    }
+};
