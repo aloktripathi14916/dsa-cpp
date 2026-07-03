@@ -1,0 +1,168 @@
+/*
+Problem: Construct Binary Tree from Inorder and Postorder Traversal (LC 106)
+Topic: Binary Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+Postorder traversal:
+
+Left -> Right -> Root
+
+So the last element of postorder is
+always the root of the current subtree.
+
+In inorder traversal:
+
+Left -> Root -> Right
+
+The root divides inorder into:
+
+Left subtree | Root | Right subtree
+
+Since we process postorder from the end,
+we must build the RIGHT subtree first,
+then the LEFT subtree.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Pick postorder[postIdx] as root.
+
+2. Find its index in inorder.
+
+3. Elements left of that index
+   belong to the left subtree.
+
+4. Elements right of that index
+   belong to the right subtree.
+
+5. Decrement postIdx.
+
+6. Build right subtree first,
+   then left subtree.
+
+--------------------------------------------------
+
+Example:
+
+Inorder:
+
+[9,3,15,20,7]
+
+Postorder:
+
+[9,15,7,20,3]
+
+Root = 3
+
+Inorder becomes:
+
+[9] | 3 | [15,20,7]
+
+Next root from postorder is 20,
+which belongs to the RIGHT subtree.
+
+Hence,
+Right subtree is built first.
+
+--------------------------------------------------
+
+Why It Works?
+
+Postorder gives the current root.
+
+Inorder tells where to split the tree.
+
+Since we're traversing postorder
+backwards (Root → Right → Left),
+the right subtree must be constructed
+before the left subtree.
+
+--------------------------------------------------
+
+Time : O(n²)
+
+Each search in inorder takes O(n).
+
+(Using a hashmap for inorder indices
+reduces it to O(n).)
+
+Space : O(h)
+
+Recursive call stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Tree Construction + Divide & Conquer
+*/
+
+class Solution {
+public:
+
+    // Find root index in inorder
+    int search(vector<int>& inorder,
+               int left,
+               int right,
+               int val) {
+
+        for (int i = left; i <= right; i++) {
+            if (inorder[i] == val)
+                return i;
+        }
+
+        return -1;
+    }
+
+    TreeNode* helper(vector<int>& postorder,
+                     vector<int>& inorder,
+                     int& postIdx,
+                     int left,
+                     int right) {
+
+        if (left > right)
+            return NULL;
+
+        // Current root from postorder
+        TreeNode* root = new TreeNode(postorder[postIdx]);
+
+        int inIdx = search(inorder,
+                           left,
+                           right,
+                           postorder[postIdx]);
+
+        postIdx--;
+
+        // Build RIGHT subtree first
+        root->right = helper(postorder,
+                             inorder,
+                             postIdx,
+                             inIdx + 1,
+                             right);
+
+        // Build LEFT subtree
+        root->left = helper(postorder,
+                            inorder,
+                            postIdx,
+                            left,
+                            inIdx - 1);
+
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& inorder,
+                        vector<int>& postorder) {
+
+        int postIdx = postorder.size() - 1;
+
+        return helper(postorder,
+                      inorder,
+                      postIdx,
+                      0,
+                      inorder.size() - 1);
+    }
+};
