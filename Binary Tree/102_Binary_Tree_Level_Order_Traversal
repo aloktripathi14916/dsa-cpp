@@ -1,0 +1,160 @@
+/*
+Problem: Binary Tree Level Order Traversal (LC 102)
+Topic: Binary Tree / BFS
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the tree level by level.
+
+Use a queue to process nodes in the
+order they appear.
+
+For every level:
+
+• Process all nodes currently in
+  the queue.
+
+• Store their values.
+
+• Push their children into the queue.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Push the root into the queue.
+
+2. While the queue is not empty:
+
+   • Store the current queue size.
+     (Number of nodes in this level)
+
+   • Process exactly those nodes.
+
+   • Add their children to the queue.
+
+   • Store the current level.
+
+--------------------------------------------------
+
+Example:
+
+        3
+      /   \
+     9     20
+          /  \
+        15    7
+
+Queue:
+
+[3]
+
+↓
+
+Process:
+
+3
+
+Queue:
+
+[9,20]
+
+↓
+
+Process:
+
+9 20
+
+Queue:
+
+[15,7]
+
+↓
+
+Process:
+
+15 7
+
+Answer:
+
+[[3],
+ [9,20],
+ [15,7]]
+
+--------------------------------------------------
+
+Why It Works?
+
+Before processing a level,
+
+the queue already contains exactly
+all nodes of that level.
+
+Saving queue.size() allows us to
+process one level completely before
+moving to the next.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(n)
+
+Queue may contain an entire level.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Tree BFS (Level Order Traversal)
+*/
+
+class Solution {
+public:
+
+    void levelOrder(TreeNode* root,
+                    vector<vector<int>>& ans) {
+
+        if (root == NULL)
+            return;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+
+            int size = q.size();
+            vector<int> level;
+
+            // Process one complete level
+            for (int i = 0; i < size; i++) {
+
+                TreeNode* curr = q.front();
+                q.pop();
+
+                level.push_back(curr->val);
+
+                if (curr->left)
+                    q.push(curr->left);
+
+                if (curr->right)
+                    q.push(curr->right);
+            }
+
+            ans.push_back(level);
+        }
+    }
+
+    vector<vector<int>> levelOrder(TreeNode* root) {
+
+        vector<vector<int>> ans;
+
+        levelOrder(root, ans);
+
+        return ans;
+    }
+};
