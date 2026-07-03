@@ -1,0 +1,134 @@
+/*
+Problem: Maximize the Confusion of an Exam (LC 2024)
+Topic: Sliding Window
+
+--------------------------------------------------
+
+Idea:
+
+A valid window is one where we can make
+all characters the same by changing at
+most k characters.
+
+Count:
+
+T = number of 'T'
+
+F = number of 'F'
+
+The minimum of these two counts is the
+number of characters that must be flipped.
+
+If:
+
+min(T, F) <= k
+
+the window is valid.
+
+Otherwise, shrink the window.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Expand the window.
+
+2. Update count of T or F.
+
+3. While min(T, F) > k,
+   shrink the window from the left.
+
+4. Update the maximum valid window size.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+answerKey = "TTFT"
+
+k = 1
+
+Window:
+
+TTFT
+
+T = 3
+
+F = 1
+
+Need to flip only one F.
+
+Valid window length = 4.
+
+Answer = 4
+
+--------------------------------------------------
+
+Why It Works?
+
+To make every character identical,
+we only need to flip whichever
+character occurs less frequently.
+
+Hence,
+
+Required flips = min(T, F).
+
+As long as this value is at most k,
+the window is valid.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each character enters and leaves the
+window at most once.
+
+Space : O(1)
+
+Only two counters are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Sliding Window + Frequency Count
+*/
+
+class Solution {
+public:
+    int maxConsecutiveAnswers(string answerKey, int k) {
+
+        int st = 0;
+        int maxWindow = 0;
+
+        int t = 0;
+        int f = 0;
+
+        for (int end = 0; end < answerKey.size(); end++) {
+
+            // Expand window
+            if (answerKey[end] == 'T')
+                t++;
+            else
+                f++;
+
+            // Shrink until window becomes valid
+            while (min(t, f) > k) {
+
+                if (answerKey[st] == 'T')
+                    t--;
+                else
+                    f--;
+
+                st++;
+            }
+
+            maxWindow = max(maxWindow, end - st + 1);
+        }
+
+        return maxWindow;
+    }
+};
