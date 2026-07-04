@@ -1,0 +1,135 @@
+/*
+Problem: Minimum Common Value (LC 2540)
+Topic: Two Pointers
+
+--------------------------------------------------
+
+Idea:
+
+Both arrays are already sorted.
+
+Use two pointers to traverse them
+simultaneously.
+
+• If both elements are equal,
+  we have found the smallest common
+  value.
+
+• If one element is smaller,
+  move that pointer forward because
+  it cannot match any previous value
+  in the other array.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Start pointers at index 0 of
+   both arrays.
+
+2. Compare current elements.
+
+3. If equal,
+   return the value.
+
+4. If nums1[i] < nums2[j],
+   move i.
+
+5. Otherwise,
+   move j.
+
+6. If no common value exists,
+   return -1.
+
+--------------------------------------------------
+
+Example:
+
+nums1 = [1,2,3,6]
+
+nums2 = [2,3,4,5]
+
+Compare:
+
+1 < 2
+
+Move i
+
+2 == 2
+
+Answer = 2
+
+--------------------------------------------------
+
+Example:
+
+nums1 = [1,2,4]
+
+nums2 = [3,5,6]
+
+1 < 3 → move i
+
+2 < 3 → move i
+
+4 > 3 → move j
+
+4 < 5 → move i
+
+No common value.
+
+Answer = -1
+
+--------------------------------------------------
+
+Why It Works?
+
+Since both arrays are sorted,
+
+if one value is smaller than the
+other, it can never become equal
+by staying in place.
+
+So we safely move the pointer with
+the smaller value.
+
+--------------------------------------------------
+
+Time : O(n + m)
+
+Each pointer moves at most once
+through its array.
+
+Space : O(1)
+
+Only two pointers are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Two Pointers on Sorted Arrays
+*/
+
+class Solution {
+public:
+    int getCommon(vector<int>& nums1, vector<int>& nums2) {
+
+        int i = 0;
+        int j = 0;
+
+        while (i < nums1.size() &&
+               j < nums2.size()) {
+
+            if (nums1[i] == nums2[j])
+                return nums1[i];
+
+            else if (nums1[i] < nums2[j])
+                i++;
+
+            else
+                j++;
+        }
+
+        return -1;
+    }
+};
