@@ -1,0 +1,121 @@
+/*
+Problem: Check If Two String Arrays are Equivalent (LC 1662)
+Topic: String
+
+--------------------------------------------------
+
+Idea:
+
+Each array represents one complete
+string split into multiple parts.
+
+Join all strings of word1 into one
+string.
+
+Join all strings of word2 into one
+string.
+
+If the two resulting strings are
+equal, return true.
+
+Otherwise, return false.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Concatenate every string in word1.
+
+2. Concatenate every string in word2.
+
+3. Compare the two final strings.
+
+--------------------------------------------------
+
+Example:
+
+word1 = ["ab","c"]
+
+word2 = ["a","bc"]
+
+After joining:
+
+word1 -> "abc"
+
+word2 -> "abc"
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Example:
+
+word1 = ["a","cb"]
+
+word2 = ["ab","c"]
+
+After joining:
+
+"acb"
+
+"abc"
+
+Not equal.
+
+Answer:
+
+false
+
+--------------------------------------------------
+
+Why It Works?
+
+The arrays are simply different
+representations of complete strings.
+
+Concatenating every part reconstructs
+the original strings, making comparison
+straightforward.
+
+--------------------------------------------------
+
+Time : O(n + m)
+
+n = total characters in word1
+
+m = total characters in word2
+
+Space : O(n + m)
+
+Two additional strings are created.
+
+--------------------------------------------------
+
+Pattern:
+
+String Concatenation
+*/
+
+class Solution {
+public:
+    bool arrayStringsAreEqual(vector<string>& word1,
+                              vector<string>& word2) {
+
+        string words1 = "";
+        string words2 = "";
+
+        // Build first string
+        for (string& str : word1) {
+            words1 += str;
+        }
+
+        // Build second string
+        for (string& str : word2) {
+            words2 += str;
+        }
+
+        return words1 == words2;
+    }
+};
