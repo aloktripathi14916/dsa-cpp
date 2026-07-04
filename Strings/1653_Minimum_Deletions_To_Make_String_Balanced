@@ -1,0 +1,132 @@
+/*
+Problem: Minimum Deletions to Make String Balanced (LC 1653)
+Topic: Greedy / Dynamic Programming
+
+--------------------------------------------------
+
+Idea:
+
+A balanced string has all 'a'
+before all 'b'.
+
+While scanning the string:
+
+• Count how many 'b' have been seen.
+
+When an 'a' appears after some 'b's,
+there are two choices:
+
+1. Delete this 'a'.
+   Cost = previous deletions + 1
+
+2. Delete all previous 'b's.
+   Cost = number of previous 'b's
+
+Choose the cheaper option.
+
+--------------------------------------------------
+
+Algorithm:
+
+Traverse the string.
+
+If current character is 'b':
+    Increase bCount.
+
+If current character is 'a':
+    ans = min(ans + 1, bCount)
+
+Return ans.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"aababbab"
+
+Process:
+
+a -> ans = 0
+
+a -> ans = 0
+
+b -> bCount = 1
+
+a -> min(1,1) = 1
+
+b -> bCount = 2
+
+b -> bCount = 3
+
+a -> min(2,3) = 2
+
+b -> bCount = 4
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Why It Works?
+
+Whenever an 'a' appears after one or
+more 'b's, the string becomes
+unbalanced.
+
+To fix it we either:
+
+• Delete this 'a'
+
+or
+
+• Delete every previous 'b'
+
+The minimum of these two choices
+always gives the optimal answer.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Single traversal of the string.
+
+Space : O(1)
+
+Only two variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + DP State Compression
+*/
+
+class Solution {
+public:
+    int minimumDeletions(string s) {
+
+        int bCount = 0;
+        int ans = 0;
+
+        for (char ch : s) {
+
+            // Count previous 'b'
+            if (ch == 'b') {
+                bCount++;
+            }
+
+            // Current 'a' after some 'b'
+            else {
+
+                // Option 1: delete this 'a'
+                // Option 2: delete all previous 'b'
+                ans = min(ans + 1, bCount);
+            }
+        }
+
+        return ans;
+    }
+};
