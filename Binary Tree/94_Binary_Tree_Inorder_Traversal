@@ -1,0 +1,135 @@
+/*
+Problem: Binary Tree Inorder Traversal (LC 94)
+Topic: Binary Tree / DFS
+
+--------------------------------------------------
+
+Idea:
+
+Inorder traversal visits nodes in the
+following order:
+
+Left -> Root -> Right
+
+Recursively:
+
+1. Traverse the left subtree.
+
+2. Visit the current node.
+
+3. Traverse the right subtree.
+
+Store every visited node in the answer.
+
+--------------------------------------------------
+
+Algorithm:
+
+For every node:
+
+• If node is NULL,
+  return.
+
+• Traverse left subtree.
+
+• Store current node value.
+
+• Traverse right subtree.
+
+--------------------------------------------------
+
+Example:
+
+        1
+         \
+          2
+         /
+        3
+
+Traversal:
+
+Left of 1
+
+↓
+
+Visit 1
+
+↓
+
+Left of 2
+
+↓
+
+Visit 3
+
+↓
+
+Visit 2
+
+Answer:
+
+[1,3,2]
+
+--------------------------------------------------
+
+Why It Works?
+
+The recursive calls ensure that every
+left subtree is completely processed
+before the current node.
+
+After visiting the current node,
+the right subtree is processed.
+
+Thus the order is always:
+
+Left -> Root -> Right
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited exactly once.
+
+Space : O(h)
+
+h = height of tree
+
+(O(log n) for balanced,
+ O(n) for skewed tree)
+
+--------------------------------------------------
+
+Pattern:
+
+Tree DFS (Inorder Traversal)
+*/
+
+class Solution {
+public:
+
+    void inOrderTraversal(TreeNode* root,
+                          vector<int>& ans) {
+
+        if (root == NULL)
+            return;
+
+        // Left subtree
+        inOrderTraversal(root->left, ans);
+
+        // Visit current node
+        ans.push_back(root->val);
+
+        // Right subtree
+        inOrderTraversal(root->right, ans);
+    }
+
+    vector<int> inorderTraversal(TreeNode* root) {
+
+        vector<int> ans;
+
+        inOrderTraversal(root, ans);
+
+        return ans;
+    }
+};
