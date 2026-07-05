@@ -1,0 +1,165 @@
+/*
+Problem: Largest Number After Mutating Substring (LC 1946)
+Topic: Greedy
+
+--------------------------------------------------
+
+Idea:
+
+We are allowed to mutate only one
+continuous substring.
+
+To maximize the final number:
+
+• Ignore digits that would become
+  smaller.
+
+• Start mutating at the first digit
+  that becomes larger.
+
+• Continue mutating while the mapped
+  digit is greater than or equal to
+  the original digit.
+
+• Stop immediately when a mapped digit
+  becomes smaller, since the substring
+  must remain continuous.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Traverse the number from left to
+   right.
+
+2. Before mutation starts:
+
+   • If mapped digit > current digit,
+     start mutation.
+
+3. After mutation starts:
+
+   • Replace digits while
+     mapped >= current.
+
+   • Stop when mapped < current.
+
+4. Return the modified string.
+
+--------------------------------------------------
+
+Example:
+
+num = "132"
+
+change =
+
+1→9
+3→8
+2→5
+
+Process:
+
+1 → 9 (start)
+
+3 → 8
+
+2 → 5
+
+Answer:
+
+"985"
+
+--------------------------------------------------
+
+Example:
+
+num = "021"
+
+change:
+
+0→0
+2→1
+1→1
+
+0 → same
+
+2 → smaller
+
+1 → same
+
+Mutation never starts.
+
+Answer:
+
+"021"
+
+--------------------------------------------------
+
+Why It Works?
+
+Changing an earlier digit has a much
+greater impact than changing a later
+digit.
+
+Therefore, we start mutation at the
+first beneficial position.
+
+Once mutation has started, stopping
+and restarting is not allowed because
+only one contiguous substring may be
+mutated.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Single traversal of the string.
+
+Space : O(1)
+
+Only a boolean flag is used.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy
+*/
+
+class Solution {
+public:
+    string maximumNumber(string num,
+                         vector<int>& change) {
+
+        bool started = false;
+
+        for (int i = 0; i < num.length(); i++) {
+
+            int digit = num[i] - '0';
+
+            // Start mutation
+            if (change[digit] > digit) {
+
+                num[i] = change[digit] + '0';
+                started = true;
+            }
+
+            // Continue mutation
+            else if (change[digit] == digit &&
+                     started) {
+
+                num[i] = change[digit] + '0';
+            }
+
+            // End mutation
+            else if (change[digit] < digit &&
+                     started) {
+
+                break;
+            }
+        }
+
+        return num;
+    }
+};
