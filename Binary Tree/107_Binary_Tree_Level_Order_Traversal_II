@@ -1,0 +1,135 @@
+/*
+Problem: Binary Tree Level Order Traversal II (LC 107)
+Topic: Binary Tree / BFS
+
+--------------------------------------------------
+
+Idea:
+
+Perform a normal level order traversal
+(BFS).
+
+Store every level from top to bottom.
+
+Finally, reverse the result to obtain
+the levels from bottom to top.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Push the root into a queue.
+
+2. While the queue is not empty:
+
+   • Process one complete level.
+
+   • Store all node values of that
+     level.
+
+3. Reverse the answer.
+
+4. Return it.
+
+--------------------------------------------------
+
+Example:
+
+        3
+      /   \
+     9     20
+          /  \
+        15    7
+
+Normal Level Order:
+
+[[3],
+ [9,20],
+ [15,7]]
+
+After reversing:
+
+[[15,7],
+ [9,20],
+ [3]]
+
+--------------------------------------------------
+
+Why It Works?
+
+A standard BFS naturally visits the
+tree from top to bottom.
+
+Reversing the collected levels gives
+the required bottom-up order.
+
+--------------------------------------------------
+
+Time : O(n)
+
+BFS visits every node once.
+
+Reversing the levels is O(L),
+where L is the number of levels.
+
+Overall: O(n)
+
+Space : O(n)
+
+Queue and answer together store
+all nodes.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Tree BFS (Level Order Traversal)
+*/
+
+class Solution {
+public:
+
+    void levelOrder(TreeNode* root,
+                    vector<vector<int>>& ans) {
+
+        if (root == NULL)
+            return;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+
+            int size = q.size();
+            vector<int> level;
+
+            // Process one complete level
+            for (int i = 0; i < size; i++) {
+
+                TreeNode* curr = q.front();
+                q.pop();
+
+                level.push_back(curr->val);
+
+                if (curr->left)
+                    q.push(curr->left);
+
+                if (curr->right)
+                    q.push(curr->right);
+            }
+
+            ans.push_back(level);
+        }
+    }
+
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+
+        vector<vector<int>> ans;
+
+        levelOrder(root, ans);
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
