@@ -1,0 +1,161 @@
+/*
+Problem: Find Bottom Left Tree Value (LC 513)
+Topic: Binary Tree / BFS
+
+--------------------------------------------------
+
+Idea:
+
+Perform a level order traversal.
+
+The first node processed at every
+level is the leftmost node of that
+level.
+
+Keep updating the answer with this
+node.
+
+After the last level is processed,
+the stored node is the bottom-left
+value.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Push the root into the queue.
+
+2. While the queue is not empty:
+
+   • Process one complete level.
+
+   • Save the first node of that
+     level.
+
+   • Push its left child first,
+     then right child.
+
+3. Return the value of the last
+   recorded leftmost node.
+
+--------------------------------------------------
+
+Example:
+
+          2
+        /   \
+       1     3
+
+Level 1:
+
+2
+
+Leftmost = 2
+
+Level 2:
+
+1 3
+
+Leftmost = 1
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+            1
+          /   \
+         2     3
+        /     / \
+       4     5   6
+            /
+           7
+
+Levels:
+
+1
+
+2 3
+
+4 5 6
+
+7
+
+Bottom-left value = 7
+
+--------------------------------------------------
+
+Why It Works?
+
+BFS processes the tree one level at
+a time.
+
+Since children are pushed in the
+order:
+
+Left → Right
+
+the first node processed at each
+level is always that level's
+leftmost node.
+
+The final recorded leftmost node is
+the answer.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(n)
+
+Queue may store an entire level.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Tree BFS (Level Order Traversal)
+*/
+
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+
+        if (root == NULL)
+            return 0;
+
+        queue<TreeNode*> q;
+        q.push(root);
+
+        TreeNode* ans = root;
+
+        while (!q.empty()) {
+
+            int size = q.size();
+
+            // Process one complete level
+            for (int i = 0; i < size; i++) {
+
+                TreeNode* curr = q.front();
+                q.pop();
+
+                // First node of current level
+                if (i == 0)
+                    ans = curr;
+
+                if (curr->left)
+                    q.push(curr->left);
+
+                if (curr->right)
+                    q.push(curr->right);
+            }
+        }
+
+        return ans->val;
+    }
+};
