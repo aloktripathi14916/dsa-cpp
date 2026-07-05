@@ -1,0 +1,132 @@
+/*
+Problem: Binary Tree Postorder Traversal (LC 145)
+Topic: Binary Tree / DFS
+
+--------------------------------------------------
+
+Idea:
+
+Postorder traversal visits nodes in
+the following order:
+
+Left -> Right -> Root
+
+Recursively:
+
+1. Traverse the left subtree.
+
+2. Traverse the right subtree.
+
+3. Visit the current node.
+
+Store every visited node in the answer.
+
+--------------------------------------------------
+
+Algorithm:
+
+For every node:
+
+• If node is NULL,
+  return.
+
+• Traverse left subtree.
+
+• Traverse right subtree.
+
+• Store current node value.
+
+--------------------------------------------------
+
+Example:
+
+        1
+         \
+          2
+         /
+        3
+
+Traversal:
+
+Left of 1
+
+↓
+
+Left of 2
+
+↓
+
+Visit 3
+
+↓
+
+Visit 2
+
+↓
+
+Visit 1
+
+Answer:
+
+[3,2,1]
+
+--------------------------------------------------
+
+Why It Works?
+
+The recursive calls ensure that both
+subtrees are completely processed
+before the current node is visited.
+
+Thus the order is always:
+
+Left -> Right -> Root
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited exactly once.
+
+Space : O(h)
+
+h = height of tree
+
+(O(log n) for balanced,
+ O(n) for skewed tree)
+
+--------------------------------------------------
+
+Pattern:
+
+Tree DFS (Postorder Traversal)
+*/
+
+class Solution {
+public:
+
+    void postOrder(TreeNode* root,
+                   vector<int>& ans) {
+
+        if (root == NULL)
+            return;
+
+        // Left subtree
+        postOrder(root->left, ans);
+
+        // Right subtree
+        postOrder(root->right, ans);
+
+        // Visit current node
+        ans.push_back(root->val);
+    }
+
+    vector<int> postorderTraversal(TreeNode* root) {
+
+        vector<int> ans;
+
+        postOrder(root, ans);
+
+        return ans;
+    }
+};
