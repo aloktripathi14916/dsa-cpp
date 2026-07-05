@@ -1,0 +1,148 @@
+/*
+Problem: Number of Visible People in a Queue (LC 1944)
+Topic: Monotonic Stack
+
+--------------------------------------------------
+
+Idea:
+
+Process people from right to left.
+
+Maintain a decreasing stack of heights.
+
+For each person:
+
+• Every shorter person on the top of
+  the stack is visible because the
+  current person can see over them.
+
+• Pop each shorter person and
+  increase the visible count.
+
+• If a taller (or equal) person still
+  remains on the stack, that person is
+  also visible, but blocks everyone
+  behind them.
+
+Finally, push the current person's
+height onto the stack.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Traverse from right to left.
+
+2. While the stack top is shorter than
+   the current height:
+
+   • Pop it.
+
+   • Increase visible count.
+
+3. If stack is still not empty,
+   increase count by one because the
+   first taller/equal person is also
+   visible.
+
+4. Push current height.
+
+--------------------------------------------------
+
+Example:
+
+heights = [10,6,8,5,11,9]
+
+Process from right:
+
+9
+
+↓
+
+11 sees 9
+
+↓
+
+5 sees 11
+
+↓
+
+8 sees 5 and 11
+
+↓
+
+6 sees 8
+
+↓
+
+10 sees 6, 8 and 11
+
+Answer:
+
+[3,1,2,1,1,0]
+
+--------------------------------------------------
+
+Why It Works?
+
+The stack always stores heights in
+decreasing order.
+
+Shorter people are removed because
+they are completely visible.
+
+The first remaining taller (or equal)
+person is also visible, but blocks the
+view of everyone behind them.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each person is pushed and popped at
+most once.
+
+Space : O(n)
+
+Stack stores at most n heights.
+
+--------------------------------------------------
+
+Pattern:
+
+Monotonic Decreasing Stack
+*/
+
+class Solution {
+public:
+    vector<int> canSeePersonsCount(vector<int>& heights) {
+
+        int n = heights.size();
+
+        if (n == 0)
+            return {};
+
+        stack<int> st;
+        vector<int> ans(n, 0);
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            // Current person sees all shorter people
+            while (!st.empty() &&
+                   st.top() < heights[i]) {
+
+                ans[i]++;
+                st.pop();
+            }
+
+            // First taller/equal person is also visible
+            if (!st.empty()) {
+                ans[i]++;
+            }
+
+            st.push(heights[i]);
+        }
+
+        return ans;
+    }
+};
