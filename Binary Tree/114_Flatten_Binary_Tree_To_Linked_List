@@ -1,0 +1,147 @@
+/*
+Problem: Flatten Binary Tree to Linked List (LC 114)
+Topic: Binary Tree / Reverse Preorder DFS
+
+--------------------------------------------------
+
+Idea:
+
+Flatten the tree into a linked list
+following Preorder order:
+
+Root -> Left -> Right
+
+Instead of building the list from
+the front, process the tree in the
+reverse order:
+
+Right -> Left -> Root
+
+Maintain a pointer (nextRight) to
+the previously processed node.
+
+For every node:
+
+• Left child becomes NULL.
+
+• Right child points to nextRight.
+
+• Update nextRight to the current node.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Traverse right subtree.
+
+2. Traverse left subtree.
+
+3. Set:
+
+   root->left = NULL
+
+   root->right = nextRight
+
+4. Update:
+
+   nextRight = root
+
+--------------------------------------------------
+
+Example:
+
+        1
+       / \
+      2   5
+     / \   \
+    3   4   6
+
+Reverse processing:
+
+6
+
+↓
+
+5 -> 6
+
+↓
+
+4 -> 5 -> 6
+
+↓
+
+3 -> 4 -> 5 -> 6
+
+↓
+
+2 -> 3 -> 4 -> 5 -> 6
+
+↓
+
+1 -> 2 -> 3 -> 4 -> 5 -> 6
+
+Final Tree:
+
+1
+ \
+  2
+   \
+    3
+     \
+      4
+       \
+        5
+         \
+          6
+
+--------------------------------------------------
+
+Why It Works?
+
+Processing in reverse preorder means
+the next node in the final linked list
+has already been built.
+
+So every node simply attaches itself
+to that previously processed node.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = height of tree
+(recursion stack)
+
+--------------------------------------------------
+
+Pattern:
+
+Reverse Preorder DFS
+*/
+
+class Solution {
+
+    TreeNode* nextRight = NULL;
+
+public:
+
+    void flatten(TreeNode* root) {
+
+        if (root == NULL)
+            return;
+
+        // Reverse preorder:
+        // Right -> Left -> Root
+        flatten(root->right);
+        flatten(root->left);
+
+        root->left = NULL;
+        root->right = nextRight;
+
+        nextRight = root;
+    }
+};
