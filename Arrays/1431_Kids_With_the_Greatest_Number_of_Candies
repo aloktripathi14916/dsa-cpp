@@ -1,0 +1,116 @@
+/*
+Problem: Kids With the Greatest Number of Candies (LC 1431)
+Topic: Array
+
+--------------------------------------------------
+
+Idea:
+
+First find the maximum number of
+candies any child currently has.
+
+Then, for every child, check whether
+giving all extraCandies makes their
+total at least equal to this maximum.
+
+If yes, answer is true.
+
+Otherwise, false.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Find the maximum value in the
+   candies array.
+
+2. Traverse the array again.
+
+3. For each child:
+
+   If candies[i] + extraCandies >= max,
+   store true.
+
+   Otherwise,
+   store false.
+
+4. Return the result.
+
+--------------------------------------------------
+
+Example:
+
+candies = [2,3,5,1,3]
+
+extraCandies = 3
+
+Maximum = 5
+
+2 + 3 = 5 ✓
+
+3 + 3 = 6 ✓
+
+5 + 3 = 8 ✓
+
+1 + 3 = 4 ✗
+
+3 + 3 = 6 ✓
+
+Answer:
+
+[true,true,true,false,true]
+
+--------------------------------------------------
+
+Why It Works?
+
+A child can have the greatest number
+of candies only if, after receiving
+all extraCandies, their total is at
+least the current maximum.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass to find the maximum and one
+pass to build the answer.
+
+Space : O(n)
+
+Result vector stores one boolean for
+each child.
+
+--------------------------------------------------
+
+Pattern:
+
+Array Traversal
+*/
+
+class Solution {
+public:
+    vector<bool> kidsWithCandies(vector<int>& candies,
+                                 int extraCandies) {
+
+        vector<bool> ans;
+
+        int maxCandies = 0;
+
+        // Find maximum candies
+        for (int candy : candies) {
+            maxCandies = max(maxCandies, candy);
+        }
+
+        // Check each child
+        for (int candy : candies) {
+
+            if (candy + extraCandies >= maxCandies)
+                ans.push_back(true);
+            else
+                ans.push_back(false);
+        }
+
+        return ans;
+    }
+};
