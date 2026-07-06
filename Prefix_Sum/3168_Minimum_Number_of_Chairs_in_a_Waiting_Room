@@ -1,0 +1,142 @@
+/*
+Problem: Minimum Number of Chairs in a Waiting Room (LC 3168)
+Topic: Simulation / Prefix Sum
+
+--------------------------------------------------
+
+Idea:
+
+Each character represents an event:
+
+'E' -> One person enters.
+       Occupied chairs increase.
+
+'L' -> One person leaves.
+       Occupied chairs decrease.
+
+The maximum number of people present
+at any moment equals the minimum
+number of chairs required.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   occupied = 0
+
+   maxOccupied = 0
+
+2. Traverse the string.
+
+3. If current character is 'E',
+   increase occupied.
+
+4. Otherwise,
+   decrease occupied.
+
+5. Update the maximum occupied count.
+
+6. Return the maximum.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"ELELEE"
+
+Process:
+
+E -> 1
+
+L -> 0
+
+E -> 1
+
+L -> 0
+
+E -> 1
+
+E -> 2
+
+Maximum = 2
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"EEEE"
+
+Process:
+
+1
+
+2
+
+3
+
+4
+
+Answer:
+
+4
+
+--------------------------------------------------
+
+Why It Works?
+
+The number of occupied chairs changes
+by ±1 after every event.
+
+The highest occupancy reached during
+the simulation is exactly the minimum
+number of chairs needed so that no
+person has to stand.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Single traversal of the string.
+
+Space : O(1)
+
+Only two integer variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Simulation / Prefix Sum
+*/
+
+class Solution {
+public:
+    int minimumChairs(string s) {
+
+        int occupied = 0;
+        int maxOccupied = 0;
+
+        for (char ch : s) {
+
+            if (ch == 'E')
+                occupied++;
+            else
+                occupied--;
+
+            maxOccupied = max(maxOccupied,
+                              occupied);
+        }
+
+        return maxOccupied;
+    }
+};
