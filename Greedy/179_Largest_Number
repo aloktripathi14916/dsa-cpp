@@ -1,0 +1,155 @@
+/*
+Problem: Largest Number (LC 179)
+Topic: Greedy / Custom Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Convert every integer into a string.
+
+Sort the strings so that, for any two
+strings a and b:
+
+a comes before b if
+
+a + b > b + a
+
+This ordering guarantees that the
+final concatenated number is as large
+as possible.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Convert all integers to strings.
+
+2. Sort using the comparator:
+
+   a + b > b + a
+
+3. Concatenate all sorted strings.
+
+4. If the first character is '0',
+   return "0" because all numbers are
+   zeros.
+
+5. Otherwise, return the result.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[10,2]
+
+Compare:
+
+"210" > "102"
+
+So,
+
+2 comes before 10.
+
+Answer:
+
+"210"
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[3,30,34,5,9]
+
+Sorted order:
+
+9
+
+5
+
+34
+
+3
+
+30
+
+Concatenation:
+
+9534330
+
+Answer:
+
+"9534330"
+
+--------------------------------------------------
+
+Why It Works?
+
+For any two numbers, placing them in
+the order that produces the larger
+concatenation always contributes to
+the globally largest number.
+
+The custom comparator enforces this
+ordering throughout the sort.
+
+--------------------------------------------------
+
+Time : O(n log n × k)
+
+n = number of elements
+
+k = average number of digits
+
+Sorting dominates the complexity.
+
+Space : O(n × k)
+
+Strings are stored separately.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Custom Comparator Sorting
+*/
+
+class Solution {
+public:
+
+    static bool cmp(string a, string b) {
+
+        // Choose the better ordering
+        return a + b > b + a;
+    }
+
+    string largestNumber(vector<int>& nums) {
+
+        vector<string> v;
+
+        // Convert integers to strings
+        for (int num : nums) {
+            v.push_back(to_string(num));
+        }
+
+        // Sort using custom comparator
+        sort(v.begin(), v.end(), cmp);
+
+        string ans = "";
+
+        // Build final number
+        for (string& s : v) {
+            ans += s;
+        }
+
+        // Handle all-zero case
+        if (ans[0] == '0')
+            return "0";
+
+        return ans;
+    }
+};
