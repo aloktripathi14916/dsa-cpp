@@ -1,0 +1,141 @@
+/*
+Problem: Count the Number of Special Characters I (LC 3120)
+Topic: String / Hashing
+
+--------------------------------------------------
+
+Idea:
+
+A character is "special" if both its
+lowercase and uppercase forms appear
+in the string.
+
+Use two boolean arrays:
+
+• lower[i] stores whether
+  ('a' + i) exists.
+
+• upper[i] stores whether
+  ('A' + i) exists.
+
+Finally, count the indices where both
+arrays contain true.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Create two boolean arrays of
+   size 26.
+
+2. Traverse the string.
+
+   • If lowercase, mark it in lower.
+
+   • If uppercase, mark it in upper.
+
+3. Traverse all 26 letters.
+
+4. Count indices where both arrays
+   are true.
+
+5. Return the count.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"aAbBc"
+
+lower:
+
+a b c
+
+upper:
+
+A B
+
+Common letters:
+
+a, b
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"abc"
+
+Only lowercase letters exist.
+
+Answer:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+Each position in the boolean arrays
+represents one alphabet letter.
+
+If both lowercase and uppercase
+versions are marked, that character
+is special.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass over the string and one pass
+over the 26 letters.
+
+Overall: O(n)
+
+Space : O(1)
+
+Two fixed-size arrays of length 26.
+
+--------------------------------------------------
+
+Pattern:
+
+String Hashing / Frequency Tracking
+*/
+
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+
+        vector<bool> lower(26, false);
+        vector<bool> upper(26, false);
+
+        int count = 0;
+
+        // Record existing characters
+        for (char ch : word) {
+
+            if (islower(ch))
+                lower[ch - 'a'] = true;
+
+            else
+                upper[ch - 'A'] = true;
+        }
+
+        // Count letters present in both forms
+        for (int i = 0; i < 26; i++) {
+
+            if (lower[i] && upper[i])
+                count++;
+        }
+
+        return count;
+    }
+};
