@@ -1,0 +1,144 @@
+/*
+Problem: Construct String from Binary Tree (LC 606)
+Topic: Binary Tree / DFS
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the tree in preorder:
+
+Root -> Left -> Right
+
+For every node:
+
+• Add its value.
+
+• If a left child exists,
+  enclose its string in parentheses.
+
+• If there is no left child but a
+  right child exists, add empty
+  parentheses "()" to preserve the
+  one-to-one tree mapping.
+
+• If a right child exists,
+  enclose its string in parentheses.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. If node is NULL,
+   return "".
+
+2. Add current node value.
+
+3. Recursively build the left string.
+
+4. If the node has a left child or a
+   right child, append:
+
+   "(" + left + ")"
+
+5. Recursively build the right string.
+
+6. If the node has a right child,
+   append:
+
+   "(" + right + ")"
+
+7. Return the final string.
+
+--------------------------------------------------
+
+Example:
+
+        1
+       / \
+      2   3
+     /
+    4
+
+Output:
+
+"1(2(4))(3)"
+
+--------------------------------------------------
+
+Example:
+
+        1
+         \
+          2
+
+Output:
+
+"1()(2)"
+
+The empty parentheses are necessary
+to indicate that node 1 has no left
+child.
+
+--------------------------------------------------
+
+Why It Works?
+
+Preorder traversal naturally places
+the parent before its children.
+
+Parentheses preserve the tree
+structure.
+
+The empty "()" is required only when
+a right child exists without a left
+child; otherwise, the tree structure
+would become ambiguous.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = height of tree
+(recursion stack)
+
+--------------------------------------------------
+
+Pattern:
+
+Tree DFS (Preorder Traversal)
+*/
+
+class Solution {
+public:
+    string tree2str(TreeNode* root) {
+
+        if (root == NULL)
+            return "";
+
+        string s = "";
+
+        // Current node
+        s += to_string(root->val);
+
+        // Left subtree
+        string left = tree2str(root->left);
+
+        if (root->left || root->right) {
+            s += "(" + left + ")";
+        }
+
+        // Right subtree
+        string right = tree2str(root->right);
+
+        if (root->right) {
+            s += "(" + right + ")";
+        }
+
+        return s;
+    }
+};
