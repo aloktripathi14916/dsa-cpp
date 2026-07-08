@@ -1,0 +1,175 @@
+/*
+Problem: Non-overlapping Intervals (LC 435)
+Topic: Greedy / Interval Scheduling
+
+--------------------------------------------------
+
+Idea:
+
+We want to remove the minimum number
+of intervals so that the remaining
+intervals do not overlap.
+
+Greedy strategy:
+
+Always keep the interval that finishes
+earliest.
+
+Why?
+
+An interval with the earliest ending
+time leaves the maximum space for
+future intervals.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort intervals by ending time.
+
+2. Keep the first interval.
+
+3. Traverse the remaining intervals.
+
+4. If:
+
+   currentEnd > nextStart
+
+   the intervals overlap.
+
+   Remove the current interval by
+   counting this interval as removed.
+
+5. Otherwise:
+
+   Keep the new interval by updating
+   current.
+
+6. Return the removal count.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[1,2],[2,3],[3,4],[1,3]]
+
+Sorted by end:
+
+[1,2]
+
+[2,3]
+
+[1,3]
+
+[3,4]
+
+Keep:
+
+[1,2]
+
+↓
+
+[2,3] (no overlap)
+
+↓
+
+[1,3] overlaps
+
+Remove it
+
+↓
+
+[3,4] (no overlap)
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[1,2],[1,2],[1,2]]
+
+Keep first interval.
+
+Remove the remaining two.
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Why It Works?
+
+Keeping the interval with the smallest
+ending time maximizes the available
+space for future intervals.
+
+Any interval ending later cannot
+produce a better solution.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates.
+
+Traversal is O(n).
+
+Space : O(1)
+
+Ignoring sorting space.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Interval Scheduling
+*/
+
+class Solution {
+public:
+
+    static bool paircmp(vector<int> a,
+                        vector<int> b) {
+
+        return a[1] < b[1];
+    }
+
+    int eraseOverlapIntervals(
+        vector<vector<int>>& intervals) {
+
+        sort(intervals.begin(),
+             intervals.end(),
+             paircmp);
+
+        vector<int> curr = intervals[0];
+
+        int count = 0;
+
+        for (int i = 1;
+             i < intervals.size();
+             i++) {
+
+            // Overlap
+            if (intervals[i][0] < curr[1]) {
+
+                count++;
+            }
+
+            // No overlap
+            else {
+
+                curr = intervals[i];
+            }
+        }
+
+        return count;
+    }
+};
