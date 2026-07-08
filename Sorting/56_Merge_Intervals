@@ -1,0 +1,168 @@
+/*
+Problem: Merge Intervals (LC 56)
+Topic: Greedy / Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Sort all intervals according to their
+starting time.
+
+Maintain one current interval.
+
+For every next interval:
+
+• If it overlaps with the current
+  interval, merge them by extending
+  the ending point.
+
+• Otherwise, store the current
+  interval and start a new one.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort intervals by starting point.
+
+2. Initialize current interval as the
+   first interval.
+
+3. Traverse the remaining intervals.
+
+4. If:
+
+   currentEnd >= nextStart
+
+   merge them.
+
+5. Otherwise:
+
+   • Store current interval.
+
+   • Update current interval.
+
+6. Push the last interval.
+
+7. Return the answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[1,3],[2,6],[8,10],[15,18]]
+
+Sorted:
+
+[[1,3],[2,6],[8,10],[15,18]]
+
+Merge:
+
+[1,3] + [2,6]
+
+↓
+
+[1,6]
+
+Answer:
+
+[[1,6],[8,10],[15,18]]
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[1,4],[4,5]]
+
+Since:
+
+4 >= 4
+
+They overlap.
+
+Merged:
+
+[1,5]
+
+Answer:
+
+[[1,5]]
+
+--------------------------------------------------
+
+Why It Works?
+
+After sorting, every interval that can
+overlap with the current interval
+appears immediately after it.
+
+Thus, a single linear scan is enough
+to merge all overlapping intervals.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates.
+
+Traversal is O(n).
+
+Space : O(n)
+
+Answer vector stores merged intervals.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Sorting
+*/
+
+class Solution {
+public:
+
+    static bool paircmp(vector<int>& a,
+                        vector<int>& b) {
+
+        return a[0] < b[0];
+    }
+
+    vector<vector<int>> merge(
+        vector<vector<int>>& intervals) {
+
+        vector<vector<int>> ans;
+
+        sort(intervals.begin(),
+             intervals.end(),
+             paircmp);
+
+        vector<int> curr = intervals[0];
+
+        for (int i = 1; i < intervals.size(); i++) {
+
+            // Overlapping intervals
+            if (curr[1] >= intervals[i][0]) {
+
+                curr[1] = max(curr[1],
+                              intervals[i][1]);
+            }
+
+            // Non-overlapping interval
+            else {
+
+                ans.push_back(curr);
+                curr = intervals[i];
+            }
+        }
+
+        // Store the last interval
+        ans.push_back(curr);
+
+        return ans;
+    }
+};
