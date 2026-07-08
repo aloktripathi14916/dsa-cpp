@@ -1,0 +1,205 @@
+/*
+Problem: Count the Number of Special Characters II (LC 3121)
+Topic: String / Index Tracking
+
+--------------------------------------------------
+
+Idea:
+
+A letter is "special" if:
+
+1. Both its lowercase and uppercase
+   forms exist.
+
+2. Every lowercase occurrence appears
+   before the first uppercase
+   occurrence.
+
+To verify this, store:
+
+• The last occurrence of each
+  lowercase letter.
+
+• The first occurrence of each
+  uppercase letter.
+
+A letter is special if:
+
+lastLower < firstUpper
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Create two arrays of size 26.
+
+   • lastLower = -1
+
+   • firstUpper = -1
+
+2. Traverse the string.
+
+   • Update the last index of every
+     lowercase letter.
+
+   • Store only the first index of
+     every uppercase letter.
+
+3. Traverse all 26 letters.
+
+4. Count letters where:
+
+   • lowercase exists
+
+   • uppercase exists
+
+   • lastLower < firstUpper
+
+5. Return the count.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"aAbBc"
+
+Indices:
+
+a -> 0
+
+A -> 1
+
+b -> 2
+
+B -> 3
+
+c -> 4
+
+For:
+
+a
+
+0 < 1 ✔
+
+For:
+
+b
+
+2 < 3 ✔
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"aaA"
+
+Last lowercase a = 1
+
+First uppercase A = 2
+
+1 < 2 ✔
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"Aa"
+
+Last lowercase a = 1
+
+First uppercase A = 0
+
+1 < 0 ✘
+
+Answer:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+The last lowercase occurrence tells us
+whether any lowercase letter appears
+after an uppercase letter.
+
+If:
+
+lastLower < firstUpper
+
+then every lowercase occurrence comes
+before the first uppercase occurrence,
+satisfying the condition.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One traversal of the string and one
+traversal of 26 letters.
+
+Overall: O(n)
+
+Space : O(1)
+
+Two arrays of size 26.
+
+--------------------------------------------------
+
+Pattern:
+
+String Index Tracking
+*/
+
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+
+        vector<int> lastLower(26, -1);
+        vector<int> firstUpper(26, -1);
+
+        // Record indices
+        for (int i = 0; i < word.size(); i++) {
+
+            if (islower(word[i])) {
+
+                lastLower[word[i] - 'a'] = i;
+            }
+
+            else {
+
+                if (firstUpper[word[i] - 'A'] == -1)
+                    firstUpper[word[i] - 'A'] = i;
+            }
+        }
+
+        int count = 0;
+
+        // Count special characters
+        for (int i = 0; i < 26; i++) {
+
+            if (lastLower[i] != -1 &&
+                firstUpper[i] != -1 &&
+                lastLower[i] < firstUpper[i]) {
+
+                count++;
+            }
+        }
+
+        return count;
+    }
+};
