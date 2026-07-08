@@ -1,0 +1,158 @@
+/*
+Problem: Maximum Product Difference Between Two Pairs (LC 1913)
+Topic: Array / Greedy
+
+--------------------------------------------------
+
+Idea:
+
+We need to maximize:
+
+(max1 × max2) - (min1 × min2)
+
+So we only need:
+
+• The two largest numbers.
+
+• The two smallest numbers.
+
+Find all four values in a single
+traversal without sorting.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   max1, max2
+
+   min1, min2
+
+2. Traverse the array.
+
+3. Update the two largest numbers.
+
+4. Update the two smallest numbers.
+
+5. Compute:
+
+   (max1 × max2)
+   -
+   (min1 × min2)
+
+6. Return the answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[5,6,2,7,4]
+
+Largest:
+
+7, 6
+
+Smallest:
+
+2, 4
+
+Answer:
+
+(7 × 6) - (2 × 4)
+
+= 42 - 8
+
+= 34
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[4,2,5,9,7,4,8]
+
+Largest:
+
+9, 8
+
+Smallest:
+
+2, 4
+
+Answer:
+
+72 - 8
+
+= 64
+
+--------------------------------------------------
+
+Why It Works?
+
+To maximize the expression:
+
+(max product) - (min product)
+
+we must choose:
+
+• The two largest values for the
+  first product.
+
+• The two smallest values for the
+  second product.
+
+A single scan is enough to keep
+track of these four numbers.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Single traversal of the array.
+
+Space : O(1)
+
+Only four variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy / One Pass Array
+*/
+
+class Solution {
+public:
+    int maxProductDifference(vector<int>& nums) {
+
+        int max1 = 0, max2 = 0;
+        int min1 = INT_MAX, min2 = INT_MAX;
+
+        for (int x : nums) {
+
+            // Update two largest numbers
+            if (x > max1) {
+                max2 = max1;
+                max1 = x;
+            }
+            else if (x > max2) {
+                max2 = x;
+            }
+
+            // Update two smallest numbers
+            if (x < min1) {
+                min2 = min1;
+                min1 = x;
+            }
+            else if (x < min2) {
+                min2 = x;
+            }
+        }
+
+        return (max1 * max2) - (min1 * min2);
+    }
+};
