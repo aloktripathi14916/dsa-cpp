@@ -1,0 +1,172 @@
+/*
+Problem: Minimum Number of Arrows to Burst Balloons (LC 452)
+Topic: Greedy / Interval Scheduling
+
+--------------------------------------------------
+
+Idea:
+
+Each balloon is represented as an
+interval [start, end].
+
+One arrow shot at position x bursts
+every balloon whose interval contains
+x.
+
+Greedy strategy:
+
+Always shoot the arrow at the ending
+point of the earliest-ending balloon.
+
+This maximizes the number of balloons
+burst with one arrow.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort all balloons by their ending
+   coordinates.
+
+2. Shoot the first arrow at the end
+   of the first balloon.
+
+3. Traverse the remaining balloons.
+
+4. If:
+
+   currentStart > arrowPosition
+
+   the current arrow cannot burst it.
+
+   Shoot a new arrow.
+
+5. Otherwise:
+
+   The current balloon is already
+   burst by the existing arrow.
+
+6. Return the total arrows used.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[10,16],[2,8],[1,6],[7,12]]
+
+Sorted by end:
+
+[1,6]
+
+[2,8]
+
+[7,12]
+
+[10,16]
+
+Arrow 1 at x = 6
+
+Bursts:
+
+[1,6]
+
+[2,8]
+
+Next balloon:
+
+[7,12]
+
+7 > 6
+
+Need Arrow 2.
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[[1,2],[3,4],[5,6]]
+
+No intervals overlap.
+
+Need one arrow for each balloon.
+
+Answer:
+
+3
+
+--------------------------------------------------
+
+Why It Works?
+
+Choosing the earliest ending balloon
+leaves the maximum room for future
+overlapping balloons.
+
+Any later ending position can only
+burst fewer or the same number of
+balloons.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates.
+
+Traversal is O(n).
+
+Space : O(1)
+
+Ignoring sorting space.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Interval Scheduling
+*/
+
+class Solution {
+public:
+
+    static bool cmp(vector<int> a,
+                    vector<int> b) {
+
+        return a[1] < b[1];
+    }
+
+    int findMinArrowShots(
+        vector<vector<int>>& points) {
+
+        sort(points.begin(),
+             points.end(),
+             cmp);
+
+        int count = 1;
+
+        // Current arrow position
+        vector<int> curr = points[0];
+
+        for (int i = 1; i < points.size(); i++) {
+
+            // No overlap, need another arrow
+            if (points[i][0] > curr[1]) {
+
+                count++;
+                curr = points[i];
+            }
+
+            // Else, current arrow already
+            // bursts this balloon
+        }
+
+        return count;
+    }
+};
