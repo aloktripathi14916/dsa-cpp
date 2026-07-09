@@ -1,0 +1,147 @@
+/*
+Problem: Minimum Element After Replacement With Digit Sum (LC 3300)
+Topic: Array / Math
+
+--------------------------------------------------
+
+Idea:
+
+Replace every number by the sum of
+its digits.
+
+Among all the digit sums, return the
+minimum one.
+
+Instead of modifying the entire array,
+compute the digit sum for each number
+and keep track of the smallest value.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   minNumber = INT_MAX
+
+2. Traverse every number.
+
+3. Compute its digit sum by repeatedly:
+
+   • Extract last digit.
+
+   • Add it to the sum.
+
+   • Remove the last digit.
+
+4. Update the minimum digit sum.
+
+5. Return the minimum.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[10,12,13,14]
+
+Digit sums:
+
+10 → 1
+
+12 → 3
+
+13 → 4
+
+14 → 5
+
+Minimum:
+
+1
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[999,25,101]
+
+Digit sums:
+
+999 → 27
+
+25 → 7
+
+101 → 2
+
+Minimum:
+
+2
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Why It Works?
+
+Each number is processed independently.
+
+Its digit sum is calculated using
+modulo (%) and division (/).
+
+The smallest digit sum encountered is
+the required answer.
+
+--------------------------------------------------
+
+Time : O(n × d)
+
+n = number of elements
+
+d = maximum digits in a number
+
+Since d ≤ 10 for integers,
+this is effectively O(n).
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Array Traversal / Digit Manipulation
+*/
+
+class Solution {
+public:
+    int minElement(vector<int>& nums) {
+
+        int minNumber = INT_MAX;
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            int sum = 0;
+
+            // Compute digit sum
+            while (nums[i] > 0) {
+
+                sum += nums[i] % 10;
+                nums[i] /= 10;
+            }
+
+            minNumber = min(minNumber, sum);
+        }
+
+        return minNumber;
+    }
+};
