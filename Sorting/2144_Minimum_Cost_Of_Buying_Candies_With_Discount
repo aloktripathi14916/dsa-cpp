@@ -1,0 +1,143 @@
+/*
+Problem: Minimum Cost of Buying Candies With Discount (LC 2144)
+Topic: Greedy / Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Offer:
+
+For every 3 candies purchased,
+the cheapest one is free.
+
+To maximize the discount:
+
+Buy the most expensive candies
+together.
+
+After sorting in decreasing order,
+every third candy in the sorted list
+is the cheapest among its group of
+three, so it becomes free.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort the costs in descending order.
+
+2. Traverse the sorted array.
+
+3. Add the cost of every candy except
+   every third one.
+
+4. Return the total cost.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[6,5,7,9,2,2]
+
+Sorted:
+
+[9,7,6,5,2,2]
+
+Groups:
+
+(9,7,6)
+
+Pay:
+
+9 + 7
+
+6 is free.
+
+(5,2,2)
+
+Pay:
+
+5 + 2
+
+2 is free.
+
+Answer:
+
+23
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[1,2,3]
+
+Sorted:
+
+[3,2,1]
+
+Pay:
+
+3 + 2
+
+1 is free.
+
+Answer:
+
+5
+
+--------------------------------------------------
+
+Why It Works?
+
+Sorting in descending order ensures
+that every third candy is the
+cheapest within its group of three.
+
+Making the cheapest candy free
+maximizes the total discount.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates.
+
+Traversal is O(n).
+
+Space : O(1)
+
+Ignoring sorting space.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Sorting
+*/
+
+class Solution {
+public:
+    int minimumCost(vector<int>& cost) {
+
+        // Sort from highest to lowest
+        sort(cost.begin(),
+             cost.end(),
+             greater<int>());
+
+        int totalCost = 0;
+
+        // Every third candy is free
+        for (int i = 0; i < cost.size(); i++) {
+
+            if ((i + 1) % 3 != 0)
+                totalCost += cost[i];
+        }
+
+        return totalCost;
+    }
+};
