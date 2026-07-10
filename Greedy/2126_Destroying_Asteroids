@@ -1,0 +1,153 @@
+/*
+Problem: Destroying Asteroids (LC 2126)
+Topic: Greedy / Sorting
+
+--------------------------------------------------
+
+Idea:
+
+An asteroid can be destroyed only if:
+
+currentMass >= asteroidMass
+
+After destroying it, your mass
+increases by the asteroid's mass.
+
+To maximize the chance of destroying
+every asteroid, always destroy the
+smallest available asteroid first.
+
+So, sort the asteroids in increasing
+order.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort the asteroids.
+
+2. Store the current mass as long long
+   to avoid overflow.
+
+3. Traverse the sorted asteroids.
+
+4. If:
+
+   currentMass < asteroidMass
+
+   return false.
+
+5. Otherwise:
+
+   currentMass += asteroidMass
+
+6. If all asteroids are destroyed,
+   return true.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+mass = 10
+
+asteroids = [3,9,19,5,21]
+
+Sorted:
+
+[3,5,9,19,21]
+
+Mass progression:
+
+10 → 13 → 18 → 27 → 46 → 67
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+mass = 5
+
+asteroids = [4,9,23]
+
+Sorted:
+
+[4,9,23]
+
+Mass progression:
+
+5 → 9
+
+9 → 18
+
+18 < 23
+
+Cannot destroy 23.
+
+Answer:
+
+false
+
+--------------------------------------------------
+
+Why It Works?
+
+Destroying smaller asteroids first
+increases your mass as quickly as
+possible.
+
+Any larger asteroid that cannot be
+destroyed now also cannot be destroyed
+by choosing an even larger asteroid
+first.
+
+Hence, the greedy choice is optimal.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates.
+
+Traversal is O(n).
+
+Space : O(1)
+
+Ignoring sorting space.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy + Sorting
+*/
+
+class Solution {
+public:
+    bool asteroidsDestroyed(int mass,
+                            vector<int>& asteroids) {
+
+        // Destroy smaller asteroids first
+        sort(asteroids.begin(), asteroids.end());
+
+        long long currMass = mass;
+
+        for (int i = 0; i < asteroids.size(); i++) {
+
+            // Cannot destroy current asteroid
+            if (currMass < asteroids[i])
+                return false;
+
+            // Gain its mass
+            currMass += asteroids[i];
+        }
+
+        return true;
+    }
+};
