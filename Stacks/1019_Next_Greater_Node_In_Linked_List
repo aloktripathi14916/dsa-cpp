@@ -1,0 +1,164 @@
+/*
+Problem: Next Greater Node In Linked List (LC 1019)
+Topic: Linked List / Monotonic Stack
+
+--------------------------------------------------
+
+Idea:
+
+Finding the next greater node directly
+in a linked list is difficult because
+there is no random access.
+
+Convert the linked list into an array.
+
+Then solve the classic Next Greater
+Element problem using a monotonic
+decreasing stack.
+
+The stack stores indices of elements
+whose next greater value has not yet
+been found.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Convert the linked list into an
+   array.
+
+2. Create an answer array initialized
+   with 0.
+
+3. Traverse the array from right to
+   left.
+
+4. Remove all indices whose values are
+   smaller than or equal to the current
+   value.
+
+5. If the stack is not empty, the top
+   index stores the next greater value.
+
+6. Push the current index onto the
+   stack.
+
+7. Return the answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+2 -> 1 -> 5
+
+Array:
+
+[2,1,5]
+
+Next greater values:
+
+2 → 5
+
+1 → 5
+
+5 → 0
+
+Answer:
+
+[5,5,0]
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+2 -> 7 -> 4 -> 3 -> 5
+
+Array:
+
+[2,7,4,3,5]
+
+Answer:
+
+[7,0,5,5,0]
+
+--------------------------------------------------
+
+Why It Works?
+
+The stack always maintains indices of
+elements in decreasing order of value.
+
+While processing from right to left,
+all smaller or equal elements are
+removed since they can never be the
+next greater element.
+
+The first remaining element on the
+stack is therefore the next greater
+value.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Array conversion is O(n).
+
+Each index is pushed and popped at
+most once.
+
+Space : O(n)
+
+Array + answer vector + stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Monotonic Stack (Next Greater Element)
+*/
+
+class Solution {
+public:
+    vector<int> nextLargerNodes(ListNode* head) {
+
+        // Convert linked list to array
+        vector<int> listToArray;
+
+        ListNode* temp = head;
+
+        while (temp != NULL) {
+            listToArray.push_back(temp->val);
+            temp = temp->next;
+        }
+
+        vector<int> ans(listToArray.size(), 0);
+
+        stack<int> s;   // Stores indices
+
+        // Traverse from right to left
+        for (int i = listToArray.size() - 1; i >= 0; i--) {
+
+            // Remove smaller or equal values
+            while (!s.empty() &&
+                   listToArray[i] >= listToArray[s.top()]) {
+
+                s.pop();
+            }
+
+            // Next greater value
+            if (!s.empty()) {
+
+                ans[i] = listToArray[s.top()];
+            }
+
+            // Push current index
+            s.push(i);
+        }
+
+        return ans;
+    }
+};
