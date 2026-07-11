@@ -1,0 +1,166 @@
+/*
+Problem: Total Waviness of Numbers (LC 3751)
+Topic: String / Simulation
+
+--------------------------------------------------
+
+Idea:
+
+For every number in the given range:
+
+1. Convert the number to a string.
+
+2. Check every middle digit.
+
+3. A digit contributes 1 to the
+   waviness if it is:
+
+   • Greater than both neighbors
+     (local maximum), or
+
+   • Smaller than both neighbors
+     (local minimum).
+
+4. Add the waviness of every number.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize answer = 0.
+
+2. Traverse every number from
+   num1 to num2.
+
+3. Convert the number into a string.
+
+4. For every middle digit
+   (index 1 to length-2):
+
+   Check whether it is:
+
+   • greater than both neighbors, or
+
+   • smaller than both neighbors.
+
+5. If yes, increment the answer.
+
+6. Return the total waviness.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+num1 = 120
+
+num2 = 123
+
+120
+
+2 > 1 and 2 > 0
+
+Waviness = 1
+
+121
+
+2 > 1 and 2 > 1
+
+Waviness = 1
+
+122
+
+Middle digit is not a peak or valley.
+
+Waviness = 0
+
+123
+
+Increasing sequence.
+
+Waviness = 0
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+num1 = 101
+
+num2 = 101
+
+101
+
+0 < 1 and 0 < 1
+
+Waviness = 1
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Why It Works?
+
+Every middle digit is compared only
+with its immediate neighbors.
+
+If it forms a local peak or local
+valley, it contributes exactly one
+to the total waviness.
+
+--------------------------------------------------
+
+Time : O((num2 - num1 + 1) × d)
+
+d = number of digits.
+
+Each digit is visited once.
+
+Space : O(d)
+
+String representation of one number.
+
+--------------------------------------------------
+
+Pattern:
+
+Simulation / String Traversal
+*/
+
+class Solution {
+public:
+    int totalWaviness(int num1, int num2) {
+
+        int count = 0;
+
+        // Check every number
+        for (int i = num1; i <= num2; i++) {
+
+            string s = to_string(i);
+
+            // Check every middle digit
+            for (int j = 1; j < s.length() - 1; j++) {
+
+                // Local maximum or minimum
+                if ((s[j] > s[j - 1] &&
+                     s[j] > s[j + 1]) ||
+
+                    (s[j] < s[j - 1] &&
+                     s[j] < s[j + 1])) {
+
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+};
