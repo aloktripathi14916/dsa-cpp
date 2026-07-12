@@ -1,0 +1,160 @@
+/*
+Problem: Left and Right Sum Differences (LC 2574)
+Topic: Array / Prefix Sum
+
+--------------------------------------------------
+
+Idea:
+
+For every index i:
+
+leftSum  = sum of elements before i
+
+rightSum = sum of elements after i
+
+The required value is:
+
+|leftSum - rightSum|
+
+Instead of computing these sums for
+every index separately, maintain them
+while traversing the array.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Compute the total sum of the array.
+
+2. Initialize:
+
+   leftSum = 0
+
+   rightSum = totalSum
+
+3. Traverse the array.
+
+4. Remove the current element from
+   rightSum.
+
+5. Compute:
+
+   abs(leftSum - rightSum)
+
+6. Store it in the answer.
+
+7. Add the current element to
+   leftSum.
+
+8. Return the answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [10,4,8,3]
+
+Initially:
+
+leftSum = 0
+
+rightSum = 25
+
+i = 0
+
+rightSum = 15
+
+|0 - 15| = 15
+
+i = 1
+
+leftSum = 10
+
+rightSum = 11
+
+|10 - 11| = 1
+
+i = 2
+
+leftSum = 14
+
+rightSum = 3
+
+|14 - 3| = 11
+
+i = 3
+
+leftSum = 22
+
+rightSum = 0
+
+|22 - 0| = 22
+
+Answer:
+
+[15,1,11,22]
+
+--------------------------------------------------
+
+Why It Works?
+
+At every index:
+
+leftSum stores the sum before the
+current element.
+
+rightSum stores the sum after the
+current element.
+
+Thus their absolute difference is
+computed in O(1) time.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass to compute the total sum and
+one pass to build the answer.
+
+Space : O(1)
+
+Ignoring the output vector.
+
+--------------------------------------------------
+
+Pattern:
+
+Prefix Sum
+*/
+
+class Solution {
+public:
+    vector<int> leftRightDifference(vector<int>& nums) {
+
+        int leftSum = 0;
+        int rightSum = 0;
+
+        // Compute total sum
+        for (int i = 0; i < nums.size(); i++) {
+            rightSum += nums[i];
+        }
+
+        vector<int> ans(nums.size(), 0);
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            // Exclude current element
+            rightSum -= nums[i];
+
+            // Store absolute difference
+            ans[i] = abs(leftSum - rightSum);
+
+            // Include current element
+            leftSum += nums[i];
+        }
+
+        return ans;
+    }
+};
