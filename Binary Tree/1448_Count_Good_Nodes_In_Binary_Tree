@@ -1,0 +1,153 @@
+/*
+Problem: Count Good Nodes in Binary Tree (LC 1448)
+Topic: Binary Tree / DFS
+
+--------------------------------------------------
+
+Idea:
+
+A node is called "good" if no node on
+the path from the root to that node
+has a value greater than it.
+
+While traversing the tree, keep track
+of the maximum value seen so far on
+the current root-to-node path.
+
+If the current node's value is greater
+than or equal to this maximum, it is a
+good node.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Start DFS from the root.
+
+2. Pass the maximum value seen on the
+   current path.
+
+3. For every node:
+
+   • If node->val >= maxValue,
+     count it as a good node.
+
+   • Update:
+
+     maxValue = max(maxValue,
+                    node->val)
+
+4. Recursively process the left and
+   right subtrees.
+
+5. Return the total count.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        3
+       / \
+      1   4
+     /   / \
+    3   1   5
+
+Good nodes:
+
+3 (root)
+
+4
+
+5
+
+3 (left leaf)
+
+Answer:
+
+4
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+      3
+     /
+    3
+   /
+  3
+
+Every node equals the maximum seen.
+
+Answer:
+
+3
+
+--------------------------------------------------
+
+Why It Works?
+
+The variable maxValue always stores
+the largest value encountered on the
+current root-to-node path.
+
+A node is good exactly when its value
+is not smaller than this maximum.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each node is visited exactly once.
+
+Space : O(h)
+
+h = height of the tree (recursion
+stack).
+
+Worst case: O(n)
+
+Balanced tree: O(log n)
+
+--------------------------------------------------
+
+Pattern:
+
+DFS / Tree Traversal
+*/
+
+class Solution {
+public:
+
+    int dfs(TreeNode* root, int maxValue) {
+
+        if (root == NULL)
+            return 0;
+
+        int count = 0;
+
+        // Current node is good
+        if (root->val >= maxValue)
+            count = 1;
+
+        // Update maximum on this path
+        maxValue = max(maxValue,
+                       root->val);
+
+        count += dfs(root->left,
+                     maxValue);
+
+        count += dfs(root->right,
+                     maxValue);
+
+        return count;
+    }
+
+    int goodNodes(TreeNode* root) {
+
+        return dfs(root, root->val);
+    }
+};
