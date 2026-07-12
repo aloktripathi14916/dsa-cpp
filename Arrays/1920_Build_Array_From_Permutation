@@ -1,0 +1,123 @@
+/*
+Problem: Build Array from Permutation (LC 1920)
+Topic: Array
+
+--------------------------------------------------
+
+Idea:
+
+The array nums is a permutation of
+numbers from 0 to n-1.
+
+For every index i, the required value
+is:
+
+ans[i] = nums[nums[i]]
+
+Simply access the element at index
+nums[i] and store it in the answer.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Create an answer array of size n.
+
+2. Traverse the array.
+
+3. For every index i:
+
+   ans[i] = nums[nums[i]]
+
+4. Return the answer.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [0,2,1,5,3,4]
+
+i = 0
+
+ans[0] = nums[0] = 0
+
+i = 1
+
+ans[1] = nums[2] = 1
+
+i = 2
+
+ans[2] = nums[1] = 2
+
+i = 3
+
+ans[3] = nums[5] = 4
+
+i = 4
+
+ans[4] = nums[3] = 5
+
+i = 5
+
+ans[5] = nums[4] = 3
+
+Answer:
+
+[0,1,2,4,5,3]
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [5,0,1,2,3,4]
+
+Answer:
+
+[4,5,0,1,2,3]
+
+--------------------------------------------------
+
+Why It Works?
+
+Since nums is a valid permutation,
+every value nums[i] is a valid index.
+
+Thus, nums[nums[i]] is always safe to
+access and directly gives the required
+value for ans[i].
+
+--------------------------------------------------
+
+Time : O(n)
+
+One traversal of the array.
+
+Space : O(n)
+
+Answer array.
+
+--------------------------------------------------
+
+Pattern:
+
+Array Traversal
+*/
+
+class Solution {
+public:
+    vector<int> buildArray(vector<int>& nums) {
+
+        vector<int> ans(nums.size(), 0);
+
+        for (int i = 0; i < nums.size(); i++) {
+
+            ans[i] = nums[nums[i]];
+        }
+
+        return ans;
+    }
+};
