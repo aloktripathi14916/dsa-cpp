@@ -1,0 +1,154 @@
+/*
+Problem: Reverse Prefix of Word (LC 2000)
+Topic: String / Two Pointers
+
+--------------------------------------------------
+
+Idea:
+
+Find the first occurrence of the
+given character.
+
+If the character exists, reverse the
+substring from index 0 to its
+position.
+
+If the character does not exist,
+return the original string.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Find the first occurrence of ch.
+
+2. If ch is not found, return the
+   original string.
+
+3. Initialize:
+
+   left = 0
+
+   right = index of ch
+
+4. Swap characters while:
+
+   left < right
+
+5. Return the modified string.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+word = "abcdefd"
+
+ch = 'd'
+
+Prefix:
+
+"abcd"
+
+Reverse:
+
+"dcba"
+
+Answer:
+
+"dcbaefd"
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+word = "xyxzxe"
+
+ch = 'z'
+
+Prefix:
+
+"xyxz"
+
+Reverse:
+
+"zxyx"
+
+Answer:
+
+"zxyxxe"
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+word = "abcd"
+
+ch = 'z'
+
+Character not found.
+
+Answer:
+
+"abcd"
+
+--------------------------------------------------
+
+Why It Works?
+
+Only the prefix ending at the first
+occurrence of ch needs to be reversed.
+
+Using two pointers swaps characters
+from both ends until the prefix is
+completely reversed.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Finding the character is O(n).
+
+Reversing the prefix is also O(n).
+
+Space : O(1)
+
+The string is modified in-place.
+
+--------------------------------------------------
+
+Pattern:
+
+String / Two Pointers
+*/
+
+class Solution {
+public:
+    string reversePrefix(string word, char ch) {
+
+        // Find first occurrence of ch
+        int idx = word.find(ch);
+
+        // Character not found
+        if (idx == string::npos)
+            return word;
+
+        int left = 0;
+
+        // Reverse the prefix
+        while (left < idx) {
+
+            swap(word[left], word[idx]);
+
+            left++;
+            idx--;
+        }
+
+        return word;
+    }
+};
