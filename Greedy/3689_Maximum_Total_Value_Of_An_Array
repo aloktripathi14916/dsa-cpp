@@ -1,0 +1,117 @@
+/*
+Problem: Maximum Total Value of an Array (LC 3689)
+Topic: Greedy / Math
+
+--------------------------------------------------
+
+Idea:
+
+The maximum contribution from one
+operation is the difference between
+the largest and smallest elements.
+
+Since each of the k operations can
+contribute this maximum difference,
+the total maximum value is simply:
+
+k × (maximum element − minimum element)
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Find the maximum element.
+
+2. Find the minimum element.
+
+3. Compute:
+
+   k × (max - min)
+
+4. Return the result as long long.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [1,5,3]
+
+k = 2
+
+Maximum = 5
+
+Minimum = 1
+
+Difference = 4
+
+Answer:
+
+2 × 4 = 8
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [7,7,7]
+
+k = 5
+
+Maximum = 7
+
+Minimum = 7
+
+Difference = 0
+
+Answer:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+The largest possible value from one
+operation is obtained by choosing the
+maximum and minimum elements.
+
+Repeating this optimal choice for all
+k operations gives the maximum total
+value.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Finding the minimum and maximum each
+takes O(n).
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Greedy / Math
+*/
+
+class Solution {
+public:
+    long long maxTotalValue(vector<int>& nums, int k) {
+
+        // Find maximum and minimum
+        int mx = *max_element(nums.begin(),
+                              nums.end());
+
+        int mn = *min_element(nums.begin(),
+                              nums.end());
+
+        // Maximum total value
+        return 1LL * k * (mx - mn);
+    }
+};
