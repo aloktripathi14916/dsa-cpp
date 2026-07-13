@@ -1,0 +1,139 @@
+/*
+Problem: Search in a Binary Search Tree (LC 700)
+Topic: Binary Search Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+A Binary Search Tree (BST) has the
+property:
+
+• Left subtree values < root value
+
+• Right subtree values > root value
+
+Use this property to eliminate half
+of the tree at every step.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. If the current node is NULL,
+   return NULL.
+
+2. If the current node's value equals
+   the target, return the node.
+
+3. If the target is smaller than the
+   current value, search the left
+   subtree.
+
+4. Otherwise, search the right
+   subtree.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        4
+       / \
+      2   7
+     / \
+    1   3
+
+Target = 2
+
+Search path:
+
+4 → 2
+
+Answer:
+
+Node with value 2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        4
+       / \
+      2   7
+     / \
+    1   3
+
+Target = 5
+
+Search path:
+
+4 → 7 → NULL
+
+Answer:
+
+NULL
+
+--------------------------------------------------
+
+Why It Works?
+
+At every node, the BST property tells
+us exactly which subtree may contain
+the target.
+
+The other subtree can be ignored,
+making the search much faster than a
+normal binary tree search.
+
+--------------------------------------------------
+
+Time :
+
+Average : O(log n)
+
+Balanced BST.
+
+Worst : O(n)
+
+Skewed BST.
+
+Space :
+
+Average : O(log n)
+
+Worst : O(n)
+
+Due to recursion stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree / Recursion
+*/
+
+class Solution {
+public:
+
+    TreeNode* searchBST(TreeNode* root, int val) {
+
+        // Base case
+        if (root == NULL)
+            return NULL;
+
+        // Target found
+        if (root->val == val)
+            return root;
+
+        // Search left subtree
+        if (val < root->val)
+            return searchBST(root->left, val);
+
+        // Search right subtree
+        return searchBST(root->right, val);
+    }
+};
