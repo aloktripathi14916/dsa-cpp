@@ -1,0 +1,181 @@
+/*
+Problem: Partition Array According to Given Pivot (LC 2161)
+Topic: Array / Partitioning
+
+--------------------------------------------------
+
+Idea:
+
+Rearrange the array so that:
+
+1. All elements smaller than the
+   pivot appear first.
+
+2. All elements equal to the pivot
+   appear next.
+
+3. All elements greater than the
+   pivot appear last.
+
+The relative order of elements within
+each group must remain unchanged.
+
+Use three separate arrays to collect
+the elements.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Create three vectors:
+
+   less
+
+   equal
+
+   greater
+
+2. Traverse the array.
+
+3. If:
+
+   nums[i] < pivot
+
+   add it to less.
+
+4. Else if:
+
+   nums[i] == pivot
+
+   add it to equal.
+
+5. Otherwise:
+
+   add it to greater.
+
+6. Concatenate:
+
+   less + equal + greater
+
+7. Return the final array.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [9,12,5,10,14,3,10]
+
+pivot = 10
+
+less:
+
+[5,3]
+
+equal:
+
+[10,10]
+
+greater:
+
+[9,12,14]
+
+Answer:
+
+[5,3,10,10,9,12,14]
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [-3,4,3,2]
+
+pivot = 2
+
+less:
+
+[-3]
+
+equal:
+
+[2]
+
+greater:
+
+[4,3]
+
+Answer:
+
+[-3,2,4,3]
+
+--------------------------------------------------
+
+Why It Works?
+
+Each element belongs to exactly one
+of the three groups.
+
+Appending the groups in order
+maintains the required partition and
+preserves the original relative order
+within each group.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One traversal to partition and one
+traversal to build the answer.
+
+Space : O(n)
+
+Three temporary vectors and the
+answer vector.
+
+--------------------------------------------------
+
+Pattern:
+
+Array Partitioning
+*/
+
+class Solution {
+public:
+    vector<int> pivotArray(vector<int>& nums,
+                           int pivot) {
+
+        vector<int> less;
+        vector<int> equal;
+        vector<int> greater;
+
+        // Partition elements
+        for (int i = 0; i < nums.size(); i++) {
+
+            if (nums[i] < pivot)
+                less.push_back(nums[i]);
+
+            else if (nums[i] == pivot)
+                equal.push_back(nums[i]);
+
+            else
+                greater.push_back(nums[i]);
+        }
+
+        vector<int> ans;
+
+        // Merge all groups
+        for (int x : less)
+            ans.push_back(x);
+
+        for (int x : equal)
+            ans.push_back(x);
+
+        for (int x : greater)
+            ans.push_back(x);
+
+        return ans;
+    }
+};
