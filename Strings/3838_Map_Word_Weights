@@ -1,0 +1,153 @@
+/*
+Problem: Map Word Weights (LC 3838)
+Topic: String / Simulation
+
+--------------------------------------------------
+
+Idea:
+
+For every word:
+
+1. Compute the total weight of all
+   its characters.
+
+2. Take the sum modulo 26.
+
+3. Map this value to a lowercase
+   letter using:
+
+   'z' - remainder
+
+4. Append the resulting character to
+   the answer string.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize an empty answer string.
+
+2. Traverse every word.
+
+3. For each character:
+
+   Add its corresponding weight using
+   the weights array.
+
+4. Compute:
+
+   remainder = sum % 26
+
+5. Convert it into a character:
+
+   'z' - remainder
+
+6. Append the character to the answer.
+
+7. Return the final string.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+words = ["ab","c"]
+
+weights:
+
+a = 1
+
+b = 2
+
+c = 3
+
+Word:
+
+"ab"
+
+Sum:
+
+1 + 2 = 3
+
+3 % 26 = 3
+
+Character:
+
+'z' - 3 = 'w'
+
+Word:
+
+"c"
+
+Sum:
+
+3
+
+Character:
+
+'w'
+
+Answer:
+
+"ww"
+
+--------------------------------------------------
+
+Why It Works?
+
+Each word is processed independently.
+
+The modulo operation limits the total
+weight to the range [0, 25], allowing
+it to map directly to a lowercase
+letter.
+
+--------------------------------------------------
+
+Time : O(T)
+
+T = Total number of characters across
+all words.
+
+Space : O(1)
+
+Ignoring the output string.
+
+--------------------------------------------------
+
+Pattern:
+
+String Traversal / Simulation
+*/
+
+class Solution {
+public:
+    string mapWordWeights(vector<string>& words,
+                          vector<int>& weights) {
+
+        string ans = "";
+
+        // Process each word
+        for (int i = 0; i < words.size(); i++) {
+
+            int sum = 0;
+
+            // Compute weight of current word
+            for (int j = 0; j < words[i].size(); j++) {
+
+                sum += weights[
+                    words[i][j] - 'a'
+                ];
+            }
+
+            // Keep value within 0-25
+            sum %= 26;
+
+            // Map to a character
+            ans.push_back('z' - sum);
+        }
+
+        return ans;
+    }
+};
