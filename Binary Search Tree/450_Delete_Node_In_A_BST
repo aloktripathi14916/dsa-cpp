@@ -1,0 +1,210 @@
+/*
+Problem: Delete Node in a BST (LC 450)
+Topic: Binary Search Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+Search for the node to delete using
+the BST property.
+
+After finding the node, there are
+three possible cases:
+
+1. No left child
+
+   Return the right child.
+
+2. No right child
+
+   Return the left child.
+
+3. Two children
+
+   Find the inorder successor
+   (smallest node in the right
+   subtree), copy its value into the
+   current node, and delete the
+   successor.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Search for the key.
+
+2. If key < root->val:
+
+   Delete in the left subtree.
+
+3. If key > root->val:
+
+   Delete in the right subtree.
+
+4. Otherwise, the node is found.
+
+5. Handle the three deletion cases.
+
+6. Return the updated root.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        5
+       / \
+      3   6
+     / \   \
+    2   4   7
+
+Delete:
+
+3
+
+Inorder successor:
+
+4
+
+Tree becomes:
+
+        5
+       / \
+      4   6
+     /     \
+    2       7
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+    2
+   /
+  1
+
+Delete:
+
+2
+
+Answer:
+
+    1
+
+--------------------------------------------------
+
+Why It Works?
+
+The BST property helps locate the
+node efficiently.
+
+When deleting a node with two
+children, replacing it with its
+inorder successor preserves the BST
+ordering.
+
+--------------------------------------------------
+
+Time :
+
+Average : O(log n)
+
+Balanced BST.
+
+Worst : O(n)
+
+Skewed BST.
+
+Space :
+
+Average : O(log n)
+
+Worst : O(n)
+
+Recursion stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree / Recursion
+*/
+
+class Solution {
+public:
+
+    // Find inorder successor
+    TreeNode* getIS(TreeNode* root) {
+
+        while (root != NULL &&
+               root->left != NULL) {
+
+            root = root->left;
+        }
+
+        return root;
+    }
+
+    TreeNode* deleteNode(TreeNode* root,
+                         int key) {
+
+        if (root == NULL)
+            return NULL;
+
+        // Search left subtree
+        if (key < root->val) {
+
+            root->left =
+                deleteNode(root->left, key);
+        }
+
+        // Search right subtree
+        else if (key > root->val) {
+
+            root->right =
+                deleteNode(root->right, key);
+        }
+
+        // Node found
+        else {
+
+            // No left child
+            if (root->left == NULL) {
+
+                TreeNode* temp = root->right;
+
+                delete root;
+
+                return temp;
+            }
+
+            // No right child
+            else if (root->right == NULL) {
+
+                TreeNode* temp = root->left;
+
+                delete root;
+
+                return temp;
+            }
+
+            // Two children
+            else {
+
+                TreeNode* IS =
+                    getIS(root->right);
+
+                root->val = IS->val;
+
+                root->right =
+                    deleteNode(root->right,
+                               IS->val);
+            }
+        }
+
+        return root;
+    }
+};
