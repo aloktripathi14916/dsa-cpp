@@ -1,0 +1,139 @@
+/*
+Problem: Maximum Average Subarray I (LC 643)
+Topic: Sliding Window
+
+--------------------------------------------------
+
+Idea:
+
+The subarray size is fixed (k).
+
+Instead of computing the sum of every
+subarray from scratch, maintain a
+sliding window of size k.
+
+As the window moves:
+
+• Add the new element.
+
+• Remove the outgoing element.
+
+• Update the maximum average.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   left = 0
+
+   sum = 0
+
+2. Traverse the array.
+
+3. Add the current element to the
+   window sum.
+
+4. Once the window size becomes k:
+
+   • Compute the average.
+
+   • Update the maximum average.
+
+   • Remove the leftmost element.
+
+   • Move the left pointer.
+
+5. Return the maximum average.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+nums = [1,12,-5,-6,50,3]
+
+k = 4
+
+Windows:
+
+[1,12,-5,-6]
+
+Average = 0.5
+
+[12,-5,-6,50]
+
+Average = 12.75
+
+[-5,-6,50,3]
+
+Average = 10.5
+
+Answer:
+
+12.75
+
+--------------------------------------------------
+
+Why It Works?
+
+The window size always remains k.
+
+Instead of recomputing each window's
+sum, we reuse the previous sum by
+adding one element and removing one
+element.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each element enters and leaves the
+window exactly once.
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Sliding Window (Fixed Size)
+*/
+
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+
+        int left = 0;
+
+        double sum = 0;
+        double maxAvg = INT_MIN;
+
+        for (int right = 0;
+             right < nums.size();
+             right++) {
+
+            // Expand window
+            sum += nums[right];
+
+            // Wait until window size becomes k
+            if (right - left + 1 < k)
+                continue;
+
+            // Compute current average
+            double avg = sum / k;
+
+            maxAvg = max(maxAvg, avg);
+
+            // Slide window
+            sum -= nums[left];
+            left++;
+        }
+
+        return maxAvg;
+    }
+};
