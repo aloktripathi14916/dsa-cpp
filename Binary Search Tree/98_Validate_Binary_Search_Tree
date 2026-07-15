@@ -1,0 +1,146 @@
+/*
+Problem: Validate Binary Search Tree (LC 98)
+Topic: Binary Search Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+A valid BST must satisfy:
+
+• Every node in the left subtree is
+  smaller than the current node.
+
+• Every node in the right subtree is
+  greater than the current node.
+
+Instead of comparing only with the
+parent, keep track of the valid
+minimum and maximum ancestors for
+each node.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Start with no bounds.
+
+2. For every node:
+
+   • If it is <= minimum bound,
+     return false.
+
+   • If it is >= maximum bound,
+     return false.
+
+3. Recur for:
+
+   • Left subtree with current node
+     as the new maximum.
+
+   • Right subtree with current node
+     as the new minimum.
+
+4. If every node satisfies its
+   bounds, return true.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        2
+       / \
+      1   3
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+        5
+       / \
+      1   4
+         / \
+        3   6
+
+Answer:
+
+false
+
+Reason:
+
+3 is in the right subtree of 5 but
+3 < 5, violating the BST property.
+
+--------------------------------------------------
+
+Why It Works?
+
+Each recursive call carries the
+allowed value range for that node.
+
+A node must lie strictly between its
+minimum and maximum bounds to satisfy
+the BST property.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = Height of the tree due to the
+recursion stack.
+
+Worst case: O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree / Recursion
+*/
+
+class Solution {
+public:
+
+    bool isBST(TreeNode* root,
+               TreeNode* min,
+               TreeNode* max) {
+
+        if (root == NULL)
+            return true;
+
+        // Violates lower bound
+        if (min != NULL &&
+            root->val <= min->val)
+            return false;
+
+        // Violates upper bound
+        if (max != NULL &&
+            root->val >= max->val)
+            return false;
+
+        // Check left and right subtrees
+        return isBST(root->left,
+                     min,
+                     root) &&
+               isBST(root->right,
+                     root,
+                     max);
+    }
+
+    bool isValidBST(TreeNode* root) {
+
+        return isBST(root, NULL, NULL);
+    }
+};
