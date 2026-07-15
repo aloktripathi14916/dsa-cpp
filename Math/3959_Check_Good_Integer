@@ -1,0 +1,150 @@
+/*
+Problem: Check Good Integer (LC 3959)
+Topic: Math / Digit Manipulation
+
+--------------------------------------------------
+
+Idea:
+
+Extract every digit of the number.
+
+While traversing the digits:
+
+• Compute the sum of digits.
+
+• Compute the sum of squares of
+  digits.
+
+After processing all digits, check
+whether:
+
+(sum of squares) - (sum of digits)
+>= 50
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   digitSum = 0
+
+   squareSum = 0
+
+2. While n > 0:
+
+   • Extract the last digit.
+
+   • Add it to digitSum.
+
+   • Add its square to squareSum.
+
+   • Remove the last digit.
+
+3. Return whether:
+
+   squareSum - digitSum >= 50
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+n = 98
+
+Digits:
+
+9, 8
+
+digitSum:
+
+9 + 8 = 17
+
+squareSum:
+
+81 + 64 = 145
+
+Difference:
+
+145 - 17 = 128
+
+128 >= 50
+
+Answer:
+
+true
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+n = 23
+
+digitSum:
+
+2 + 3 = 5
+
+squareSum:
+
+4 + 9 = 13
+
+Difference:
+
+13 - 5 = 8
+
+Answer:
+
+false
+
+--------------------------------------------------
+
+Why It Works?
+
+Every digit contributes to both the
+digit sum and the square sum.
+
+After processing all digits, the
+required condition can be checked
+directly.
+
+--------------------------------------------------
+
+Time : O(d)
+
+d = Number of digits in n.
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Math / Digit Manipulation
+*/
+
+class Solution {
+public:
+    bool checkGoodInteger(int n) {
+
+        int digitSum = 0;
+        int squareSum = 0;
+
+        while (n > 0) {
+
+            int digit = n % 10;
+
+            digitSum += digit;
+
+            squareSum += digit * digit;
+
+            n /= 10;
+        }
+
+        return (squareSum - digitSum) >= 50;
+    }
+};
