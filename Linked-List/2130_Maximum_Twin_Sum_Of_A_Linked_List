@@ -1,0 +1,141 @@
+/*
+Problem: Maximum Twin Sum of a Linked List (LC 2130)
+Topic: Linked List / Two Pointers
+
+--------------------------------------------------
+
+Idea:
+
+Store all linked list values in an
+array.
+
+Twin nodes are the first and last,
+second and second-last, and so on.
+
+Use two pointers from both ends of
+the array to compute each twin sum
+and keep track of the maximum.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Traverse the linked list and store
+   all node values in a vector.
+
+2. Initialize:
+
+   left = 0
+
+   right = last index
+
+3. While left < right:
+
+   • Compute twin sum.
+
+   • Update the maximum sum.
+
+   • Move both pointers inward.
+
+4. Return the maximum twin sum.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+1 → 2 → 3 → 4
+
+Twin pairs:
+
+(1,4) = 5
+
+(2,3) = 5
+
+Answer:
+
+5
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+4 → 2 → 2 → 3
+
+Twin pairs:
+
+(4,3) = 7
+
+(2,2) = 4
+
+Answer:
+
+7
+
+--------------------------------------------------
+
+Why It Works?
+
+The vector stores nodes in their
+original order.
+
+Using two pointers from both ends
+naturally forms all twin pairs.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One traversal to build the vector and
+one traversal to compute twin sums.
+
+Space : O(n)
+
+Extra vector stores all node values.
+
+--------------------------------------------------
+
+Pattern:
+
+Linked List / Two Pointers
+*/
+
+class Solution {
+public:
+    int pairSum(ListNode* head) {
+
+        vector<int> values;
+
+        // Store linked list values
+        ListNode* temp = head;
+
+        while (temp != NULL) {
+
+            values.push_back(temp->val);
+
+            temp = temp->next;
+        }
+
+        int left = 0;
+        int right = values.size() - 1;
+
+        int maxSum = 0;
+
+        // Compute twin sums
+        while (left < right) {
+
+            int sum =
+                values[left] + values[right];
+
+            maxSum = max(maxSum, sum);
+
+            left++;
+            right--;
+        }
+
+        return maxSum;
+    }
+};
