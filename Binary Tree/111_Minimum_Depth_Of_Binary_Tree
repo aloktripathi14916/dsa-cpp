@@ -1,0 +1,133 @@
+/*
+Problem: Minimum Depth of Binary Tree (LC 111)
+Topic: Binary Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+The minimum depth is the number of
+nodes along the shortest path from
+the root to a leaf.
+
+Unlike maximum depth, we cannot
+simply take:
+
+min(left, right)
+
+because one subtree may be empty.
+
+If one child is missing, the path
+must continue through the other
+child.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. If the tree is empty,
+   return 0.
+
+2. Recursively compute the minimum
+   depth of the left and right
+   subtrees.
+
+3. If the left child is missing,
+   return right + 1.
+
+4. If the right child is missing,
+   return left + 1.
+
+5. Otherwise, return:
+
+   min(left, right) + 1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+      3
+     / \
+    9   20
+       /  \
+      15   7
+
+Minimum depth:
+
+2
+
+Path:
+
+3 → 9
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+    2
+     \
+      3
+       \
+        4
+
+Minimum depth:
+
+3
+
+--------------------------------------------------
+
+Why It Works?
+
+A missing child cannot contribute to
+a valid root-to-leaf path.
+
+Only existing paths are considered
+when computing the minimum depth.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = Height of the tree due to the
+recursion stack.
+
+Worst case: O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Tree / Recursion
+*/
+
+class Solution {
+public:
+
+    int minDepth(TreeNode* root) {
+
+        if (root == NULL)
+            return 0;
+
+        int left = minDepth(root->left);
+        int right = minDepth(root->right);
+
+        // Only right subtree exists
+        if (root->left == NULL)
+            return right + 1;
+
+        // Only left subtree exists
+        if (root->right == NULL)
+            return left + 1;
+
+        // Both subtrees exist
+        return min(left, right) + 1;
+    }
+};
