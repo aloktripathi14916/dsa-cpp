@@ -1,0 +1,160 @@
+/*
+Problem: Minimum Distance Between BST Nodes (LC 783)
+Topic: Binary Search Tree / Inorder Traversal
+
+--------------------------------------------------
+
+Idea:
+
+Inorder traversal of a BST visits
+nodes in sorted order.
+
+Therefore, the minimum difference can
+only occur between two consecutive
+nodes in this sorted sequence.
+
+Keep track of the previously visited
+node and compute the difference with
+the current node.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Perform inorder traversal.
+
+2. Traverse the left subtree.
+
+3. If a previous node exists:
+
+   Update the minimum difference.
+
+4. Update the previous node to the
+   current node.
+
+5. Traverse the right subtree.
+
+6. Return the minimum difference.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+      4
+     / \
+    2   6
+   / \
+  1   3
+
+Inorder:
+
+1 → 2 → 3 → 4 → 6
+
+Differences:
+
+1, 1, 1, 2
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+      1
+       \
+        3
+       /
+      2
+
+Inorder:
+
+1 → 2 → 3
+
+Differences:
+
+1, 1
+
+Answer:
+
+1
+
+--------------------------------------------------
+
+Why It Works?
+
+Inorder traversal of a BST produces
+values in ascending order.
+
+Hence, the smallest difference must
+be between adjacent values in this
+sorted order.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Every node is visited once.
+
+Space : O(h)
+
+h = Height of the tree due to the
+recursion stack.
+
+Worst case: O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree / Inorder Traversal
+*/
+
+class Solution {
+public:
+
+    TreeNode* prev = NULL;
+
+    int minDiffInBST(TreeNode* root) {
+
+        int ans = INT_MAX;
+
+        if (root == NULL)
+            return INT_MAX;
+
+        // Traverse left subtree
+        if (root->left) {
+
+            int leftMin =
+                minDiffInBST(root->left);
+
+            ans = min(ans, leftMin);
+        }
+
+        // Compare with previous node
+        if (prev != NULL) {
+
+            ans = min(ans,
+                      root->val - prev->val);
+        }
+
+        // Update previous node
+        prev = root;
+
+        // Traverse right subtree
+        if (root->right) {
+
+            int rightMin =
+                minDiffInBST(root->right);
+
+            ans = min(ans, rightMin);
+        }
+
+        return ans;
+    }
+};
