@@ -1,0 +1,184 @@
+/*
+Problem: Process String with Special Characters (LC 3612)
+Topic: String Simulation
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the string one character at
+a time.
+
+Depending on the character:
+
+• Lowercase letter:
+  Append it to the answer.
+
+• '*':
+  Remove the last character.
+
+• '#':
+  Duplicate the current string.
+
+• Any other character:
+  Reverse the current string.
+
+Simulate each operation in order.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize an empty string.
+
+2. Traverse every character.
+
+3. Perform:
+
+   • Letter  -> Append.
+
+   • '*'     -> Remove last character
+                (if possible).
+
+   • '#'     -> Duplicate the string.
+
+   • Others  -> Reverse the string.
+
+4. Return the final string.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+s = "ab#"
+
+Process:
+
+"a"
+
+"ab"
+
+"abab"
+
+Answer:
+
+"abab"
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+s = "abc*"
+
+Process:
+
+"a"
+
+"ab"
+
+"abc"
+
+"ab"
+
+Answer:
+
+"ab"
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+s = "abc%"
+
+Process:
+
+"a"
+
+"ab"
+
+"abc"
+
+Reverse
+
+"cba"
+
+Answer:
+
+"cba"
+
+--------------------------------------------------
+
+Why It Works?
+
+Each character represents exactly one
+operation on the current string.
+
+Processing them sequentially produces
+the required final string.
+
+--------------------------------------------------
+
+Time : O(n + k)
+
+n = Length of input string.
+
+k = Cost of duplicate/reverse
+operations.
+
+Worst case can reach O(n²).
+
+Space : O(n)
+
+Stores the resulting string.
+
+--------------------------------------------------
+
+Pattern:
+
+String Simulation
+*/
+
+class Solution {
+public:
+    string processStr(string s) {
+
+        string ans = "";
+
+        for (char ch : s) {
+
+            // Append letter
+            if ('a' <= ch && ch <= 'z') {
+
+                ans.push_back(ch);
+            }
+
+            // Remove last character
+            else if (ch == '*' &&
+                     !ans.empty()) {
+
+                ans.pop_back();
+            }
+
+            // Duplicate string
+            else if (ch == '#') {
+
+                ans += ans;
+            }
+
+            // Reverse string
+            else {
+
+                reverse(ans.begin(),
+                        ans.end());
+            }
+        }
+
+        return ans;
+    }
+};
