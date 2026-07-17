@@ -1,0 +1,240 @@
+/*
+Problem: Process String Queries (LC 3614)
+Topic: String Simulation / Reverse Simulation
+
+--------------------------------------------------
+
+Idea:
+
+The final string can become extremely
+large because of '#' (duplication).
+
+Instead of actually constructing it,
+we only keep track of its length.
+
+Then, starting from the end of the
+operations, we "undo" every operation
+until the required character is found.
+
+This avoids building the huge string.
+
+--------------------------------------------------
+
+Forward Pass (Compute Length)
+
+Maintain only the current length.
+
+Rules:
+
+• Letter:
+  length++
+
+• '*':
+  Delete last character
+  (if length > 0)
+
+• '#':
+  Duplicate string
+  length *= 2
+
+• '%':
+  Reverse string
+  (length unchanged)
+
+--------------------------------------------------
+
+If k >= final length:
+
+Return '.'
+
+--------------------------------------------------
+
+Reverse Pass
+
+Traverse the operations from right
+to left and undo each operation.
+
+1. Letter
+
+Current letter was appended at the
+end.
+
+If k points to this last position,
+this letter is the answer.
+
+Otherwise,
+
+length--
+
+--------------------------------------------------
+
+2. '#'
+
+Before duplication:
+
+Original length = half
+
+After duplication:
+
+length = 2 × half
+
+Both halves are identical.
+
+Map k back into the first half:
+
+k %= half
+
+length = half
+
+--------------------------------------------------
+
+3. '%'
+
+Reverse swaps positions.
+
+If current length is L:
+
+New index:
+
+k = L - 1 - k
+
+--------------------------------------------------
+
+4. '*'
+
+Forward operation removed one
+character.
+
+Undoing it means the previous string
+had one extra character.
+
+length++
+
+--------------------------------------------------
+
+Example
+
+Input:
+
+s = "ab#"
+
+Forward:
+
+"a"   length = 1
+
+"ab"  length = 2
+
+"abab" length = 4
+
+Suppose:
+
+k = 3
+
+Reverse:
+
+'#'
+
+half = 2
+
+k = 3 % 2 = 1
+
+length = 2
+
+Letter 'b'
+
+k == length-1
+
+Return 'b'
+
+--------------------------------------------------
+
+Why It Works?
+
+Reverse simulation maps the queried
+index back through every operation
+until it reaches the original
+character that created it.
+
+No large string is ever built.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Forward pass + reverse pass.
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Reverse Simulation
+String Processing
+*/
+
+class Solution {
+public:
+    char processStr(string s, long long k) {
+
+        long long len = 0;
+
+        // Forward pass:
+        // Compute final length only.
+        for (char c : s) {
+
+            if (islower(c))
+                len++;
+
+            else if (c == '*') {
+
+                if (len > 0)
+                    len--;
+            }
+
+            else if (c == '#')
+                len *= 2;
+        }
+
+        // Query outside final string
+        if (k >= len)
+            return '.';
+
+        // Reverse simulation
+        for (int i = s.size() - 1; i >= 0; i--) {
+
+            char c = s[i];
+
+            if (islower(c)) {
+
+                if (k == len - 1)
+                    return c;
+
+                len--;
+            }
+
+            else if (c == '#') {
+
+                long long half = len / 2;
+
+                k %= half;
+
+                len = half;
+            }
+
+            else if (c == '%') {
+
+                k = len - 1 - k;
+            }
+
+            else {   // '*'
+
+                len++;
+            }
+        }
+
+        return '.';
+    }
+};
