@@ -1,0 +1,149 @@
+/*
+Problem: Angle Between Hands of a Clock (LC 1344)
+Topic: Math / Geometry
+
+--------------------------------------------------
+
+Idea:
+
+Compute the positions of the hour
+hand and minute hand separately.
+
+Then find the absolute difference
+between their angles.
+
+Since there are always two angles
+between the hands, return the smaller
+one.
+
+--------------------------------------------------
+
+Formulae
+
+Hour hand:
+
+30 × hour + 0.5 × minutes
+
+Minute hand:
+
+6 × minutes
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Compute the hour hand angle.
+
+2. Compute the minute hand angle.
+
+3. Find their absolute difference.
+
+4. Return:
+
+   min(diff, 360 - diff)
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+hour = 3
+
+minutes = 30
+
+Hour hand:
+
+3 × 30 + 30 × 0.5
+
+= 105°
+
+Minute hand:
+
+30 × 6
+
+= 180°
+
+Difference:
+
+75°
+
+Answer:
+
+75
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+hour = 12
+
+minutes = 30
+
+Hour hand:
+
+15°
+
+Minute hand:
+
+180°
+
+Difference:
+
+165°
+
+Answer:
+
+165
+
+--------------------------------------------------
+
+Why It Works?
+
+The hour hand moves continuously
+(0.5° every minute), while the
+minute hand moves 6° every minute.
+
+The smaller angle is always:
+
+min(diff, 360 - diff)
+
+--------------------------------------------------
+
+Time : O(1)
+
+Only a few arithmetic operations.
+
+Space : O(1)
+
+--------------------------------------------------
+
+Pattern:
+
+Math / Geometry
+*/
+
+class Solution {
+public:
+    double angleClock(int hour,
+                      int minutes) {
+
+        // Hour hand angle
+        double hourAngle =
+            (hour % 12) * 30 +
+            minutes * 0.5;
+
+        // Minute hand angle
+        double minuteAngle =
+            minutes * 6;
+
+        // Absolute difference
+        double diff =
+            abs(hourAngle - minuteAngle);
+
+        // Smaller angle
+        return min(diff, 360 - diff);
+    }
+};
