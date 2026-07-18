@@ -1,0 +1,157 @@
+/*
+Problem: Count Hills and Valleys in an Array (LC 2210)
+Topic: Array / Simulation
+
+--------------------------------------------------
+
+Idea:
+
+Consecutive duplicate values do not
+affect whether an element is a hill
+or valley.
+
+First remove consecutive duplicates.
+
+Then, for every middle element:
+
+• Hill:
+  greater than both neighbors.
+
+• Valley:
+  smaller than both neighbors.
+
+Count all such elements.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Create a new array containing only
+   distinct consecutive values.
+
+2. Traverse the new array from the
+   second element to the second-last.
+
+3. If the current element is:
+
+   • Greater than both neighbors,
+     increment count.
+
+   • Smaller than both neighbors,
+     increment count.
+
+4. Return the count.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[2,4,1,1,6,5]
+
+After removing duplicates:
+
+[2,4,1,6,5]
+
+Hills/Valleys:
+
+4 → Hill
+
+1 → Valley
+
+6 → Hill
+
+Answer:
+
+3
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[6,6,5,5,4,1]
+
+After removing duplicates:
+
+[6,5,4,1]
+
+No hills or valleys.
+
+Answer:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+Consecutive duplicates belong to the
+same plateau and should be treated as
+a single value.
+
+After removing them, every remaining
+middle element can be checked using
+its immediate neighbors.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass to remove duplicates and
+one pass to count hills/valleys.
+
+Space : O(n)
+
+Extra array stores the compressed
+sequence.
+
+--------------------------------------------------
+
+Pattern:
+
+Array Simulation
+*/
+
+class Solution {
+public:
+    int countHillValley(vector<int>& nums) {
+
+        vector<int> arr;
+
+        // Remove consecutive duplicates
+        arr.push_back(nums[0]);
+
+        for (int i = 1; i < nums.size(); i++) {
+
+            if (nums[i] != nums[i - 1]) {
+
+                arr.push_back(nums[i]);
+            }
+        }
+
+        int count = 0;
+
+        // Count hills and valleys
+        for (int i = 1;
+             i < arr.size() - 1;
+             i++) {
+
+            if (arr[i] > arr[i - 1] &&
+                arr[i] > arr[i + 1]) {
+
+                count++;
+            }
+
+            else if (arr[i] < arr[i - 1] &&
+                     arr[i] < arr[i + 1]) {
+
+                count++;
+            }
+        }
+
+        return count;
+    }
+};
