@@ -1,0 +1,133 @@
+/*
+Problem: Find the Highest Altitude (LC 1732)
+Topic: Prefix Sum
+
+--------------------------------------------------
+
+Idea:
+
+The biker starts at altitude 0.
+
+Each value in the gain array
+represents the change in altitude
+between two points.
+
+Keep a running sum of gains to obtain
+the current altitude and track the
+maximum altitude reached.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize:
+
+   currentAltitude = 0
+
+   maxAltitude = 0
+
+2. Traverse the gain array.
+
+3. Add the current gain to the
+   current altitude.
+
+4. Update the maximum altitude.
+
+5. Return the maximum altitude.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+gain = [-5,1,5,0,-7]
+
+Altitudes:
+
+0
+
+-5
+
+-4
+
+1
+
+1
+
+-6
+
+Highest altitude:
+
+1
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+gain = [-4,-3,-2]
+
+Altitudes:
+
+0
+
+-4
+
+-7
+
+-9
+
+Highest altitude:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+The running sum represents the
+current altitude after each segment.
+
+The maximum running sum (including
+the starting altitude 0) is the
+highest altitude reached.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each gain is processed once.
+
+Space : O(1)
+
+Only a few variables are used.
+
+--------------------------------------------------
+
+Pattern:
+
+Prefix Sum
+*/
+
+class Solution {
+public:
+    int largestAltitude(vector<int>& gain) {
+
+        int currentAltitude = 0;
+        int maxAltitude = 0;
+
+        // Compute running altitude
+        for (int i = 0; i < gain.size(); i++) {
+
+            currentAltitude += gain[i];
+
+            maxAltitude =
+                max(maxAltitude,
+                    currentAltitude);
+        }
+
+        return maxAltitude;
+    }
+};
