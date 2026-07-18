@@ -1,0 +1,148 @@
+/*
+Problem: Lowest Common Ancestor of a BST (LC 235)
+Topic: Binary Search Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+Use the Binary Search Tree property.
+
+• If both nodes are smaller than the
+  current node, the LCA lies in the
+  left subtree.
+
+• If both nodes are greater than the
+  current node, the LCA lies in the
+  right subtree.
+
+• Otherwise, the current node is the
+  point where the paths split, so it
+  is the Lowest Common Ancestor.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. If the tree is empty,
+   return NULL.
+
+2. If both p and q are smaller than
+   the current node, recurse left.
+
+3. If both p and q are greater than
+   the current node, recurse right.
+
+4. Otherwise, return the current
+   node as the LCA.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+          6
+         / \
+        2   8
+       / \ / \
+      0  4 7  9
+        / \
+       3   5
+
+p = 2
+
+q = 8
+
+Answer:
+
+6
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+          6
+         / \
+        2   8
+       / \
+      0   4
+         / \
+        3   5
+
+p = 2
+
+q = 4
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Why It Works?
+
+The BST property lets us determine
+which subtree contains both nodes.
+
+The first node where the two paths
+diverge (or one node equals the
+current node) is the Lowest Common
+Ancestor.
+
+--------------------------------------------------
+
+Time : O(h)
+
+h = Height of the BST.
+
+Balanced BST: O(log n)
+
+Worst case (skewed): O(n)
+
+--------------------------------------------------
+
+Space : O(h)
+
+Recursion stack.
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree / Recursion
+*/
+
+class Solution {
+public:
+
+    TreeNode* lowestCommonAncestor(
+        TreeNode* root,
+        TreeNode* p,
+        TreeNode* q) {
+
+        if (root == NULL)
+            return NULL;
+
+        // Both nodes are in the left subtree
+        if (root->val > p->val &&
+            root->val > q->val) {
+
+            return lowestCommonAncestor(
+                root->left, p, q);
+        }
+
+        // Both nodes are in the right subtree
+        if (root->val < p->val &&
+            root->val < q->val) {
+
+            return lowestCommonAncestor(
+                root->right, p, q);
+        }
+
+        // Split point (or one node is root)
+        return root;
+    }
+};
