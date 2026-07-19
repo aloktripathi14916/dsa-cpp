@@ -1,0 +1,143 @@
+/*
+Problem: Convert Sorted List to Binary Search Tree (LC 109)
+Topic: Linked List / Binary Search Tree / Divide & Conquer
+
+--------------------------------------------------
+
+Idea:
+
+The middle node of a sorted linked
+list becomes the root of the BST.
+
+Use the Fast & Slow Pointer technique
+to find the middle node.
+
+Recursively build:
+
+• Left subtree from the left half.
+
+• Right subtree from the right half.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. If the list is empty,
+   return NULL.
+
+2. If the list has one node,
+   create and return a tree node.
+
+3. Find the middle node using
+   slow and fast pointers.
+
+4. Disconnect the left half from
+   the middle.
+
+5. Create the root using the middle
+   node.
+
+6. Recursively build:
+
+   • Left subtree.
+
+   • Right subtree.
+
+7. Return the root.
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+-10 → -3 → 0 → 5 → 9
+
+Middle:
+
+0
+
+BST:
+
+        0
+       / \
+    -10   5
+       \    \
+       -3    9
+
+--------------------------------------------------
+
+Why It Works?
+
+Choosing the middle element as the
+root keeps the BST height balanced.
+
+Each recursive call builds the left
+and right halves independently.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Finding the middle takes O(n) for
+each recursive level.
+
+Space : O(log n)
+
+Recursion stack for a balanced tree.
+
+Worst case recursion stack: O(n)
+
+--------------------------------------------------
+
+Pattern:
+
+Fast & Slow Pointers
+Divide & Conquer
+Binary Search Tree
+*/
+
+class Solution {
+public:
+
+    TreeNode* sortedListToBST(ListNode* head) {
+
+        // Empty list
+        if (head == NULL)
+            return NULL;
+
+        // Single node
+        if (head->next == NULL)
+            return new TreeNode(head->val);
+
+        ListNode* prev = NULL;
+        ListNode* slow = head;
+        ListNode* fast = head;
+
+        // Find middle node
+        while (fast != NULL &&
+               fast->next != NULL) {
+
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // Split the list
+        prev->next = NULL;
+
+        // Middle becomes root
+        TreeNode* root =
+            new TreeNode(slow->val);
+
+        // Build left subtree
+        root->left =
+            sortedListToBST(head);
+
+        // Build right subtree
+        root->right =
+            sortedListToBST(slow->next);
+
+        return root;
+    }
+};
