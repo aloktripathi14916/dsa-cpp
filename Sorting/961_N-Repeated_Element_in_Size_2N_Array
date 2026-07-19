@@ -1,0 +1,121 @@
+/*
+Problem: N-Repeated Element in Size 2N Array (LC 961)
+Topic: Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Sort the array so that equal elements
+become adjacent.
+
+The element repeated N times will
+appear consecutively after sorting.
+
+Traverse the sorted array and return
+the first adjacent duplicate.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Sort the array.
+
+2. Traverse from index 1.
+
+3. If the current element equals the
+   previous element:
+
+   Return that element.
+
+4. (This case never occurs according
+   to the problem constraints.)
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[1,2,3,3]
+
+Sorted:
+
+[1,2,3,3]
+
+Adjacent duplicate:
+
+3
+
+Answer:
+
+3
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+[5,1,5,2]
+
+Sorted:
+
+[1,2,5,5]
+
+Adjacent duplicate:
+
+5
+
+Answer:
+
+5
+
+--------------------------------------------------
+
+Why It Works?
+
+Sorting groups identical elements
+together.
+
+Since one element appears exactly N
+times, it must have at least one
+adjacent duplicate after sorting.
+
+--------------------------------------------------
+
+Time : O(n log n)
+
+Sorting dominates the complexity.
+
+Space : O(1)
+
+Ignoring the space used internally by
+the sorting algorithm.
+
+--------------------------------------------------
+
+Pattern:
+
+Sorting
+*/
+
+class Solution {
+public:
+    int repeatedNTimes(vector<int>& nums) {
+
+        // Sort the array
+        sort(nums.begin(), nums.end());
+
+        // Find adjacent duplicate
+        for (int i = 1;
+             i < nums.size();
+             i++) {
+
+            if (nums[i] == nums[i - 1])
+                return nums[i];
+        }
+
+        return 0;
+    }
+};
