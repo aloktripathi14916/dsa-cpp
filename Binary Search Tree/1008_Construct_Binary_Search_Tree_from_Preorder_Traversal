@@ -1,0 +1,173 @@
+/*
+Problem: Construct Binary Search Tree from Preorder Traversal (LC 1008)
+Topic: Binary Search Tree / Recursion
+
+--------------------------------------------------
+
+Idea:
+
+In preorder traversal:
+
+Root → Left → Right
+
+The first element is always the root.
+
+Every value smaller than the root
+belongs to the left subtree.
+
+Every value greater than the root
+belongs to the right subtree.
+
+Instead of searching for the split
+point every time, keep an index and
+an upper bound.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Maintain an index 'i' pointing to
+   the current preorder element.
+
+2. If:
+
+   • i reaches the end, or
+
+   • preorder[i] > bound,
+
+   return NULL.
+
+3. Create the current node using
+   preorder[i].
+
+4. Increment i.
+
+5. Build:
+
+   • Left subtree with bound =
+     root->val.
+
+   • Right subtree with the same
+     bound received from the parent.
+
+6. Return the root.
+
+--------------------------------------------------
+
+Example:
+
+Preorder:
+
+[8,5,1,7,10,12]
+
+Tree:
+
+        8
+      /   \
+     5     10
+    / \      \
+   1   7      12
+
+--------------------------------------------------
+
+Dry Run:
+
+helper(bound = ∞)
+
+Create 8
+
+Left:
+
+helper(bound = 8)
+
+Create 5
+
+Left:
+
+helper(bound = 5)
+
+Create 1
+
+Next value = 7
+
+7 > 5
+
+Return NULL
+
+Right:
+
+7 > 5
+
+Return NULL
+
+Return node 1
+
+Back to 5
+
+Right:
+
+helper(bound = 8)
+
+Create 7
+
+Next value = 10
+
+10 > 7
+
+Return NULL
+
+Return node 7
+
+Back to 8
+
+Right:
+
+helper(bound = ∞)
+
+Create 10
+
+Right:
+
+Create 12
+
+Done.
+
+--------------------------------------------------
+
+Why It Works?
+
+The preorder sequence is consumed only
+once.
+
+The 'bound' ensures that nodes never
+cross into another subtree.
+
+Every element is processed exactly
+once.
+
+--------------------------------------------------
+
+Time : O(n)
+
+Each node is visited once.
+
+Space : O(h)
+
+Recursion stack.
+
+Worst case:
+
+O(n)
+
+Balanced BST:
+
+O(log n)
+
+--------------------------------------------------
+
+Pattern:
+
+Binary Search Tree
+Recursion
+Preorder Traversal
+*/
