@@ -1,0 +1,149 @@
+/*
+Problem: Maximum Number of Balloons (LC 1189)
+Topic: String / Counting
+
+--------------------------------------------------
+
+Idea:
+
+To form the word "balloon", we need:
+
+b -> 1
+a -> 1
+l -> 2
+o -> 2
+n -> 1
+
+Count the frequency of each required
+character in the input string.
+
+The answer is the minimum number of
+complete "balloon" words that can be
+formed.
+
+--------------------------------------------------
+
+Algorithm:
+
+1. Initialize counters for:
+
+   b, a, l, o, n
+
+2. Traverse the string.
+
+3. Increment the corresponding
+   counter whenever one of the above
+   characters is found.
+
+4. Since 'l' and 'o' are required
+   twice, divide their counts by 2.
+
+5. Return:
+
+   min(b, a, l/2, o/2, n)
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"loonbalxballpoon"
+
+Counts:
+
+b = 2
+a = 2
+l = 4
+o = 4
+n = 2
+
+Possible balloons:
+
+min(2,2,2,2,2) = 2
+
+Answer:
+
+2
+
+--------------------------------------------------
+
+Example:
+
+Input:
+
+"balon"
+
+Counts:
+
+b = 1
+a = 1
+l = 1
+o = 1
+n = 1
+
+Need two 'l's and two 'o's.
+
+Answer:
+
+0
+
+--------------------------------------------------
+
+Why It Works?
+
+A complete "balloon" can only be
+formed as many times as its least
+available required character.
+
+Since 'l' and 'o' appear twice in the
+word, their counts are halved.
+
+--------------------------------------------------
+
+Time : O(n)
+
+One pass through the string.
+
+Space : O(1)
+
+Only five counters are used.
+
+--------------------------------------------------
+
+Pattern:
+
+String
+Frequency Counting
+*/
+
+class Solution {
+public:
+    int maxNumberOfBalloons(string text) {
+
+        int b = 0, a = 0, l = 0;
+        int o = 0, n = 0;
+
+        // Count required characters
+        for (char ch : text) {
+
+            if (ch == 'b')
+                b++;
+
+            else if (ch == 'a')
+                a++;
+
+            else if (ch == 'l')
+                l++;
+
+            else if (ch == 'o')
+                o++;
+
+            else if (ch == 'n')
+                n++;
+        }
+
+        // 'l' and 'o' are needed twice
+        return min({b, a, l / 2, o / 2, n});
+    }
+};
