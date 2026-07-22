@@ -1,0 +1,77 @@
+/*
+Problem: Recover Binary Search Tree (LC 99)
+Topic: Binary Tree, BST, Inorder Traversal
+
+--------------------------------------------------
+
+Idea:
+
+The inorder traversal of a BST is always
+sorted.
+
+If two nodes are swapped, the inorder
+sequence will have one or two inversions.
+
+During inorder traversal:
+
+• prev stores the previous node.
+
+• On finding:
+
+    prev->val > root->val
+
+  we have found an inversion.
+
+• First inversion:
+    first = prev
+
+• Every inversion:
+    second = root
+
+Finally, swap the values of first and
+second to restore the BST.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(h)
+
+(h = height of tree due to recursion)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    TreeNode *prev = NULL, *first = NULL, *second = NULL;
+
+    void inorder(TreeNode* root) {
+
+        if(root == NULL)
+            return;
+
+        inorder(root->left);
+
+        // Found an inversion
+        if(prev != NULL && root->val < prev->val) {
+
+            if(!first)
+                first = prev;
+
+            second = root;
+        }
+
+        prev = root;
+
+        inorder(root->right);
+    }
+
+    void recoverTree(TreeNode* root) {
+
+        inorder(root);
+
+        swap(first->val, second->val);
+    }
+};
