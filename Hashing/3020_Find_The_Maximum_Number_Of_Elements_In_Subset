@@ -1,0 +1,92 @@
+/*
+Problem: Find the Maximum Number of Elements in Subset (LC 3020)
+Topic: Hash Map, Greedy
+
+--------------------------------------------------
+
+Idea:
+
+A valid subset follows the pattern:
+
+x, x, x², x², x⁴, x⁴, ...
+
+Every number (except the last one)
+must appear at least twice so that one
+copy can generate the next square.
+
+Algorithm:
+
+1. Count the frequency of every number.
+
+2. Handle 1 separately:
+   Since 1² = 1, we can only use an
+   odd number of 1's.
+
+3. For every remaining number:
+
+   • While current number appears at
+     least twice:
+       - use both copies
+       - move to its square
+
+   • If the last square exists once,
+     add it.
+
+   • Otherwise remove one from the
+     length because the last pair
+     cannot terminate the chain.
+
+4. Return the maximum length found.
+
+--------------------------------------------------
+
+Time: O(n log log M)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+
+        unordered_map<long long, int> cnt;
+
+        // Count frequencies
+        for(int x : nums)
+            cnt[x]++;
+
+        int ans = 1;
+
+        // Handle 1 separately
+        if(cnt.count(1))
+            ans = cnt[1] - (cnt[1] % 2 == 0);
+
+        cnt.erase(1);
+
+        // Try every possible starting value
+        for(auto &[num, _] : cnt) {
+
+            long long x = num;
+            int len = 0;
+
+            // Keep extending while two copies exist
+            while(cnt.count(x) && cnt[x] >= 2) {
+
+                len += 2;
+                x = x * x;
+            }
+
+            // Last element of chain
+            if(cnt.count(x))
+                len++;
+            else
+                len--;
+
+            ans = max(ans, len);
+        }
+
+        return ans;
+    }
+};
