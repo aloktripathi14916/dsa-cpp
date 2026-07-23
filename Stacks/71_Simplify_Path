@@ -1,0 +1,82 @@
+/*
+Problem: Simplify Path (LC 71)
+Topic: Stack, String
+
+--------------------------------------------------
+
+Idea:
+
+Process the path directory by directory.
+
+• Ignore "" (multiple '/')
+• Ignore "." (current directory)
+• ".." means go back one directory,
+  so pop from the stack if possible.
+• Otherwise, push the directory name.
+
+Finally, build the canonical path from
+the remaining directories in the stack.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+
+        stack<string> s;
+        string ans = "/";
+
+        // Process each directory
+        for(int i = 0; i < path.length(); i++) {
+
+            string curr = "";
+
+            while(i < path.length() && path[i] != '/') {
+                curr += path[i];
+                i++;
+            }
+
+            // Go to parent directory
+            if(curr == "..") {
+
+                if(!s.empty())
+                    s.pop();
+
+                continue;
+            }
+
+            // Ignore "." and empty names
+            if(curr.empty() || curr == ".")
+                continue;
+
+            // Valid directory
+            s.push(curr);
+        }
+
+        // Stack is reversed
+        vector<string> temp;
+
+        while(!s.empty()) {
+            temp.push_back(s.top());
+            s.pop();
+        }
+
+        // Build answer
+        for(int i = temp.size() - 1; i >= 0; i--) {
+
+            ans += temp[i];
+
+            if(i != 0)
+                ans += "/";
+        }
+
+        return ans;
+    }
+};
