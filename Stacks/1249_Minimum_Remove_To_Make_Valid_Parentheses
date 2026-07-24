@@ -1,0 +1,73 @@
+/*
+Problem: Minimum Remove to Make Valid Parentheses (LC 1249)
+Topic: Stack, String
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the string once.
+
+• Push the index of every '('.
+
+• For every ')':
+    - If a matching '(' exists,
+      pop it.
+    - Otherwise, mark ')' for removal.
+
+After traversal, any '(' left in the
+stack is unmatched, so mark it for
+removal.
+
+Finally, build the answer by skipping
+all marked characters.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+
+        stack<int> st;
+        vector<bool> remove(s.length(), false);
+        string ans = "";
+
+        // Mark invalid parentheses
+        for(int i = 0; i < s.length(); i++) {
+
+            if(s[i] == '(') {
+                st.push(i);
+            }
+
+            else if(s[i] == ')') {
+
+                if(!st.empty())
+                    st.pop();
+                else
+                    remove[i] = true;
+            }
+        }
+
+        // Unmatched '('
+        while(!st.empty()) {
+            remove[st.top()] = true;
+            st.pop();
+        }
+
+        // Build valid string
+        for(int i = 0; i < s.length(); i++) {
+
+            if(!remove[i])
+                ans += s[i];
+        }
+
+        return ans;
+    }
+};
