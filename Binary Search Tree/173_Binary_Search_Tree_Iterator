@@ -1,0 +1,88 @@
+/*
+Problem: Binary Search Tree Iterator (LC 173)
+Topic: BST, Stack
+
+--------------------------------------------------
+
+Idea:
+
+The inorder traversal of a BST gives
+nodes in sorted order.
+
+Instead of storing the entire inorder
+traversal, store only the leftmost path
+in a stack.
+
+• Constructor:
+  Push all left nodes from the root.
+
+• next():
+  Pop the top node (next smallest).
+  If it has a right child, push the
+  leftmost path of its right subtree.
+
+• hasNext():
+  Return whether the stack is non-empty.
+
+This gives the next smallest element
+on demand.
+
+--------------------------------------------------
+
+Time:
+
+Constructor : O(h)
+
+next() : O(1) amortized
+
+hasNext() : O(1)
+
+Space: O(h)
+
+(h = height of the BST)
+
+--------------------------------------------------
+*/
+
+class BSTIterator {
+public:
+
+    stack<TreeNode*> s;
+
+    // Push all left descendants
+    void storeLeft(TreeNode* root) {
+
+        while(root != NULL) {
+            s.push(root);
+            root = root->left;
+        }
+    }
+
+    BSTIterator(TreeNode* root) {
+
+        storeLeft(root);
+    }
+
+    int next() {
+
+        TreeNode* node = s.top();
+        s.pop();
+
+        // Process right subtree
+        storeLeft(node->right);
+
+        return node->val;
+    }
+
+    bool hasNext() {
+
+        return !s.empty();
+    }
+};
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator* obj = new BSTIterator(root);
+ * int param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
