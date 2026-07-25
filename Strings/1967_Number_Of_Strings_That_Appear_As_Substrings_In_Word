@@ -1,0 +1,51 @@
+/*
+Problem: Number of Strings That Appear as Substrings in Word (LC 1967)
+Topic: String
+
+--------------------------------------------------
+
+Idea:
+
+For each pattern, check whether it
+appears as a substring of the given
+word.
+
+Use the built-in find() function.
+
+If find() returns anything other than
+string::npos, the pattern exists in
+the word.
+
+Count all such patterns.
+
+--------------------------------------------------
+
+Time: O(p * w)
+
+p = number of patterns
+
+w = length of word
+
+(Built-in find() is used for each
+pattern.)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int numOfStrings(vector<string>& patterns, string word) {
+
+        int count = 0;
+
+        for(int i = 0; i < patterns.size(); i++) {
+
+            if(word.find(patterns[i]) != string::npos)
+                count++;
+        }
+
+        return count;
+    }
+};
