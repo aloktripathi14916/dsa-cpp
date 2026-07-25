@@ -1,0 +1,67 @@
+/*
+Problem: Number of Substrings Containing All Three Characters (LC 1358)
+Topic: Sliding Window
+
+--------------------------------------------------
+
+Idea:
+
+Maintain a sliding window containing
+characters 'a', 'b' and 'c'.
+
+Expand the window by moving 'end'.
+
+Whenever the current window contains
+at least one 'a', 'b' and 'c':
+
+• Every substring ending at 'end' or
+  later will also be valid.
+
+So add:
+
+(n - end)
+
+to the answer.
+
+Then shrink the window from the left
+to find more valid starting positions.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+(Only stores frequencies of 3 characters.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+
+        int count = 0;
+        int st = 0;
+
+        unordered_map<char, int> mp;
+
+        for(int end = 0; end < s.length(); end++) {
+
+            mp[s[end]]++;
+
+            // Window contains a, b and c
+            while(mp['a'] > 0 &&
+                  mp['b'] > 0 &&
+                  mp['c'] > 0) {
+
+                count += s.length() - end;
+
+                mp[s[st]]--;
+                st++;
+            }
+        }
+
+        return count;
+    }
+};
