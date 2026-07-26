@@ -1,0 +1,69 @@
+/*
+Problem: Maximum Binary Tree (LC 654)
+Topic: Binary Tree, Divide & Conquer
+
+--------------------------------------------------
+
+Idea:
+
+The maximum element of the array
+becomes the root.
+
+• Elements to its left form the left
+  subtree.
+
+• Elements to its right form the
+  right subtree.
+
+Recursively apply the same process to
+both subarrays until no elements are
+left.
+
+--------------------------------------------------
+
+Time: O(n²)
+
+(In each recursive call, finding the
+maximum takes O(n).)
+
+Best Case: O(n log n)
+
+Worst Case: O(n)
+
+Space: O(n)
+
+(Recursion stack in worst case.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    TreeNode* buildTree(vector<int> nums, int st, int end) {
+
+        if(st > end)
+            return NULL;
+
+        // Find index of maximum element
+        int idx = st;
+
+        for(int i = st + 1; i <= end; i++) {
+
+            if(nums[i] > nums[idx])
+                idx = i;
+        }
+
+        TreeNode* root = new TreeNode(nums[idx]);
+
+        root->left = buildTree(nums, st, idx - 1);
+        root->right = buildTree(nums, idx + 1, end);
+
+        return root;
+    }
+
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+
+        return buildTree(nums, 0, nums.size() - 1);
+    }
+};
