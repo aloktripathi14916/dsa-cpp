@@ -1,0 +1,47 @@
+/*
+Problem: Strictly Palindromic Number (LC 2396)
+Topic: Math
+
+--------------------------------------------------
+
+Idea:
+
+A number is strictly palindromic if its
+representation is a palindrome in every
+base from 2 to (n - 2).
+
+For every n ≥ 4, consider base (n - 2):
+
+Representation of n in base (n - 2):
+
+10₂₍ₙ₋₂₎
+
+because
+
+n = 1 × (n - 2) + 2
+
+The representation is always:
+
+"12"
+
+which is never a palindrome.
+
+Hence, no number can be strictly
+palindromic.
+
+--------------------------------------------------
+
+Time: O(1)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool isStrictlyPalindromic(int n) {
+
+        return false;
+    }
+};
