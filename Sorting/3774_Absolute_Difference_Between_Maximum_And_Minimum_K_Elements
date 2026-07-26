@@ -1,0 +1,53 @@
+/*
+Problem: Find the Minimum Absolute Difference
+Between Sum of Extremes (LC 3774)
+Topic: Sorting, Greedy
+
+--------------------------------------------------
+
+Idea:
+
+To minimize the difference:
+
+• Sort the array.
+
+• Take the sum of the k smallest
+  elements.
+
+• Take the sum of the k largest
+  elements.
+
+• Return the absolute difference
+  between these two sums.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+(Due to sorting.)
+
+Space: O(1)
+
+(Ignoring the sorting space.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int absDifference(vector<int>& nums, int k) {
+
+        sort(nums.begin(), nums.end());
+
+        int low = 0, high = 0;
+
+        // Sum of k smallest and k largest
+        for(int i = 0; i < k; i++) {
+
+            low += nums[i];
+            high += nums[nums.size() - 1 - i];
+        }
+
+        return abs(high - low);
+    }
+};
