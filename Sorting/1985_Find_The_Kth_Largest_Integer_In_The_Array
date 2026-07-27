@@ -1,0 +1,55 @@
+/*
+Problem: Find the Kth Largest Integer in the Array (LC 1985)
+Topic: Sorting, Custom Comparator
+
+--------------------------------------------------
+
+Idea:
+
+The numbers are given as strings and
+may be too large for integer types.
+
+Compare two numbers as follows:
+
+• The number with more digits is larger.
+
+• If both have the same number of
+  digits, compare them lexicographically.
+
+Sort the strings in ascending order
+using this comparator.
+
+The k-th largest element is then at:
+
+nums[n - k]
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+Space: O(1)
+
+(Ignoring the sorting space.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    static bool cmp(string &a, string &b) {
+
+        // Compare by length first
+        if(a.size() == b.size())
+            return a < b;
+
+        return a.size() < b.size();
+    }
+
+    string kthLargestNumber(vector<string>& nums, int k) {
+
+        sort(nums.begin(), nums.end(), cmp);
+
+        return nums[nums.size() - k];
+    }
+};
