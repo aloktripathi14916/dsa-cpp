@@ -1,0 +1,43 @@
+/*
+Problem: Kth Largest Element in an Array (LC 215)
+Topic: Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Sort the array in ascending order.
+
+After sorting:
+
+• Smallest element is at index 0.
+
+• Largest element is at index n - 1.
+
+Therefore, the k-th largest element is
+located at index:
+
+n - k
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+(Due to sorting.)
+
+Space: O(1)
+
+(Ignoring the sorting space.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+
+        sort(nums.begin(), nums.end());
+
+        return nums[nums.size() - k];
+    }
+};
