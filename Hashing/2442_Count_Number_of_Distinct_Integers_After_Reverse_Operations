@@ -1,0 +1,63 @@
+/*
+Problem: Count Number of Distinct Integers After Reverse Operations (LC 2442)
+Topic: Hash Set, Math
+
+--------------------------------------------------
+
+Idea:
+
+For every number in the array:
+
+• Reverse its digits.
+
+• Append the reversed number to the
+  array.
+
+Finally, insert all numbers into a
+hash set.
+
+Since a set stores only unique values,
+its size is the number of distinct
+integers.
+
+--------------------------------------------------
+
+Time: O(n × d)
+
+d = number of digits in each number.
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int countDistinctIntegers(vector<int>& nums) {
+
+        int n = nums.size();
+
+        // Append reversed numbers
+        for(int i = 0; i < n; i++) {
+
+            int x = nums[i];
+            int revNum = 0;
+
+            while(x > 0) {
+                revNum = revNum * 10 + (x % 10);
+                x /= 10;
+            }
+
+            nums.push_back(revNum);
+        }
+
+        unordered_set<int> s;
+
+        // Count distinct integers
+        for(int i = 0; i < 2 * n; i++) {
+            s.insert(nums[i]);
+        }
+
+        return s.size();
+    }
+};
