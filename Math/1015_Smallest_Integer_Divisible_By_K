@@ -1,0 +1,61 @@
+/*
+Problem: Smallest Integer Divisible by K (LC 1015)
+Topic: Math, Modular Arithmetic
+
+--------------------------------------------------
+
+Idea:
+
+A repunit is a number consisting only
+of digit '1'.
+
+Instead of constructing huge numbers,
+keep track of only the remainder.
+
+If the current remainder is r, then
+after appending another '1':
+
+newRemainder = (r * 10 + 1) % k
+
+If the remainder ever becomes 0, the
+current length is the answer.
+
+If k is divisible by 2 or 5, such a
+number can never exist because every
+repunit ends with digit 1.
+
+Also, after checking k different
+remainders, a remainder must repeat
+(Pigeonhole Principle). If no remainder
+is 0 by then, the answer is impossible.
+
+--------------------------------------------------
+
+Time: O(k)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int smallestRepunitDivByK(int k) {
+
+        // Impossible cases
+        if(k % 2 == 0 || k % 5 == 0)
+            return -1;
+
+        int remainder = 0;
+
+        for(int i = 1; i <= k; i++) {
+
+            remainder = (remainder * 10 + 1) % k;
+
+            if(remainder == 0)
+                return i;
+        }
+
+        return -1;
+    }
+};
