@@ -1,0 +1,43 @@
+/*
+Problem: A Number After a Double Reversal (LC 2119)
+Topic: Math
+
+--------------------------------------------------
+
+Idea:
+
+Reversing a number removes its leading
+zeros.
+
+If a number ends with zero (and is not
+0 itself), the first reversal loses
+those trailing zeros permanently.
+
+After reversing again, the original
+number cannot be recovered.
+
+Therefore:
+
+• num = 0      -> true
+• num ends in 0 -> false
+• Otherwise     -> true
+
+--------------------------------------------------
+
+Time: O(1)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool isSameAfterReversals(int num) {
+
+        if(num % 10 == 0 && num != 0)
+            return false;
+
+        return true;
+    }
+};
