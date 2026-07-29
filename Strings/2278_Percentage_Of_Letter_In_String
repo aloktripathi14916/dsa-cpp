@@ -1,0 +1,43 @@
+/*
+Problem: Percentage of Letter in String (LC 2278)
+Topic: String
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the string and count how many
+times the given letter appears.
+
+The required percentage is:
+
+(count × 100) / length of string
+
+Since the answer should be an integer,
+integer division automatically floors
+the result.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int percentageLetter(string s, char letter) {
+
+        int count = 0;
+
+        for(int i = 0; i < s.length(); i++) {
+
+            if(s[i] == letter)
+                count++;
+        }
+
+        return (count * 100) / s.length();
+    }
+};
