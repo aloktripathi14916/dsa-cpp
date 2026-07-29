@@ -1,0 +1,83 @@
+/*
+Problem: Replace Non-Coprime Numbers in Array (LC 2197)
+Topic: Stack, Math (GCD & LCM)
+
+--------------------------------------------------
+
+Idea:
+
+Process the array from left to right.
+
+Maintain a stack representing the
+current processed array.
+
+For every number:
+
+• Let it be the current value.
+
+• While the top of the stack and the
+  current value are not coprime
+  (gcd > 1):
+
+    - Replace both by their LCM.
+
+    - Pop the stack.
+
+    - Continue checking with the new
+      top because another merge may
+      now be possible.
+
+Finally, the stack contains the
+required array.
+
+LCM(a, b) = (a / gcd(a, b)) * b
+
+--------------------------------------------------
+
+Time: O(n log M)
+
+M = maximum value in nums.
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> replaceNonCoprimes(vector<int>& nums) {
+
+        stack<int> s;
+
+        for(int x : nums) {
+
+            long long curr = x;
+
+            while(!s.empty()) {
+
+                int g = gcd((int)curr, s.top());
+
+                // Already coprime
+                if(g == 1)
+                    break;
+
+                // Merge using LCM
+                curr = (curr * s.top()) / g;
+                s.pop();
+            }
+
+            s.push((int)curr);
+        }
+
+        vector<int> ans;
+
+        while(!s.empty()) {
+            ans.push_back(s.top());
+            s.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
+    }
+};
