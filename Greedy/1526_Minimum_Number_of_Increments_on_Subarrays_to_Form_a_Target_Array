@@ -1,0 +1,50 @@
+/*
+Problem: Minimum Number of Increments on Subarrays to Form a Target Array (LC 1526)
+Topic: Greedy
+
+--------------------------------------------------
+
+Idea:
+
+Imagine building the target array from
+an array of all zeros.
+
+• The first element requires
+  target[0] operations.
+
+• For every next element:
+
+    - If it is greater than the
+      previous element, we need extra
+      operations equal to the increase.
+
+    - Otherwise, no new operations are
+      needed because previous subarray
+      increments already cover it.
+
+Thus, add only the positive increases.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int minNumberOperations(vector<int>& target) {
+
+        int count = target[0];
+
+        for(int i = 1; i < target.size(); i++) {
+
+            if(target[i] > target[i - 1])
+                count += target[i] - target[i - 1];
+        }
+
+        return count;
+    }
+};
