@@ -1,0 +1,57 @@
+/*
+Problem: Number of Ways to Buy Pens and Pencils (LC 2240)
+Topic: Math, Enumeration
+
+--------------------------------------------------
+
+Idea:
+
+Enumerate the number of pens bought.
+
+For each possible number of pens:
+
+• Compute the remaining money.
+
+• The maximum number of pencils that
+  can be bought is:
+
+      remaining / cost2
+
+• Since we can buy anywhere from
+  0 to maxPencils pencils, the number
+  of valid choices is:
+
+      maxPencils + 1
+
+Add these values for all possible
+numbers of pens.
+
+--------------------------------------------------
+
+Time: O(total / cost1)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    long long waysToBuyPensPencils(int total, int cost1, int cost2) {
+
+        int maxPens = total / cost1;
+
+        long long ways = 0;
+
+        for(int pens = 0; pens <= maxPens; pens++) {
+
+            int remaining = total - pens * cost1;
+
+            int maxPencils = remaining / cost2;
+
+            ways += maxPencils + 1;
+        }
+
+        return ways;
+    }
+};
