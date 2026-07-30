@@ -1,0 +1,54 @@
+/*
+Problem: Count Integers With Even Digit Sum (LC 2180)
+Topic: Math
+
+--------------------------------------------------
+
+Idea:
+
+Check every integer from 1 to num.
+
+For each number:
+
+• Compute the sum of its digits.
+
+• If the digit sum is even, increase
+  the answer.
+
+Finally, return the count.
+
+--------------------------------------------------
+
+Time: O(num × d)
+
+d = number of digits in each number.
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int countEven(int num) {
+
+        int count = 0;
+
+        for(int i = 1; i <= num; i++) {
+
+            int sum = 0;
+            int x = i;
+
+            // Compute digit sum
+            while(x > 0) {
+                sum += x % 10;
+                x /= 10;
+            }
+
+            if(sum % 2 == 0)
+                count++;
+        }
+
+        return count;
+    }
+};
