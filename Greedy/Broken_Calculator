@@ -1,0 +1,64 @@
+/*
+Problem: Broken Calculator (LC 991)
+Topic: Greedy
+
+--------------------------------------------------
+
+Idea:
+
+Instead of transforming startValue
+into target, work backwards from the
+target.
+
+Allowed forward operations:
+
+• Multiply by 2
+• Subtract 1
+
+Reverse operations:
+
+• If target is even:
+      Divide by 2.
+
+• If target is odd:
+      Add 1
+      (reverse of subtracting 1).
+
+Keep doing this until target becomes
+less than or equal to startValue.
+
+If target is smaller than startValue,
+the only way is to subtract 1 from
+startValue repeatedly.
+
+--------------------------------------------------
+
+Time: O(log target)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int brokenCalc(int startValue, int target) {
+
+        int count = 0;
+
+        while(target > startValue) {
+
+            if(target % 2 == 0)
+                target /= 2;
+            else
+                target++;
+
+            count++;
+        }
+
+        // Remaining operations are decrements
+        count += startValue - target;
+
+        return count;
+    }
+};
