@@ -1,0 +1,39 @@
+/*
+Problem: Check if All A's Appears Before All B's (LC 2124)
+Topic: String
+
+--------------------------------------------------
+
+Idea:
+
+The string is valid if no 'b' appears
+before an 'a'.
+
+This is equivalent to saying the
+substring "ba" should never occur.
+
+Use the built-in find() function:
+
+• If "ba" is found, return false.
+
+• Otherwise, return true.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool checkString(string s) {
+
+        if(s.find("ba") != string::npos)
+            return false;
+
+        return true;
+    }
+};
