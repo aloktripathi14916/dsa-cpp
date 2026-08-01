@@ -1,0 +1,51 @@
+/*
+Problem: Consecutive Characters (LC 1446)
+Topic: String
+
+--------------------------------------------------
+
+Idea:
+
+Traverse the string while keeping
+track of the current streak of
+consecutive identical characters.
+
+• If the current character matches
+  the previous one, extend the streak.
+
+• Otherwise, start a new streak.
+
+Maintain the maximum streak seen
+throughout the traversal.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int maxPower(string s) {
+
+        int maxCount = 1;
+        int count = 1;
+
+        for(int i = 1; i < s.length(); i++) {
+
+            if(s[i] == s[i - 1]) {
+
+                count++;
+                maxCount = max(maxCount, count);
+            }
+            else {
+                count = 1;
+            }
+        }
+
+        return maxCount;
+    }
+};
