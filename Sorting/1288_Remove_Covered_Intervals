@@ -1,0 +1,73 @@
+/*
+Problem: Remove Covered Intervals (LC 1288)
+Topic: Sorting, Greedy
+
+--------------------------------------------------
+
+Idea:
+
+Sort the intervals by:
+
+1. Increasing start point.
+
+2. If two intervals have the same
+   start, place the longer interval
+   first (decreasing end point).
+
+This ensures that if an interval is
+covered, it will always appear after
+the interval covering it.
+
+Traverse the sorted intervals while
+maintaining the maximum end seen so
+far.
+
+• If the current end is greater than
+  maxEnd, it is not covered.
+
+• Otherwise, it is covered by a
+  previous interval.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+(Due to sorting.)
+
+Space: O(1)
+
+(Ignoring sorting space.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    static bool cmp(const vector<int> &a, const vector<int> &b) {
+
+        if(a[0] == b[0])
+            return a[1] > b[1];
+
+        return a[0] < b[0];
+    }
+
+    int removeCoveredIntervals(vector<vector<int>>& intervals) {
+
+        sort(intervals.begin(), intervals.end(), cmp);
+
+        int count = 0;
+        int maxEnd = 0;
+
+        for(int i = 0; i < intervals.size(); i++) {
+
+            if(intervals[i][1] > maxEnd) {
+
+                count++;
+                maxEnd = intervals[i][1];
+            }
+        }
+
+        return count;
+    }
+};
