@@ -1,0 +1,76 @@
+/*
+Problem: Rabbits in Forest (LC 781)
+Topic: Hash Map, Greedy
+
+--------------------------------------------------
+
+Idea:
+
+If a rabbit answers x, it means there
+are exactly x other rabbits of the
+same color.
+
+Hence, one color group contains:
+
+    x + 1 rabbits
+
+Count the frequency of each answer.
+
+Suppose:
+
+• freq = number of rabbits answering x
+
+If freq exceeds one group, multiple
+groups are needed.
+
+Number of groups:
+
+    ceil(freq / (x + 1))
+
+Using integer arithmetic:
+
+    (freq + groupSize - 1) / groupSize
+
+Each group contributes:
+
+    groupSize rabbits
+
+Add the contribution of every answer.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+
+        unordered_map<int, vector<int>> mp;
+
+        // Group rabbits by their answers
+        for(int i = 0; i < answers.size(); i++)
+            mp[answers[i]].push_back(i);
+
+        int count = 0;
+
+        for(auto &it : mp) {
+
+            int x = it.first;
+            int freq = it.second.size();
+
+            int groupSize = x + 1;
+
+            int groups =
+                (freq + groupSize - 1) / groupSize;
+
+            count += groups * groupSize;
+        }
+
+        return count;
+    }
+};
