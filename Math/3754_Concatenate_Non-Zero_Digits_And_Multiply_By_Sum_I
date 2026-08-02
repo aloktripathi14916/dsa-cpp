@@ -1,0 +1,70 @@
+/*
+Problem: Sum and Multiply (LC 3754)
+Topic: Math
+
+--------------------------------------------------
+
+Idea:
+
+Extract all non-zero digits of the
+number.
+
+While extracting, digits come in
+reverse order, so reverse the list to
+restore the original order.
+
+Then:
+
+• Compute the sum of the non-zero
+  digits.
+
+• Form the new number using only the
+  non-zero digits.
+
+Finally, return:
+
+    sum × newNumber
+
+--------------------------------------------------
+
+Time: O(d)
+
+d = number of digits in n.
+
+Space: O(d)
+
+(To store the non-zero digits.)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    long long sumAndMultiply(int n) {
+
+        vector<int> digits;
+
+        // Extract non-zero digits
+        while(n > 0) {
+
+            int digit = n % 10;
+            n /= 10;
+
+            if(digit > 0)
+                digits.push_back(digit);
+        }
+
+        reverse(digits.begin(), digits.end());
+
+        long long sum = 0;
+        long long number = 0;
+
+        // Compute sum and rebuild number
+        for(int d : digits) {
+            sum += d;
+            number = number * 10 + d;
+        }
+
+        return sum * number;
+    }
+};
