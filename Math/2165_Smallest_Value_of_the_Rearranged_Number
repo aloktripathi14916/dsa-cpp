@@ -1,0 +1,78 @@
+/*
+Problem: Smallest Value of the Rearranged Number (LC 2165)
+Topic: Math, Sorting
+
+--------------------------------------------------
+
+Idea:
+
+Positive number:
+• Sort the digits in ascending order.
+• If leading zeros exist, swap the
+  first non-zero digit with the first
+  position to avoid leading zeros.
+
+Negative number:
+• Remove the sign.
+• Sort the digits in descending order.
+• Add the negative sign back.
+
+Why descending for negatives?
+
+A larger absolute value produces a
+smaller (more negative) number.
+
+--------------------------------------------------
+
+Time: O(d log d)
+
+d = number of digits.
+
+Space: O(d)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    long long smallestNumber(long long num) {
+
+        if(num == 0)
+            return 0;
+
+        bool isNeg = false;
+
+        if(num < 0) {
+            isNeg = true;
+            num = -num;
+        }
+
+        string s = to_string(num);
+        vector<int> digits;
+
+        for(char c : s)
+            digits.push_back(c - '0');
+
+        if(isNeg)
+            sort(digits.begin(), digits.end(), greater<int>());
+        else
+            sort(digits.begin(), digits.end());
+
+        // Avoid leading zero for positive numbers
+        if(!isNeg && digits[0] == 0) {
+
+            int i = 0;
+            while(digits[i] == 0)
+                i++;
+
+            swap(digits[0], digits[i]);
+        }
+
+        long long number = 0;
+
+        for(int d : digits)
+            number = number * 10 + d;
+
+        return isNeg ? -number : number;
+    }
+};
