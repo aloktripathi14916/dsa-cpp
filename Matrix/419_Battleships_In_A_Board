@@ -1,0 +1,70 @@
+/*
+Problem: Battleships in a Board (LC 419)
+Topic: Matrix
+
+--------------------------------------------------
+
+Idea:
+
+A battleship is formed by consecutive
+'X' cells either horizontally or
+vertically.
+
+Instead of traversing the entire
+battleship, count only its starting
+cell.
+
+A cell is the start of a battleship if:
+
+• It contains 'X'.
+
+• There is no 'X' directly above it.
+
+• There is no 'X' directly to its left.
+
+Every battleship has exactly one such
+starting cell.
+
+--------------------------------------------------
+
+Time: O(n × m)
+
+Each cell is visited once.
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int countBattleships(vector<vector<char>>& board) {
+
+        int n = board.size();
+        int m = board[0].size();
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            for(int j = 0; j < m; j++) {
+
+                // Ignore water
+                if(board[i][j] != 'X')
+                    continue;
+
+                // Not the start of a vertical ship
+                if(i > 0 && board[i - 1][j] == 'X')
+                    continue;
+
+                // Not the start of a horizontal ship
+                if(j > 0 && board[i][j - 1] == 'X')
+                    continue;
+
+                count++;
+            }
+        }
+
+        return count;
+    }
+};
