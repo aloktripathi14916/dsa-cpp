@@ -1,0 +1,84 @@
+/*
+Problem: Maximum Number of Fish in a Grid (LC 2658)
+Topic: Graph, DFS
+
+--------------------------------------------------
+
+Idea:
+
+Treat every non-zero cell as land.
+
+A connected component of non-zero cells
+represents one area of water that can be
+visited.
+
+For each unvisited non-zero cell:
+
+• Run DFS.
+• Add the fish in every connected cell.
+• The DFS returns the total fish in that
+  connected component.
+
+Keep the maximum total among all
+components.
+
+--------------------------------------------------
+
+Time: O(n × m)
+
+Each cell is visited at most once.
+
+Space: O(n × m)
+
+Visited array + recursion stack.
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    int dfs(int i, int j,
+            vector<vector<bool>>& vis,
+            vector<vector<int>>& grid,
+            int n, int m) {
+
+        if(i < 0 || j < 0 || i >= n || j >= m ||
+           vis[i][j] || grid[i][j] == 0)
+            return 0;
+
+        vis[i][j] = true;
+
+        return grid[i][j]
+             + dfs(i - 1, j, vis, grid, n, m)
+             + dfs(i + 1, j, vis, grid, n, m)
+             + dfs(i, j - 1, vis, grid, n, m)
+             + dfs(i, j + 1, vis, grid, n, m);
+    }
+
+    int findMaxFish(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<bool>> vis(n,
+                                 vector<bool>(m, false));
+
+        int maxFish = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            for(int j = 0; j < m; j++) {
+
+                if(grid[i][j] != 0 && !vis[i][j]) {
+
+                    int fish = dfs(i, j, vis, grid, n, m);
+
+                    maxFish = max(maxFish, fish);
+                }
+            }
+        }
+
+        return maxFish;
+    }
+};
