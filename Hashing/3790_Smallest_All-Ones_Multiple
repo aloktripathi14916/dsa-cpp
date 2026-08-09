@@ -1,0 +1,68 @@
+/*
+Problem: Minimum All-One Multiple (LC 3790)
+Topic: Math, Modular Arithmetic
+
+--------------------------------------------------
+
+Idea:
+
+We need the smallest number consisting
+only of 1's that is divisible by k.
+
+Instead of constructing the actual number
+(which can become extremely large), keep
+only its remainder modulo k.
+
+If the current number has remainder rem:
+
+    newRem = (rem * 10 + 1) % k
+
+If newRem becomes 0, we found the answer.
+
+There are only k possible remainders:
+0, 1, 2, ..., k-1.
+
+If a remainder repeats, the sequence has
+entered a cycle, so 0 can never be reached.
+
+Also, if k is divisible by 2 or 5, an
+all-1 number can never be divisible by k.
+
+--------------------------------------------------
+
+Time: O(k)
+
+Space: O(k)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int minAllOneMultiple(int k) {
+
+        if(k % 2 == 0 || k % 5 == 0)
+            return -1;
+
+        int rem = 0;
+
+        unordered_set<int> seen;
+
+        for(int i = 1; i <= k; i++) {
+
+            rem = (rem * 10 + 1) % k;
+
+            // Remainder repeated -> cycle
+            if(seen.count(rem))
+                return -1;
+
+            seen.insert(rem);
+
+            // Found a divisible number
+            if(rem == 0)
+                return i;
+        }
+
+        return -1;
+    }
+};
