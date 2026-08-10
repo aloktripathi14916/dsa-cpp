@@ -1,0 +1,69 @@
+/*
+Problem: Most Frequent Even Element (LC 2404)
+Topic: Hash Map
+
+--------------------------------------------------
+
+Idea:
+
+Count the frequency of every number
+using a hash map.
+
+Then consider only even numbers.
+
+For each even number:
+
+• If its frequency is greater than the
+  current best frequency, update it.
+
+• If frequencies are equal, choose the
+  smaller number.
+
+If no even number exists, return -1.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int mostFrequentEven(vector<int>& nums) {
+
+        unordered_map<int, int> mp;
+
+        // Count frequencies
+        for(int num : nums)
+            mp[num]++;
+
+        int bestNum = -1;
+        int bestFreq = 0;
+
+        for(auto &p : mp) {
+
+            int num = p.first;
+            int freq = p.second;
+
+            // Only consider even numbers
+            if(num % 2 != 0)
+                continue;
+
+            if(freq > bestFreq) {
+                bestFreq = freq;
+                bestNum = num;
+            }
+            else if(freq == bestFreq) {
+
+                // Tie -> choose smaller number
+                if(bestNum == -1 || num < bestNum)
+                    bestNum = num;
+            }
+        }
+
+        return bestNum;
+    }
+};
