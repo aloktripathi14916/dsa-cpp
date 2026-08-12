@@ -1,0 +1,59 @@
+/*
+Problem: Minimum Difference Between Highest and Lowest
+         of K Scores (LC 1984)
+Topic: Sorting, Sliding Window
+
+--------------------------------------------------
+
+Idea:
+
+After sorting, any group of k elements can
+be represented by a consecutive window.
+
+For a window:
+
+    [st ... end]
+
+the maximum value is nums[end] and the
+minimum value is nums[st].
+
+So the difference is:
+
+    nums[end] - nums[st]
+
+Check every window of size k and keep the
+minimum difference.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+Sorting takes O(n log n), sliding window
+takes O(n).
+
+Space: O(1) extra (ignoring sort internals).
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums, int k) {
+
+        sort(nums.begin(), nums.end());
+
+        int st = 0;
+        int minDiff = INT_MAX;
+
+        for(int end = k - 1; end < nums.size(); end++) {
+
+            int diff = nums[end] - nums[st];
+
+            minDiff = min(minDiff, diff);
+
+            st++;
+        }
+
+        return minDiff;
+    }
+};
