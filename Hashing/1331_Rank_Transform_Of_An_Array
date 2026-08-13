@@ -1,0 +1,59 @@
+/*
+Problem: Rank Transform of an Array (LC 1331)
+Topic: Sorting, Hash Map
+
+--------------------------------------------------
+
+Idea:
+
+We need to replace every number with its
+rank.
+
+1. Copy the array and sort it.
+2. Assign ranks to unique values.
+3. Store value -> rank in a hash map.
+4. Traverse the original array and replace
+   each value with its corresponding rank.
+
+Equal values receive the same rank.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+Sorting takes O(n log n), while the remaining
+operations take O(n) average time.
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> arrayRankTransform(vector<int>& arr) {
+
+        vector<int> temp = arr;
+
+        sort(temp.begin(), temp.end());
+
+        unordered_map<int, int> m;
+
+        int rank = 1;
+
+        // Assign rank to each unique value
+        for(int i = 0; i < temp.size(); i++) {
+
+            if(m.find(temp[i]) == m.end())
+                m[temp[i]] = rank++;
+        }
+
+        // Transform the original array
+        vector<int> ans(arr.size());
+
+        for(int i = 0; i < arr.size(); i++)
+            ans[i] = m[arr[i]];
+
+        return ans;
+    }
+};
