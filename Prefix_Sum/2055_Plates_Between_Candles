@@ -1,0 +1,103 @@
+/*
+Problem: Plates Between Candles (LC 2055)
+Topic: Prefix Sum, Preprocessing
+
+--------------------------------------------------
+
+Idea:
+
+For every query [l, r], we need the number
+of '*' between the first candle from l and
+the last candle from r.
+
+Precompute:
+
+1. Prefix sum of plates.
+2. left[i]  = nearest candle at or before i.
+3. right[i] = nearest candle at or after i.
+
+For a query:
+
+    leftCandle  = right[l]
+    rightCandle = left[r]
+
+If both exist and leftCandle < rightCandle:
+
+    plates = prefix[rightCandle] - prefix[leftCandle]
+
+Otherwise, answer is 0.
+
+--------------------------------------------------
+
+Time: O(n + q)
+
+n = length of string
+q = number of queries
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> platesBetweenCandles(
+        string s,
+        vector<vector<int>>& queries
+    ) {
+
+        int n = s.length();
+
+        // Prefix count of plates
+        vector<int> candles;
+        int candle = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            if(s[i] == '*')
+                candle++;
+
+            candles.push_back(candle);
+        }
+
+        // Nearest candle on the left
+        vector<int> left;
+        int last = -1;
+
+        for(int i = 0; i < n; i++) {
+
+            if(s[i] == '|')
+                last = i;
+
+            left.push_back(last);
+        }
+
+        // Nearest candle on the right
+        vector<int> right(n);
+
+        int next = -1;
+
+        for(int i = n - 1; i >= 0; i--) {
+
+            if(s[i] == '|')
+                next = i;
+
+            right[i] = next;
+        }
+
+        vector<int> ans;
+
+        for(auto &query : queries) {
+
+            int l = right[query[0]];
+            int r = left[query[1]];
+
+            if(l == -1 || r == -1 || l >= r)
+                ans.push_back(0);
+            else
+                ans.push_back(candles[r] - candles[l]);
+        }
+
+        return ans;
+    }
+};
