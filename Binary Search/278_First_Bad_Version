@@ -1,0 +1,55 @@
+/*
+Problem: First Bad Version (LC 278)
+Topic: Binary Search
+
+--------------------------------------------------
+
+Idea:
+
+Versions before the first bad version are
+good, while the first bad version and every
+version after it are bad.
+
+So we can use binary search.
+
+If mid is bad:
+    mid could be the answer,
+    so search on the left half.
+
+If mid is good:
+    first bad version must be to the right.
+
+--------------------------------------------------
+
+Time: O(log n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+
+        int st = 1;
+        int end = n;
+        int ans = 0;
+
+        while(st <= end) {
+
+            int mid = st + (end - st) / 2;
+
+            if(isBadVersion(mid)) {
+
+                ans = mid;
+                end = mid - 1;
+            }
+            else {
+                st = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
