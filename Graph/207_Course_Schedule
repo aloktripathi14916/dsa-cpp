@@ -1,0 +1,97 @@
+/*
+Problem: Course Schedule (LC 207)
+Topic: Graph, DFS, Cycle Detection
+
+--------------------------------------------------
+
+Idea:
+
+Each prerequisite creates a directed edge:
+
+    prerequisite -> course
+
+For example:
+
+    [1, 0]
+
+means:
+
+    0 -> 1
+
+To finish all courses, the graph must not
+contain a cycle.
+
+Use two arrays:
+
+vis[]      -> course has been visited
+recPath[]  -> course is currently in the
+              current DFS recursion path
+
+If during DFS we reach a node that is already
+in recPath[], we found a cycle.
+
+--------------------------------------------------
+
+Time: O(V × E) with the current implementation
+
+Space: O(V)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    bool isCycle(int src,
+                 vector<bool>& vis,
+                 vector<bool>& recPath,
+                 vector<vector<int>>& prerequisites) {
+
+        vis[src] = true;
+        recPath[src] = true;
+
+        for(int i = 0; i < prerequisites.size(); i++) {
+
+            int v = prerequisites[i][0];
+            int u = prerequisites[i][1];
+
+            // u -> v
+            if(u == src) {
+
+                if(!vis[v]) {
+
+                    if(isCycle(v, vis, recPath, prerequisites))
+                        return true;
+                }
+                else if(recPath[v]) {
+
+                    // v is already in current DFS path
+                    return true;
+                }
+            }
+        }
+
+        // Remove src from current DFS path
+        recPath[src] = false;
+
+        return false;
+    }
+
+    bool canFinish(int numCourses,
+                   vector<vector<int>>& prerequisites) {
+
+        vector<bool> vis(numCourses, false);
+        vector<bool> recPath(numCourses, false);
+
+        for(int i = 0; i < numCourses; i++) {
+
+            if(!vis[i]) {
+
+                if(isCycle(i, vis, recPath, prerequisites))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+};
