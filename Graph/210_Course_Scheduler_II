@@ -1,0 +1,112 @@
+/*
+Problem: Course Schedule II (LC 210)
+Topic: Graph, DFS, Topological Sort
+
+--------------------------------------------------
+
+Idea:
+
+We have a directed edge:
+
+    prerequisite -> course
+
+We need to return an ordering where every
+prerequisite appears before its course.
+
+Use DFS.
+
+For every course:
+
+• Mark it visited.
+• Put it in recPath while DFS is processing it.
+• Explore all courses that depend on it.
+• If we encounter a node already in recPath,
+  there is a cycle -> impossible.
+
+After completely processing a course, push it
+into the stack.
+
+Because a course is pushed only after all of
+its dependent courses are processed, popping
+the stack gives the required topological order.
+
+--------------------------------------------------
+
+Time: O(V × E) with the current implementation
+
+Space: O(V)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    bool dfs(int curr,
+             vector<vector<int>>& prerequisites,
+             vector<bool>& vis,
+             vector<bool>& recPath,
+             stack<int>& s) {
+
+        vis[curr] = true;
+        recPath[curr] = true;
+
+        for(int i = 0; i < prerequisites.size(); i++) {
+
+            int u = prerequisites[i][1];
+            int v = prerequisites[i][0];
+
+            // Edge: curr -> v
+            if(u == curr) {
+
+                if(!vis[v]) {
+
+                    if(dfs(v, prerequisites,
+                           vis, recPath, s))
+                        return true;
+                }
+                else if(recPath[v]) {
+
+                    // Cycle detected
+                    return true;
+                }
+            }
+        }
+
+        // DFS completely finished for curr
+        recPath[curr] = false;
+
+        s.push(curr);
+
+        return false;
+    }
+
+    vector<int> findOrder(int numCourses,
+                           vector<vector<int>>& prerequisites) {
+
+        vector<bool> vis(numCourses, false);
+        vector<bool> recPath(numCourses, false);
+
+        stack<int> s;
+
+        for(int i = 0; i < numCourses; i++) {
+
+            if(!vis[i]) {
+
+                if(dfs(i, prerequisites,
+                       vis, recPath, s))
+                    return {};
+            }
+        }
+
+        vector<int> ans;
+
+        while(!s.empty()) {
+
+            ans.push_back(s.top());
+            s.pop();
+        }
+
+        return ans;
+    }
+};
