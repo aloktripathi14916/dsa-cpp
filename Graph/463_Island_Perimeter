@@ -1,0 +1,86 @@
+/*
+Problem: Island Perimeter (LC 463)
+Topic: Matrix, DFS
+
+--------------------------------------------------
+
+Idea:
+
+For every land cell, check its four
+directions.
+
+A side contributes to the perimeter if:
+
+1. It goes outside the grid, OR
+2. It reaches a water cell.
+
+If it reaches another land cell that has
+already been visited, that side contributes
+nothing.
+
+Since the problem contains only one island,
+we can start DFS from the first land cell.
+
+--------------------------------------------------
+
+Time: O(n × m)
+
+Each land cell is visited once.
+
+Space: O(n × m)
+
+Visited array + recursion stack.
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+
+    int dfs(int cr, int cc,
+            vector<vector<int>>& grid,
+            int n, int m,
+            vector<vector<bool>>& vis) {
+
+        // Outside the grid -> perimeter
+        if(cr < 0 || cc < 0 ||
+           cr >= n || cc >= m)
+            return 1;
+
+        // Water -> perimeter
+        if(grid[cr][cc] == 0)
+            return 1;
+
+        // Already visited land
+        if(vis[cr][cc])
+            return 0;
+
+        vis[cr][cc] = true;
+
+        return dfs(cr - 1, cc, grid, n, m, vis)
+             + dfs(cr + 1, cc, grid, n, m, vis)
+             + dfs(cr, cc - 1, grid, n, m, vis)
+             + dfs(cr, cc + 1, grid, n, m, vis);
+    }
+
+    int islandPerimeter(vector<vector<int>>& grid) {
+
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<bool>> vis(
+            n, vector<bool>(m, false)
+        );
+
+        for(int i = 0; i < n; i++) {
+
+            for(int j = 0; j < m; j++) {
+
+                if(grid[i][j] == 1 && !vis[i][j])
+                    return dfs(i, j, grid, n, m, vis);
+            }
+        }
+
+        return 0;
+    }
+};
