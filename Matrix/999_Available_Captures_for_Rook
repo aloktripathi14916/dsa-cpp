@@ -1,0 +1,112 @@
+/*
+Problem: Available Captures for Rook (LC 999)
+Topic: Matrix, Simulation
+
+--------------------------------------------------
+
+Idea:
+
+First find the position of the rook.
+
+From the rook, check all four directions:
+
+    Up
+    Down
+    Left
+    Right
+
+In each direction:
+
+• '.' -> keep moving
+• 'p' -> capture the pawn and stop
+• Any other piece -> blocked, so stop
+
+Only the first pawn in each direction can
+be captured.
+
+--------------------------------------------------
+
+Time: O(n × m)
+
+Finding the rook takes O(n × m).
+The four directional scans take O(n + m).
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int numRookCaptures(vector<vector<char>>& board) {
+
+        int n = board.size();
+        int m = board[0].size();
+
+        int rookRow = 0;
+        int rookCol = 0;
+
+        // Find the rook
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+
+                if(board[i][j] == 'R') {
+                    rookRow = i;
+                    rookCol = j;
+                }
+            }
+        }
+
+        int count = 0;
+
+        // Up
+        for(int i = rookRow - 1; i >= 0; i--) {
+
+            if(board[i][rookCol] == 'p') {
+                count++;
+                break;
+            }
+
+            if(board[i][rookCol] != '.')
+                break;
+        }
+
+        // Down
+        for(int i = rookRow + 1; i < n; i++) {
+
+            if(board[i][rookCol] == 'p') {
+                count++;
+                break;
+            }
+
+            if(board[i][rookCol] != '.')
+                break;
+        }
+
+        // Left
+        for(int j = rookCol - 1; j >= 0; j--) {
+
+            if(board[rookRow][j] == 'p') {
+                count++;
+                break;
+            }
+
+            if(board[rookRow][j] != '.')
+                break;
+        }
+
+        // Right
+        for(int j = rookCol + 1; j < m; j++) {
+
+            if(board[rookRow][j] == 'p') {
+                count++;
+                break;
+            }
+
+            if(board[rookRow][j] != '.')
+                break;
+        }
+
+        return count;
+    }
+};
