@@ -1,0 +1,132 @@
+/*
+Problem: Count Unguarded Cells in the Grid (LC 2257)
+Topic: Matrix, Simulation
+
+--------------------------------------------------
+
+Idea:
+
+Represent the grid using:
+
+    0 -> empty
+    1 -> guard
+    2 -> wall
+    3 -> guarded cell
+
+For every guard, scan in all four directions.
+
+The scan continues through empty cells and
+marks them as guarded.
+
+It stops when it encounters either:
+
+    guard (1)
+    wall  (2)
+
+Finally, count the cells that are still 0.
+
+--------------------------------------------------
+
+Time: O(G × (m + n) + m × n)
+
+Each guard can scan up to m + n cells.
+
+Space: O(m × n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int countUnguarded(int m, int n,
+                       vector<vector<int>>& guards,
+                       vector<vector<int>>& walls) {
+
+        vector<vector<int>> grid(
+            m, vector<int>(n, 0)
+        );
+
+        // Mark guards
+        for(auto &g : guards) {
+            int r = g[0];
+            int c = g[1];
+
+            grid[r][c] = 1;
+        }
+
+        // Mark walls
+        for(auto &w : walls) {
+            int r = w[0];
+            int c = w[1];
+
+            grid[r][c] = 2;
+        }
+
+        // Process every guard
+        for(int i = 0; i < m; i++) {
+
+            for(int j = 0; j < n; j++) {
+
+                if(grid[i][j] != 1)
+                    continue;
+
+                // Up
+                for(int row = i - 1; row >= 0; row--) {
+
+                    if(grid[row][j] == 1 ||
+                       grid[row][j] == 2)
+                        break;
+
+                    if(grid[row][j] == 0)
+                        grid[row][j] = 3;
+                }
+
+                // Down
+                for(int row = i + 1; row < m; row++) {
+
+                    if(grid[row][j] == 1 ||
+                       grid[row][j] == 2)
+                        break;
+
+                    if(grid[row][j] == 0)
+                        grid[row][j] = 3;
+                }
+
+                // Left
+                for(int col = j - 1; col >= 0; col--) {
+
+                    if(grid[i][col] == 1 ||
+                       grid[i][col] == 2)
+                        break;
+
+                    if(grid[i][col] == 0)
+                        grid[i][col] = 3;
+                }
+
+                // Right
+                for(int col = j + 1; col < n; col++) {
+
+                    if(grid[i][col] == 1 ||
+                       grid[i][col] == 2)
+                        break;
+
+                    if(grid[i][col] == 0)
+                        grid[i][col] = 3;
+                }
+            }
+        }
+
+        // Count unguarded cells
+        int count = 0;
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+
+                if(grid[i][j] == 0)
+                    count++;
+            }
+        }
+
+        return count;
+    }
+};
