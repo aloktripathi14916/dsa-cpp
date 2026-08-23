@@ -1,0 +1,87 @@
+/*
+Problem: Minimum Moves to Capture the Queen (LC 3001)
+Topic: Simulation, Geometry
+
+--------------------------------------------------
+
+Idea:
+
+There are only two ways to capture the queen
+in one move:
+
+1. Rook captures the queen.
+2. Bishop captures the queen.
+
+For the rook:
+
+    Same row    -> a == e
+    Same column -> b == f
+
+But the bishop can block the rook.
+
+For the bishop:
+
+    Same diagonal -> |c-e| == |d-f|
+
+But the rook can block the bishop.
+
+If neither piece can capture the queen directly,
+the answer is 2.
+
+--------------------------------------------------
+
+Time: O(1)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int minMovesToCaptureTheQueen(
+        int a, int b,
+        int c, int d,
+        int e, int f) {
+
+        // Rook and queen are in the same row
+        if(a == e) {
+
+            // Bishop must not lie between them
+            if(!(c == a &&
+                 d > min(b, f) &&
+                 d < max(b, f))) {
+
+                return 1;
+            }
+        }
+
+        // Rook and queen are in the same column
+        if(b == f) {
+
+            // Bishop must not lie between them
+            if(!(d == b &&
+                 c > min(a, e) &&
+                 c < max(a, e))) {
+
+                return 1;
+            }
+        }
+
+        // Bishop and queen are on the same diagonal
+        if(abs(c - e) == abs(d - f)) {
+
+            // Rook must not lie between them
+            if(!(abs(a - e) == abs(b - f) &&
+                 a > min(c, e) &&
+                 a < max(c, e) &&
+                 b > min(d, f) &&
+                 b < max(d, f))) {
+
+                return 1;
+            }
+        }
+
+        return 2;
+    }
+};
