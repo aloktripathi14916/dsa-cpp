@@ -1,0 +1,140 @@
+/*
+Problem: Queens That Can Attack the King (LC 1222)
+Topic: Matrix, Simulation
+
+--------------------------------------------------
+
+Idea:
+
+A queen can attack the king from 8 directions:
+
+    Up
+    Down
+    Left
+    Right
+    4 diagonals
+
+Starting from the king, scan one direction at
+a time.
+
+The first queen encountered in a direction is
+the only queen that can attack the king from
+that direction, because another queen behind it
+would be blocked.
+
+--------------------------------------------------
+
+Time: O(1)
+
+The board is always 8 x 8.
+
+Space: O(1)
+
+The board size is fixed.
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<vector<int>> queensAttacktheKing(
+        vector<vector<int>>& queens,
+        vector<int>& king) {
+
+        vector<vector<int>> board(
+            8, vector<int>(8, 0)
+        );
+
+        // Mark queens
+        for(auto &q : queens) {
+            board[q[0]][q[1]] = 1;
+        }
+
+        int rk = king[0];
+        int ck = king[1];
+
+        vector<vector<int>> ans;
+
+        // Up
+        for(int row = rk - 1; row >= 0; row--) {
+
+            if(board[row][ck] == 1) {
+                ans.push_back({row, ck});
+                break;
+            }
+        }
+
+        // Down
+        for(int row = rk + 1; row < 8; row++) {
+
+            if(board[row][ck] == 1) {
+                ans.push_back({row, ck});
+                break;
+            }
+        }
+
+        // Left
+        for(int col = ck - 1; col >= 0; col--) {
+
+            if(board[rk][col] == 1) {
+                ans.push_back({rk, col});
+                break;
+            }
+        }
+
+        // Right
+        for(int col = ck + 1; col < 8; col++) {
+
+            if(board[rk][col] == 1) {
+                ans.push_back({rk, col});
+                break;
+            }
+        }
+
+        // Up-left
+        for(int row = rk - 1, col = ck - 1;
+            row >= 0 && col >= 0;
+            row--, col--) {
+
+            if(board[row][col] == 1) {
+                ans.push_back({row, col});
+                break;
+            }
+        }
+
+        // Up-right
+        for(int row = rk - 1, col = ck + 1;
+            row >= 0 && col < 8;
+            row--, col++) {
+
+            if(board[row][col] == 1) {
+                ans.push_back({row, col});
+                break;
+            }
+        }
+
+        // Down-left
+        for(int row = rk + 1, col = ck - 1;
+            row < 8 && col >= 0;
+            row++, col--) {
+
+            if(board[row][col] == 1) {
+                ans.push_back({row, col});
+                break;
+            }
+        }
+
+        // Down-right
+        for(int row = rk + 1, col = ck + 1;
+            row < 8 && col < 8;
+            row++, col++) {
+
+            if(board[row][col] == 1) {
+                ans.push_back({row, col});
+                break;
+            }
+        }
+
+        return ans;
+    }
+};
