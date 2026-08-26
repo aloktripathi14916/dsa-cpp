@@ -1,0 +1,77 @@
+/*
+Problem: GCD Sum (LC 3867)
+Topic: Prefix GCD, Sorting, Number Theory
+
+--------------------------------------------------
+
+Idea:
+
+For every element, maintain the maximum value
+seen so far.
+
+Then calculate:
+
+    gcd(nums[i], currentMaximum)
+
+Store these values in prefixGCD.
+
+After that, sort prefixGCD.
+
+Pair:
+
+    smallest  <-> largest
+    2nd smallest <-> 2nd largest
+    ...
+
+Add the GCD of every pair.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+O(n) to build prefixGCD
+O(n log n) for sorting
+O(n) for pairing
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    long long gcdSum(vector<int>& nums) {
+
+        int mx = INT_MIN;
+        int n = nums.size();
+
+        vector<int> prefixGCD(n);
+
+        // Build prefix GCD values
+        for(int i = 0; i < n; i++) {
+
+            mx = max(mx, nums[i]);
+
+            prefixGCD[i] = gcd(nums[i], mx);
+        }
+
+        // Sort for pairing
+        sort(prefixGCD.begin(), prefixGCD.end());
+
+        long long sum = 0;
+
+        int st = 0;
+        int end = n - 1;
+
+        while(st < end) {
+
+            sum += gcd(prefixGCD[st],
+                        prefixGCD[end]);
+
+            st++;
+            end--;
+        }
+
+        return sum;
+    }
+};
