@@ -1,0 +1,60 @@
+/*
+Problem: Divide Array Into Arrays With Max Difference (LC 2966)
+Topic: Sorting, Greedy
+
+--------------------------------------------------
+
+Idea:
+
+Sort the array.
+
+After sorting, the optimal grouping is to take
+every 3 consecutive elements:
+
+    nums[i], nums[i+1], nums[i+2]
+
+If the difference between the smallest and
+largest element of this group is greater than k,
+then forming a valid group is impossible.
+
+Otherwise, add the group to the answer.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+Sorting takes O(n log n).
+
+Space: O(n)
+
+For the answer.
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    vector<vector<int>> divideArray(vector<int>& nums, int k) {
+
+        vector<vector<int>> ans;
+
+        int n = nums.size();
+
+        sort(nums.begin(), nums.end());
+
+        for(int i = 0; i < n; i += 3) {
+
+            // Maximum difference in this group
+            if(nums[i + 2] - nums[i] > k)
+                return {};
+
+            ans.push_back({
+                nums[i],
+                nums[i + 1],
+                nums[i + 2]
+            });
+        }
+
+        return ans;
+    }
+};
