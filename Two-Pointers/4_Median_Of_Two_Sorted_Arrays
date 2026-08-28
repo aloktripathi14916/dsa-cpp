@@ -1,0 +1,83 @@
+/*
+Problem: Median of Two Sorted Arrays (LC 4)
+Topic: Two Pointers, Merge
+
+--------------------------------------------------
+
+Idea:
+
+Both arrays are already sorted.
+
+Use two pointers:
+
+    st1 -> nums1
+    st2 -> nums2
+
+Take the smaller element from the two pointers
+and add it to the merged array.
+
+After merging:
+
+    Odd length  -> middle element
+    Even length -> average of two middle elements
+
+--------------------------------------------------
+
+Time: O(m + n)
+
+Each element is processed once.
+
+Space: O(m + n)
+
+For the merged array.
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    double findMedianSortedArrays(
+        vector<int>& nums1,
+        vector<int>& nums2) {
+
+        int st1 = 0;
+        int st2 = 0;
+
+        vector<int> ans;
+
+        // Merge both sorted arrays
+        while(st1 < nums1.size() &&
+              st2 < nums2.size()) {
+
+            if(nums1[st1] <= nums2[st2]) {
+                ans.push_back(nums1[st1]);
+                st1++;
+            }
+            else {
+                ans.push_back(nums2[st2]);
+                st2++;
+            }
+        }
+
+        // Remaining elements of nums1
+        while(st1 < nums1.size()) {
+            ans.push_back(nums1[st1]);
+            st1++;
+        }
+
+        // Remaining elements of nums2
+        while(st2 < nums2.size()) {
+            ans.push_back(nums2[st2]);
+            st2++;
+        }
+
+        int n = ans.size();
+
+        // Odd number of elements
+        if(n % 2 == 1)
+            return ans[n / 2];
+
+        // Even number of elements
+        return (ans[n / 2] + ans[n / 2 - 1]) / 2.0;
+    }
+};
