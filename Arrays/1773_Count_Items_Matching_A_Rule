@@ -1,0 +1,51 @@
+/*
+Problem: Count Items Matching a Rule (LC 1773)
+Topic: Arrays, Strings
+
+--------------------------------------------------
+
+Idea:
+
+Map ruleKey to its corresponding index:
+
+    type  -> 0
+    color -> 1
+    name  -> 2
+
+Then check every item at that index.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(1)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    int countMatches(vector<vector<string>>& items,
+                     string ruleKey,
+                     string ruleValue) {
+
+        int idx;
+
+        if(ruleKey == "type")
+            idx = 0;
+        else if(ruleKey == "color")
+            idx = 1;
+        else
+            idx = 2;
+
+        int count = 0;
+
+        for(int i = 0; i < items.size(); i++) {
+
+            if(items[i][idx] == ruleValue)
+                count++;
+        }
+
+        return count;
+    }
+};
