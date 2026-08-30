@@ -1,0 +1,54 @@
+/*
+Problem: Destination City (LC 1436)
+Topic: Hash Set
+
+--------------------------------------------------
+
+Idea:
+
+The destination city is the city that:
+
+    appears as a destination
+    but never appears as a starting point.
+
+Store:
+
+    s1 -> all starting cities
+    s2 -> all destination cities
+
+Then find a destination that is not present
+in s1.
+
+--------------------------------------------------
+
+Time: O(n log n)
+
+Set insertion/search takes O(log n).
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    string destCity(vector<vector<string>>& paths) {
+
+        set<string> s1;
+        set<string> s2;
+
+        for(int i = 0; i < paths.size(); i++) {
+
+            s1.insert(paths[i][0]);
+            s2.insert(paths[i][1]);
+        }
+
+        for(auto city : s2) {
+
+            if(s1.find(city) == s1.end())
+                return city;
+        }
+
+        return "";
+    }
+};
