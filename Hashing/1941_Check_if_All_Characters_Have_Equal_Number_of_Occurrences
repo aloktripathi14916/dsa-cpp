@@ -1,0 +1,43 @@
+/*
+Problem: Check if All Characters Have Equal Number of Occurrences (LC 1941)
+Topic: Hash Map, Hash Set
+
+--------------------------------------------------
+
+Idea:
+
+Count the frequency of every character.
+
+Then store all frequencies in a set.
+
+If all characters have the same frequency,
+the set will contain only one value.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    bool areOccurrencesEqual(string s) {
+
+        unordered_map<char, int> mp;
+
+        // Count frequencies
+        for(char ch : s)
+            mp[ch]++;
+
+        // Store frequencies
+        unordered_set<int> st;
+
+        for(auto &p : mp)
+            st.insert(p.second);
+
+        return st.size() == 1;
+    }
+};
