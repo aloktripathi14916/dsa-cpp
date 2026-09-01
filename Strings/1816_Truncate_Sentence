@@ -1,0 +1,44 @@
+/*
+Problem: Truncate Sentence (LC 1816)
+Topic: Strings
+
+--------------------------------------------------
+
+Idea:
+
+Split the sentence into words and keep only
+the first k words.
+
+In C++, use stringstream to extract words
+one by one.
+
+--------------------------------------------------
+
+Time: O(n)
+
+Space: O(n)
+
+--------------------------------------------------
+*/
+
+class Solution {
+public:
+    string truncateSentence(string s, int k) {
+
+        stringstream ss(s);
+        string word;
+        string ans = "";
+
+        for(int i = 0; i < k; i++) {
+
+            ss >> word;
+
+            if(i > 0)
+                ans += " ";
+
+            ans += word;
+        }
+
+        return ans;
+    }
+};
