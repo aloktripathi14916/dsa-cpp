@@ -1,0 +1,41 @@
+```cpp
+/*
+Problem: Find Greatest Common Divisor of Array
+LeetCode: 1979
+
+--------------------------------------------------
+
+Idea:
+1. Find the minimum and maximum elements in the array.
+2. The answer is GCD(minimum, maximum).
+3. Use the Euclidean Algorithm to calculate the GCD.
+
+--------------------------------------------------
+
+Time Complexity: O(n + log(max(nums)))
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    int findGCD(vector<int>& nums) {
+        int mn = INT_MAX;
+        int mx = INT_MIN;
+
+        // Find minimum and maximum elements
+        for (int num : nums) {
+            mn = min(mn, num);
+            mx = max(mx, num);
+        }
+
+        // Euclidean Algorithm
+        while (mn != 0) {
+            int r = mx % mn;
+            mx = mn;
+            mn = r;
+        }
+
+        return mx;
+    }
+};
+```
