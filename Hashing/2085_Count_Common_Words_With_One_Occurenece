@@ -1,0 +1,44 @@
+```cpp
+/*
+Problem: Count Common Words With One Occurrence
+LeetCode: 2085
+
+--------------------------------------------------
+
+Idea:
+1. Count the frequency of every word in both arrays.
+2. A word is valid only if:
+   - It appears exactly once in words1.
+   - It appears exactly once in words2.
+3. Count all such common words.
+
+--------------------------------------------------
+
+Time Complexity: O(n + m)
+Space Complexity: O(n + m)
+*/
+
+class Solution {
+public:
+    int countWords(vector<string>& words1, vector<string>& words2) {
+        unordered_map<string, int> freq1, freq2;
+
+        // Count frequencies in both arrays
+        for (string& word : words1)
+            freq1[word]++;
+
+        for (string& word : words2)
+            freq2[word]++;
+
+        int count = 0;
+
+        // Check words appearing exactly once in both
+        for (auto& [word, freq] : freq1) {
+            if (freq == 1 && freq2[word] == 1)
+                count++;
+        }
+
+        return count;
+    }
+};
+```
