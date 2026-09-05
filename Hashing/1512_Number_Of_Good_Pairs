@@ -1,0 +1,37 @@
+
+/*
+Problem: Number of Good Pairs
+LeetCode: 1512
+
+--------------------------------------------------
+
+Idea:
+For every number, maintain its frequency.
+
+If a number has already appeared k times, the current
+occurrence forms k new pairs with those previous occurrences.
+
+So, add the current frequency to the answer before
+incrementing the frequency.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    int numIdenticalPairs(vector<int>& nums) {
+        unordered_map<int, int> freq;
+        int count = 0;
+
+        for (int num : nums) {
+            count += freq[num];
+            freq[num]++;
+        }
+
+        return count;
+    }
+};
+```
