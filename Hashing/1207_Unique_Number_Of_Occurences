@@ -1,0 +1,39 @@
+
+/*
+Problem: Unique Number of Occurrences
+LeetCode: 1207
+
+--------------------------------------------------
+
+Idea:
+1. Count the frequency of every number.
+2. Store all frequencies in a set.
+3. If the number of unique frequencies equals the
+   number of unique elements, every occurrence count
+   is unique.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+        unordered_map<int, int> freq;
+
+        // Count frequency of each number
+        for (int num : arr)
+            freq[num]++;
+
+        // Store frequencies to remove duplicates
+        unordered_set<int> occurrences;
+
+        for (auto& [num, count] : freq)
+            occurrences.insert(count);
+
+        return occurrences.size() == freq.size();
+    }
+};
+```
