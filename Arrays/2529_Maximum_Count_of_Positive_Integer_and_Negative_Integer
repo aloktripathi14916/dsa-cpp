@@ -1,0 +1,34 @@
+
+/*
+Problem: Maximum Count of Positive Integer and Negative Integer
+LeetCode: 2529
+
+--------------------------------------------------
+
+Idea:
+Count the number of positive and negative integers
+separately. Ignore zeros, then return the larger count.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    int maximumCount(vector<int>& nums) {
+        int pos = 0;
+        int neg = 0;
+
+        for (int num : nums) {
+            if (num > 0)
+                pos++;
+            else if (num < 0)
+                neg++;
+        }
+
+        return max(pos, neg);
+    }
+};
+```
