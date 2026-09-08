@@ -1,0 +1,51 @@
+
+/*
+Problem: Shift 2D Grid
+LeetCode: 1260
+
+--------------------------------------------------
+
+Idea:
+Treat the 2D grid as a flattened 1D array.
+
+For each element:
+1. Convert (row, col) into a 1D index.
+2. Shift the index by k using modulo.
+3. Convert the new 1D index back into (row, col).
+4. Place the element at its new position.
+
+--------------------------------------------------
+
+Time Complexity: O(m * n)
+Space Complexity: O(m * n)
+*/
+
+class Solution {
+public:
+    vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        vector<vector<int>> ans(m, vector<int>(n));
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                // Convert 2D position to 1D index
+                int idx = i * n + j;
+
+                // Shift and wrap around
+                int newIdx = (idx + k) % (m * n);
+
+                // Convert 1D index back to 2D position
+                int newRow = newIdx / n;
+                int newCol = newIdx % n;
+
+                ans[newRow][newCol] = grid[i][j];
+            }
+        }
+
+        return ans;
+    }
+};
+```
