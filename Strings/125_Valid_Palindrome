@@ -1,0 +1,58 @@
+
+/*
+Problem: Valid Palindrome
+LeetCode: 125
+
+--------------------------------------------------
+
+Idea:
+Use two pointers from both ends of the string.
+
+1. Skip characters that are not letters or digits.
+2. Compare the remaining characters case-insensitively.
+3. If any pair differs, the string is not a palindrome.
+4. Continue until the pointers meet.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    bool isValid(char ch) {
+        return (ch >= '0' && ch <= '9') ||
+               (ch >= 'a' && ch <= 'z') ||
+               (ch >= 'A' && ch <= 'Z');
+    }
+
+    bool isPalindrome(string s) {
+        int st = 0;
+        int end = s.size() - 1;
+
+        while (st < end) {
+
+            // Skip non-alphanumeric characters
+            if (!isValid(s[st])) {
+                st++;
+                continue;
+            }
+
+            if (!isValid(s[end])) {
+                end--;
+                continue;
+            }
+
+            // Compare characters ignoring case
+            if (tolower(s[st]) != tolower(s[end]))
+                return false;
+
+            st++;
+            end--;
+        }
+
+        return true;
+    }
+};
+```
