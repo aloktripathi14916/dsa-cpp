@@ -1,0 +1,49 @@
+
+/*
+Problem: Maximum Candies Allocated to K Children
+LeetCode: 2226
+
+--------------------------------------------------
+
+Idea:
+Binary search the maximum number of candies each child
+can receive.
+
+For a candidate value mid:
+- Each pile can provide pile / mid portions.
+- If the total number of children served >= k,
+  mid is possible, so search for a larger value.
+- Otherwise, search for a smaller value.
+
+--------------------------------------------------
+
+Time Complexity: O(n log(max(candies)))
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    int maximumCandies(vector<int>& candies, long long k) {
+        int st = 1;
+        int end = *max_element(candies.begin(), candies.end());
+        int ans = 0;
+
+        while (st <= end) {
+            int mid = st + (end - st) / 2;
+            long long children = 0;
+
+            for (int pile : candies)
+                children += pile / mid;
+
+            if (children >= k) {
+                ans = mid;
+                st = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+};
+```
