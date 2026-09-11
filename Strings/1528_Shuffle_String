@@ -1,0 +1,32 @@
+
+/*
+Problem: Shuffle String
+LeetCode: 1528
+
+--------------------------------------------------
+
+Idea:
+The indices array tells us the final position of each
+character.
+
+For every character s[i], place it at indices[i].
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    string restoreString(string s, vector<int>& indices) {
+        string ans(s.size(), ' ');
+
+        for (int i = 0; i < s.size(); i++) {
+            ans[indices[i]] = s[i];
+        }
+
+        return ans;
+    }
+};
+```
