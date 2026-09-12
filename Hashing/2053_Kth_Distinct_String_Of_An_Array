@@ -1,0 +1,42 @@
+
+/*
+Problem: Kth Distinct String in an Array
+LeetCode: 2053
+
+--------------------------------------------------
+
+Idea:
+1. Count the frequency of every string.
+2. Traverse the original array to preserve its order.
+3. Whenever a string appears exactly once, it is distinct.
+4. Decrease k until the kth distinct string is found.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    string kthDistinct(vector<string>& arr, int k) {
+        unordered_map<string, int> freq;
+
+        // Count frequency of each string
+        for (string& str : arr)
+            freq[str]++;
+
+        // Find the kth distinct string in original order
+        for (string& str : arr) {
+            if (freq[str] == 1) {
+                if (k == 1)
+                    return str;
+
+                k--;
+            }
+        }
+
+        return "";
+    }
+};
+```
