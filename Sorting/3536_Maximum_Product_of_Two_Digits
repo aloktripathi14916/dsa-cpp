@@ -1,0 +1,39 @@
+
+/*
+Problem: Maximum Product of Two Digits
+LeetCode: 3536
+
+--------------------------------------------------
+
+Idea:
+1. Extract all digits from n.
+2. Sort the digits.
+3. The maximum product is obtained by multiplying
+   the two largest digits.
+
+--------------------------------------------------
+
+Time Complexity: O(d log d)
+Space Complexity: O(d)
+
+where d = number of digits in n.
+*/
+
+class Solution {
+public:
+    int maxProduct(int n) {
+        vector<int> digits;
+
+        // Extract digits
+        while (n > 0) {
+            digits.push_back(n % 10);
+            n /= 10;
+        }
+
+        // Sort digits
+        sort(digits.begin(), digits.end());
+
+        return digits[digits.size() - 1] * digits[digits.size() - 2];
+    }
+};
+```
