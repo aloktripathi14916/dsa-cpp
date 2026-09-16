@@ -1,0 +1,38 @@
+
+/*
+Problem: Number of Strings That Appear as Substrings in Word
+LeetCode: 1967
+
+--------------------------------------------------
+
+Idea:
+Traverse every pattern and check whether it appears
+as a substring of word.
+
+If found, increment the count.
+
+--------------------------------------------------
+
+Time Complexity: O(n * m * p)
+Space Complexity: O(1)
+
+where:
+n = number of patterns
+m = average pattern length
+p = length of word
+*/
+
+class Solution {
+public:
+    int numOfStrings(vector<string>& patterns, string word) {
+        int count = 0;
+
+        for (string& pattern : patterns) {
+            if (word.find(pattern) != string::npos)
+                count++;
+        }
+
+        return count;
+    }
+};
+```
