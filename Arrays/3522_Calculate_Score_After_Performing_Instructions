@@ -1,0 +1,54 @@
+
+/*
+Problem: Calculate Score After Performing Instructions
+LeetCode: 3522
+
+--------------------------------------------------
+
+Idea:
+Start from index 0 and simulate the instructions.
+
+- "add": Add values[curr] to the score and move to
+  the next instruction.
+- "jump": Move by values[curr] positions.
+- If an instruction is visited again, stop.
+- Also stop when curr goes outside the array.
+
+A visited array prevents infinite loops.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    long long calculateScore(vector<string>& instructions,
+                             vector<int>& values) {
+        long long score = 0;
+        int curr = 0;
+
+        vector<bool> vis(instructions.size(), false);
+
+        while (curr >= 0 && curr < instructions.size()) {
+
+            // Stop if this instruction was already visited
+            if (vis[curr])
+                break;
+
+            vis[curr] = true;
+
+            if (instructions[curr] == "jump") {
+                curr += values[curr];
+            }
+            else { // "add"
+                score += values[curr];
+                curr++;
+            }
+        }
+
+        return score;
+    }
+};
+```
