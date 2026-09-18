@@ -1,0 +1,39 @@
+
+/*
+Problem: Maximum Product of Two Elements in an Array
+LeetCode: 1464
+
+--------------------------------------------------
+
+Idea:
+The maximum product (nums[i] - 1) * (nums[j] - 1)
+is obtained by choosing the two largest elements.
+
+Track the two largest values in one pass.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int max1 = 0;
+        int max2 = 0;
+
+        for (int num : nums) {
+            if (num > max1) {
+                max2 = max1;
+                max1 = num;
+            }
+            else if (num > max2) {
+                max2 = num;
+            }
+        }
+
+        return (max1 - 1) * (max2 - 1);
+    }
+};
+```
