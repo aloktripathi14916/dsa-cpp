@@ -1,0 +1,51 @@
+
+/*
+Problem: Minimum Number of Pushes to Type Word II
+LeetCode: 3016
+
+--------------------------------------------------
+
+Idea:
+1. Count the frequency of every character.
+2. Sort frequencies in descending order.
+3. Assign the most frequent characters to the cheapest
+   keys first.
+4. Every group of 8 characters has the same push cost:
+   - First 8  → 1 push
+   - Next 8   → 2 pushes
+   - Next 8   → 3 pushes
+   - etc.
+
+--------------------------------------------------
+
+Time Complexity: O(n + 26 log 26)
+Space Complexity: O(26)
+*/
+
+class Solution {
+public:
+    int minimumPushes(string word) {
+        unordered_map<char, int> freq;
+
+        // Count frequency of each character
+        for (char c : word)
+            freq[c]++;
+
+        vector<int> arr;
+
+        for (auto& [ch, count] : freq)
+            arr.push_back(count);
+
+        // Most frequent characters get lower push costs
+        sort(arr.rbegin(), arr.rend());
+
+        int ans = 0;
+
+        for (int i = 0; i < arr.size(); i++) {
+            ans += (i / 8 + 1) * arr[i];
+        }
+
+        return ans;
+    }
+};
+```
