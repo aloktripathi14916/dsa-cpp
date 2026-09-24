@@ -1,0 +1,31 @@
+
+/*
+Problem: Stone Game
+LeetCode: 877
+
+--------------------------------------------------
+
+Idea:
+The number of piles is even.
+
+Alex can always guarantee a win by choosing either
+all piles at even indices or all piles at odd indices.
+One of these two groups must have a greater total sum.
+
+Therefore, Alex can always win.
+
+So the answer is always true.
+
+--------------------------------------------------
+
+Time Complexity: O(1)
+Space Complexity: O(1)
+*/
+
+class Solution {
+public:
+    bool stoneGame(vector<int>& piles) {
+        return true;
+    }
+};
+```
