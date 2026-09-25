@@ -1,0 +1,37 @@
+
+/*
+Problem: Find Missing Elements
+LeetCode: 3731
+
+--------------------------------------------------
+
+Idea:
+1. Find the smallest and largest elements.
+2. Store all elements in a set.
+3. Check every number between the smallest and largest.
+4. If a number is not present, add it to the answer.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    vector<int> findMissingElements(vector<int>& nums) {
+        int smallest = *min_element(nums.begin(), nums.end());
+        int biggest = *max_element(nums.begin(), nums.end());
+
+        unordered_set<int> present(nums.begin(), nums.end());
+        vector<int> ans;
+
+        for (int i = smallest + 1; i < biggest; i++) {
+            if (!present.count(i))
+                ans.push_back(i);
+        }
+
+        return ans;
+    }
+};
+```
