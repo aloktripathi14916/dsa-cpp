@@ -1,0 +1,40 @@
+
+/*
+Problem: Find Lucky Integer in an Array
+LeetCode: 1394
+
+--------------------------------------------------
+
+Idea:
+1. Count the frequency of every number.
+2. A number is lucky if its value equals its frequency.
+3. Among all lucky numbers, return the largest one.
+4. If no lucky number exists, return -1.
+
+--------------------------------------------------
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+*/
+
+class Solution {
+public:
+    int findLucky(vector<int>& arr) {
+        unordered_map<int, int> mp;
+
+        // Count frequency of each number
+        for (int num : arr)
+            mp[num]++;
+
+        int ans = -1;
+
+        // Find the largest lucky number
+        for (auto& p : mp) {
+            if (p.first == p.second)
+                ans = max(ans, p.first);
+        }
+
+        return ans;
+    }
+};
+```
