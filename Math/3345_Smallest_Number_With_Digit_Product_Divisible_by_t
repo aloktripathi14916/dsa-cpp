@@ -1,0 +1,49 @@
+
+/*
+Problem: Smallest Number With Digit Product Divisible by t
+LeetCode: 3345
+
+--------------------------------------------------
+
+Idea:
+Starting from n, check each number one by one.
+
+For every number:
+1. Extract all its digits.
+2. Calculate the product of its digits.
+3. If the product is divisible by t, return the number.
+4. Otherwise, move to the next number.
+
+The first valid number is the smallest one.
+
+--------------------------------------------------
+
+Time Complexity: O(100 * d)
+Space Complexity: O(1)
+
+where d = number of digits.
+*/
+
+class Solution {
+public:
+    int smallestNumber(int n, int t) {
+        while (n <= 100) {
+            int temp = n;
+            int product = 1;
+
+            while (temp > 0) {
+                int digit = temp % 10;
+                product *= digit;
+                temp /= 10;
+            }
+
+            if (product % t == 0)
+                return n;
+
+            n++;
+        }
+
+        return -1;
+    }
+};
+```
