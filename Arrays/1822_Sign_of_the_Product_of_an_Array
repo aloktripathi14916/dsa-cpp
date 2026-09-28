@@ -1,0 +1,47 @@
+### 1822. Sign of the Product of an Array
+
+**Problem:** Determine the sign of the product of all elements in the array.
+
+
+**Topic:** Array / Sign Tracking
+
+### Approach
+
+* Start with `sign = 1`.
+* If any element is `0`, the product is `0`, so return `0`.
+* For every negative element, flip the sign using `sign *= -1`.
+* Return the final sign.
+
+### Complexity
+
+* **Time:** O(n)
+* **Space:** O(1)
+
+### Code
+
+```cpp
+class Solution {
+public:
+    int arraySign(vector<int>& nums) {
+        int sign = 1;
+
+        for (int num : nums) {
+            if (num == 0)
+                return 0;
+
+            if (num < 0)
+                sign *= -1;
+        }
+
+        return sign;
+    }
+};
+```
+
+### Key Observation
+
+You don't need to actually calculate the product.
+
+* Even number of negatives → `+1`
+* Odd number of negatives → `-1`
+* Any zero → `0`
