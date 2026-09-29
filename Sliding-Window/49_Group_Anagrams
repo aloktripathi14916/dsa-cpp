@@ -1,0 +1,57 @@
+### 49. Group Anagrams
+
+**Problem:** Group strings that are anagrams of each other.
+
+**Platform:** LeetCode
+**Topic:** Hash Map / Sorting / Strings
+
+### Approach
+
+* For each string, create a sorted version.
+* Anagrams produce the **same sorted string**, so use it as the hash-map key.
+* Store the original string in the corresponding vector.
+* Finally, add all map values to the answer.
+
+### Complexity
+
+Let `n` be the number of strings and `k` be the maximum string length.
+
+* **Time:** O(n × k log k)
+* **Space:** O(n × k)
+
+### Code
+
+```cpp
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> ans;
+        unordered_map<string, vector<string>> mp;
+
+        for (string str : strs) {
+            string key = str;
+            sort(key.begin(), key.end());
+
+            mp[key].push_back(str);
+        }
+
+        for (auto& p : mp) {
+            ans.push_back(p.second);
+        }
+
+        return ans;
+    }
+};
+```
+
+### Key Observation
+
+For example:
+
+`"eat"` → `"aet"`
+`"tea"` → `"aet"`
+`"ate"` → `"aet"`
+
+Since all three have the same sorted form, they end up in the same group.
+
+**Your original logic is completely correct.** The only changes above are minor cleanup/readability improvements.
