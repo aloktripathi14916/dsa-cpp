@@ -1,0 +1,45 @@
+### 198. House Robber
+
+**Problem:** Find the maximum amount of money that can be robbed without robbing two adjacent houses.
+
+**Platform:** LeetCode
+**Topic:** Dynamic Programming
+
+### Approach
+
+For each house `i`, we have two choices:
+
+1. **Skip** the current house → `dp[i-1]`
+2. **Rob** the current house → `dp[i-2] + nums[i]`
+
+So:
+
+`dp[i] = max(dp[i-1], dp[i-2] + nums[i])`
+
+* `dp[0]` = money from the first house.
+* `dp[1]` = maximum of the first two houses.
+* Build the DP array from left to right.
+
+### Complexity
+
+* **Time:** O(n)
+* **Space:** O(n)
+
+### Code
+
+```cpp
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+
+        if (n == 1)
+            return nums[0];
+
+        vector<int> dp(n);
+
+        dp[0] = nums[0];
+        dp[1] = max(nums[0], nums[1]);
+
+        for (
+```
