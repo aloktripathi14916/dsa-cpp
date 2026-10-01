@@ -1,0 +1,59 @@
+### 347. Top K Frequent Elements
+
+**Problem:** Return the `k` most frequent elements in the array.
+
+**Platform:** LeetCode
+**Topic:** Hash Map 
+### Approach
+
+1. Use an `unordered_map` to count the frequency of every number.
+2. Store each `{number, frequency}` pair in a vector.
+3. Sort the vector in **descending order of frequency**.
+4. Take the first `k` elements.
+
+### Complexity
+
+Let `n` be the size of `nums` and `m` be the number of distinct elements.
+
+* **Time:** O(n + m log m)
+* **Space:** O(m)
+
+Since `m ≤ n`, this is commonly written as **O(n log n)** in the worst case.
+
+### Code
+
+```cpp id="7xk2pd"
+class Solution {
+public:
+    static bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second > b.second;
+    }
+
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+
+        for (int num : nums) {
+            mp[num]++;
+        }
+
+        vector<pair<int, int>> temp;
+
+        for (auto& p : mp) {
+            temp.push_back({p.first, p.second});
+        }
+
+        sort(temp.begin(), temp.end(), cmp);
+
+        vector<int> ans;
+
+        for (int i = 0; i < k; i++) {
+            ans.push_back(temp[i].first);
+        }
+
+        return ans;
+    }
+};
+```
+
+
+
