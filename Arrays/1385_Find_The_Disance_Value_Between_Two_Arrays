@@ -1,0 +1,55 @@
+### 1385. Find the Distance Value Between Two Arrays
+
+**Problem:** Count elements in `arr1` such that the absolute difference between that element and **every** element in `arr2` is greater than `d`.
+
+**Platform:** LeetCode
+**Topic:** Array / Brute Force
+
+### Approach
+
+For every element in `arr1`:
+
+* Assume it is valid.
+* Compare it with every element in `arr2`.
+* If any element satisfies:
+
+`|arr1[i] - arr2[j]| <= d`
+
+then `arr1[i]` is invalid.
+
+* Otherwise, count it.
+
+### Complexity
+
+Let `n = arr1.size()` and `m = arr2.size()`.
+
+* **Time:** O(n × m)
+* **Space:** O(1)
+
+### Code
+
+```cpp id="q7m2va"
+class Solution {
+public:
+    int findTheDistanceValue(vector<int>& arr1, vector<int>& arr2, int d) {
+        int count = 0;
+
+        for (int x : arr1) {
+            bool valid = true;
+
+            for (int y : arr2) {
+                if (abs(x - y) <= d) {
+                    valid = false;
+                    break;
+                }
+            }
+
+            if (valid)
+                count++;
+        }
+
+        return count;
+    }
+};
+```
+
