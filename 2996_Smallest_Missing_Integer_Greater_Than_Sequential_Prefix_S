@@ -1,0 +1,63 @@
+### 2996. Smallest Missing Integer Greater Than Sequential Prefix Sum
+
+**Problem:** Find the smallest integer that is greater than or equal to the sum of the longest sequential prefix and does not exist in `nums`.
+
+**Platform:** LeetCode
+**Topic:**  Hash Set
+
+### Approach
+
+1. Put all elements of `nums` into an `unordered_set` for O(1) average lookup.
+2. Start `prefix` with `nums[0]`.
+3. Traverse from the second element:
+
+   * If `nums[i] == nums[i-1] + 1`, add it to `prefix`.
+   * Otherwise, the sequential prefix ends.
+4. Starting from `prefix`, keep increasing it while it already exists in the set.
+5. Return the first missing value.
+
+### Complexity
+
+* **Time:** O(n) average
+* **Space:** O(n)
+
+### Code
+
+
+class Solution {
+public:
+    int missingInteger(vector<int>& nums) {
+        unordered_set<int> s(nums.begin(), nums.end());
+
+        int prefix = nums[0];
+
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums[i] == nums[i - 1] + 1)
+                prefix += nums[i];
+            else
+                break;
+        }
+
+        while (s.find(prefix) != s.end())
+            prefix++;
+
+        return prefix;
+    }
+};
+```
+
+### Key Observation
+
+The **sequential prefix** depends on consecutive elements **in their original order**, not on whether consecutive numbers exist somewhere else in the array.
+
+Example:
+
+`nums = [3, 4, 5, 6, 10, 11]`
+
+Sequential prefix = `3 + 4 + 5 + 6 = 18`
+
+If `18` isn't present, answer = **18**.
+
+If `18` were present, we'd check `19`, then `20`, etc., until finding a missing number.
+
+Your solution is **correct and efficient** for the constraints.
